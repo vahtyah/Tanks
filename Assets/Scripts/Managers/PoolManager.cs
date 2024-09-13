@@ -33,6 +33,7 @@ public class Pool
         if (pool.availableObjects.Count > 0)
         {
             var obj = pool.availableObjects.Dequeue();
+            _manager.TrackObject(obj, pool);
             obj.SetActive(true);
             return obj;
         }

@@ -20,7 +20,7 @@ public class CharacterMovement : CharacterAbility
     protected override void HandleInput()
     {
         base.HandleInput();
-        directionInput = new Vector3(inputManager.GetAxisHorizontal(), 0, inputManager.GetAxisVertical()).normalized *
+        directionInput = new Vector3(characterInput.GetAxisHorizontal(), 0, characterInput.GetAxisVertical()).normalized *
                          (moveSpeed * Time.deltaTime);
     }
 

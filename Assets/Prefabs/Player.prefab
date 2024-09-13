@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 4514177161256840891}
   - component: {fileID: 5609400633317766265}
   - component: {fileID: 7302457686009569396}
+  - component: {fileID: 2276521580335410947}
   m_Layer: 0
   m_Name: Abilities
   m_TagString: Untagged
@@ -197,6 +198,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3854b9b3af428d96a3524168856250, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2276521580335410947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2209820336228179555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07122442230c4341a9d7ce94cd3a25c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileSpawnPoint: {fileID: 7643223890424948031}
+  projectilePrefab: {fileID: 2226167052209142831, guid: 1d3cd51c90107624e88ee6069ecfc0bf, type: 3}
+  fireRate: 0.2
 --- !u!1 &8104838554062061906
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,6 +297,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tank
       objectReference: {fileID: 0}
+    - target: {fileID: 8357836867317936028, guid: 86b0feb0bb91a7b448d4359e3492d259, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357836867317936028, guid: 86b0feb0bb91a7b448d4359e3492d259, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357836867317936028, guid: 86b0feb0bb91a7b448d4359e3492d259, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -289,5 +317,10 @@ PrefabInstance:
 --- !u!4 &1489968756445363452 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 955397849371375199, guid: 86b0feb0bb91a7b448d4359e3492d259, type: 3}
+  m_PrefabInstance: {fileID: 1868765115275856547}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7643223890424948031 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8357836867317936028, guid: 86b0feb0bb91a7b448d4359e3492d259, type: 3}
   m_PrefabInstance: {fileID: 1868765115275856547}
   m_PrefabAsset: {fileID: 0}

@@ -180,5 +180,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 600
-  lifeTime: 10
-  Acceleration: 100
+  lifeTime: 3
+  Acceleration: 200

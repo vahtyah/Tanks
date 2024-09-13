@@ -1,13 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour
+public class CharacterInput : MonoBehaviour
 {
     private Character character;
     private string playerID;
-    public string axisHorizontal { get; private set; }
-    public string axisVertical { get; private set; }
-    public string fireButton { get; private set; }
+    private string axisHorizontal { get; set; }
+    private string axisVertical { get; set; }
+    private string fireButton { get; set; }
 
     private void Start()
     {
@@ -15,11 +15,10 @@ public class InputManager : MonoBehaviour
         playerID = character.PlayerID;
         InitializeAxis();
     }
-    
-    
 
     private void InitializeAxis()
     {
+        playerID ??= "Player1";      
         axisHorizontal = playerID + "_Horizontal";
         axisVertical = playerID + "_Vertical";
         fireButton = playerID + "_Fire";
@@ -33,5 +32,10 @@ public class InputManager : MonoBehaviour
     public float GetAxisVertical()
     {
         return Input.GetAxis(axisVertical);        
+    }
+    
+    public bool GetFireButton()
+    {
+        return Input.GetButton(fireButton);
     }
 }

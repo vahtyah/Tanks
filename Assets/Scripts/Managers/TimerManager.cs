@@ -104,6 +104,12 @@ public class Timer
         onStart?.Invoke();
         return this;
     }
+    
+    public Timer AlreadyDone()
+    {
+        IsCompleted = true;
+        return this;
+    }
 
     public void Restart()
     {

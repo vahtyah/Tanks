@@ -7,12 +7,12 @@ public class Character : MonoBehaviour
 {
     [SerializeField] private string playerID = "Player1";
     [SerializeField] private GameObject abilityNode;
-    public InputManager InputManager { get; private set; }
-    List<CharacterAbility>  characterAbilities = new();
+    public CharacterInput CharacterInput { get; private set; }
+    readonly List<CharacterAbility>  characterAbilities = new();
     
     private void Awake()
     {
-        InputManager = GetComponent<InputManager>();
+        CharacterInput = GetComponent<CharacterInput>();
         InitializeAbilities();
     }
     

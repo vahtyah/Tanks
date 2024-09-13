@@ -3,7 +3,7 @@
 public class CharacterAbility : MonoBehaviour
 {
     protected Character character;
-    protected InputManager inputManager;
+    protected CharacterInput characterInput;
     protected TankController controller;
 
     public bool AbilityInitialized { get; private set; }
@@ -25,7 +25,7 @@ public class CharacterAbility : MonoBehaviour
 
     protected virtual void Initialization()
     {
-        inputManager = character.InputManager;
+        characterInput = character.CharacterInput;
         AbilityInitialized = true;
     }
 
