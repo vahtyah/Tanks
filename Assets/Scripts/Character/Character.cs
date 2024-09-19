@@ -10,14 +10,18 @@ public class Character : MonoBehaviour
     public CharacterInput CharacterInput { get; private set; }
     readonly List<CharacterAbility>  characterAbilities = new();
     
+    //StateMachine
+    public StateMachine<CharacterStates.CharacterCondition> conditionState { get; private set; }
+    
     private void Awake()
     {
         CharacterInput = GetComponent<CharacterInput>();
-        InitializeAbilities();
+        Initialization();
     }
     
-    private void InitializeAbilities()
+    private void Initialization()
     {
+        conditionState = new StateMachine<CharacterStates.CharacterCondition>(gameObject);
         characterAbilities.AddRange(abilityNode.GetComponents<CharacterAbility>());
     }
     

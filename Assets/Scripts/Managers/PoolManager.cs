@@ -1,6 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+public interface IPoolable
+{
+    void OnSpawn();
+    void OnDespawn();
+}
+
 public class Pool
 {
     private static PoolManager _manager;
@@ -22,7 +28,36 @@ public class Pool
         return _manager.RegisterPool(prefab, pool);
     }
 
-    public static GameObject Get(GameObject prefab)
+    public GameObject Get()
+    {
+        EnsureManagerExists();
+        if(availableObjects.Count > 0)
+        {
+            var obj = availableObjects.Dequeue();
+            _manager.TrackObject(obj, this);
+            obj.SetActive(true);
+            return obj;
+        }
+        
+        var newObj = Object.Instantiate(availableObjects.Peek(), _manager.transform);
+        _manager.TrackObject(newObj, this);
+        newObj.SetActive(true);
+        return newObj;
+    }
+
+    // public void Return(GameObject obj)
+    // {
+    //     EnsureManagerExists();
+    //
+    //     if (availableObjects.Contains(obj))
+    //         return;
+    //
+    //     _manager.UntrackObject(obj);
+    //     obj.SetActive(false);
+    //     availableObjects.Enqueue(obj);
+    // }
+
+    public static GameObject Get(GameObject prefab, bool enable = true)
     {
         EnsureManagerExists();
 
@@ -34,13 +69,13 @@ public class Pool
         {
             var obj = pool.availableObjects.Dequeue();
             _manager.TrackObject(obj, pool);
-            obj.SetActive(true);
+            obj.SetActive(enable);
             return obj;
         }
 
         var newObj = Object.Instantiate(prefab, _manager.transform);
         _manager.TrackObject(newObj, pool);
-        newObj.SetActive(true);
+        newObj.SetActive(enable);
         return newObj;
     }
 

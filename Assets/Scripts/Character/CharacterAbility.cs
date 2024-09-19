@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CharacterAbility : MonoBehaviour
+public abstract class CharacterAbility : MonoBehaviour
 {
     protected Character character;
     protected CharacterInput characterInput;

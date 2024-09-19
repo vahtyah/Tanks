@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CinemachineCameraController : MonoBehaviour
 {
-    [SerializeField] Camera camera;
+    [SerializeField] Camera cam;
     private CinemachineVirtualCamera virtualCamera;
     
     private void Awake()
@@ -20,11 +20,11 @@ public class CinemachineCameraController : MonoBehaviour
     
     public void SetViewportRect(Rect rect)
     {
-        camera.rect = rect;
+        cam.rect = rect;
     }
     
     public void Hide()
     {
-        camera.enabled = false;
+        cam.enabled = false;
     }
 }

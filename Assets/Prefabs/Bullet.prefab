@@ -96,6 +96,8 @@ GameObject:
   - component: {fileID: 4658222234709451662}
   - component: {fileID: 2286616557776189007}
   - component: {fileID: 408263075974561970}
+  - component: {fileID: 73489939828762687}
+  - component: {fileID: 1141311314027810831}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -182,3 +184,36 @@ MonoBehaviour:
   speed: 600
   lifeTime: 3
   Acceleration: 200
+--- !u!114 &73489939828762687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2226167052209142831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ab194a37ef4b7e80ff2f0e7a9a4178, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 1032
+  damage: 10
+  damageTaken: 1
+  ignoreObjects: []
+--- !u!114 &1141311314027810831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2226167052209142831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b89d0327644736a2e2d9cc56928303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  disableColliderOnDeath: 0
+  currentHealth: 0

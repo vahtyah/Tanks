@@ -8,7 +8,7 @@ public class Timer
     private readonly float duration;
     private float startTime;
     private float? timeElapsedBeforePause;
-    private MonoBehaviour owner;
+    public MonoBehaviour owner;
     private bool hasOwner;
 
     private Action onStart;
@@ -23,13 +23,13 @@ public class Timer
     public bool IsLooped { get; private set; }
     public bool IsCancelled { get; private set; }
     public bool UsesRealTime { get; private set; }
-    public bool IsDone => IsCompleted || IsPaused || IsCancelled || isOwnerDestroyed;
+    public bool IsDone => IsCompleted || IsPaused || IsCancelled || isOwnerDisappear;
     public bool IsRunning => !IsDone;
     public float Progress => GetTimeElapsed() / duration;
     public float TimeRemaining => duration - GetTimeElapsed();
     public float Remaining => duration / GetTimeElapsed();
 
-    private bool isOwnerDestroyed => hasOwner && owner == null;
+    private bool isOwnerDisappear => hasOwner && (owner == null || !owner.gameObject.activeSelf);
 
     private Timer(float duration)
     {
@@ -89,7 +89,7 @@ public class Timer
         return this;
     }
 
-    public Timer AutoDestroyWhenOwnerDestroyed(MonoBehaviour owner)
+    public Timer AutoDestroyWhenOwnerDisappear(MonoBehaviour owner)
     {
         if (owner == null) return this;
         this.owner = owner;
@@ -110,8 +110,8 @@ public class Timer
         IsCompleted = true;
         return this;
     }
-
-    public void Restart()
+    
+    public void Reset()
     {
         startTime = GetWorldTime();
         IsCompleted = false;

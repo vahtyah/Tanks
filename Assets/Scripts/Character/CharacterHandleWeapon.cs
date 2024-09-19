@@ -2,18 +2,21 @@
 
 public class CharacterHandleWeapon : CharacterAbility
 {
+    //Binding
+    [SerializeField] private Transform weaponHolder;
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private GameObject projectilePrefab;
     
-    [SerializeField] private float fireRate = 1f;
-
-    private Timer fireTimer;
+    [SerializeField] private Weapon weapon;
 
     protected override void Initialization()
     {
-        base.Initialization();
         Pool.Register(projectilePrefab);
-        fireTimer = Timer.Register(fireRate).AlreadyDone();
+        weapon = Instantiate(weapon, weaponHolder);
+        weapon.Owner = character;
+        weapon.SetProjectileSpawnTransform(projectileSpawnPoint);
+        base.Initialization();
+        //NOTE: Clear
     }
 
     public override void ProcessAbility()
@@ -25,17 +28,9 @@ public class CharacterHandleWeapon : CharacterAbility
     protected override void HandleInput()
     {
         base.HandleInput(); 
-        if (characterInput.GetFireButton() && fireTimer.IsCompleted)
+        if (characterInput.GetFireButton())
         {
-            Fire();
-            fireTimer.Restart();
+            weapon.WeaponUse();
         }
-    }
-
-    private void Fire()
-    {
-        var projectile = Pool.Get(projectilePrefab);
-        projectile.transform.position = projectileSpawnPoint.position;
-        projectile.transform.rotation = projectileSpawnPoint.rotation;
     }
 }
