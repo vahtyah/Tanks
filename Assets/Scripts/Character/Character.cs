@@ -12,7 +12,7 @@ public class Character : MonoBehaviour
     
     //StateMachine
     public StateMachine<CharacterStates.CharacterCondition> conditionState { get; private set; }
-    
+    public GameObject CameraTarget;
     private void Awake()
     {
         CharacterInput = GetComponent<CharacterInput>();

@@ -1132,6 +1132,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 737757894}
+  FollowsAPlayer: 0
+  TargetCharacter: {fileID: 0}
+  BoundsCollider: {fileID: 0}
 --- !u!1 &432626712
 GameObject:
   m_ObjectHideFlags: 0
@@ -1305,6 +1308,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 963194227}
+  FollowsAPlayer: 0
+  TargetCharacter: {fileID: 0}
+  BoundsCollider: {fileID: 0}
 --- !u!1 &490144066
 GameObject:
   m_ObjectHideFlags: 0
@@ -2514,6 +2520,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 1608958025}
+  FollowsAPlayer: 0
+  TargetCharacter: {fileID: 0}
+  BoundsCollider: {fileID: 0}
 --- !u!1 &779634427
 GameObject:
   m_ObjectHideFlags: 0
@@ -3321,6 +3330,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 628363387}
+  FollowsAPlayer: 0
+  TargetCharacter: {fileID: 0}
+  BoundsCollider: {fileID: 0}
 --- !u!1 &1109404157
 GameObject:
   m_ObjectHideFlags: 0
