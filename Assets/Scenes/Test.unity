@@ -225,6 +225,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!65 &301064472 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 2856158765760906608, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+  m_PrefabInstance: {fileID: 7767970196534889652}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &571467669
 GameObject:
   m_ObjectHideFlags: 0
@@ -963,6 +968,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1039210157078385966, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 1329572497}
+    - target: {fileID: 2495801326970807198, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_CameraDistance
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164775023385905658, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164775023385905658, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.495739
+      objectReference: {fileID: 0}
+    - target: {fileID: 3164775023385905658, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -22.662376
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613330309164942452, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613330309164942452, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.495739
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613330309164942452, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -22.662376
+      objectReference: {fileID: 0}
+    - target: {fileID: 3814078452629583515, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_BoundingVolume
+      value: 
+      objectReference: {fileID: 301064472}
     - target: {fileID: 4801747604979182412, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
       propertyPath: m_Name
       value: Camera
