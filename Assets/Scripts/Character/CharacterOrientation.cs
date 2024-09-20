@@ -15,7 +15,7 @@ public class CharacterOrientation : CharacterAbility
     void RotateToFaceMovementDirection()
     {
         currentDirection = controller.CurrentDirection.normalized;
-        if (currentDirection.sqrMagnitude >= 0.25f)
+        if (currentDirection.sqrMagnitude >= .5f)
         {
             _lastMovement = currentDirection;
         }
