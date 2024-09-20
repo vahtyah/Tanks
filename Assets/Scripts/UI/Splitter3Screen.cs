@@ -5,7 +5,6 @@ public class Splitter3Screen : MonoBehaviour
     [SerializeField] private RectTransform rectTransform1;
     [SerializeField] private RectTransform rectTransform2;
     
-    
     private void Start()
     {
         var width = Screen.width;
