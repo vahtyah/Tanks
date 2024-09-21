@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MoreMountains.Feedbacks;
+using UnityEngine;
 
 public class CharacterHandleWeapon : CharacterAbility
 {
@@ -6,6 +7,7 @@ public class CharacterHandleWeapon : CharacterAbility
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private MMF_Player weaponUseFeedback;
     
     [SerializeField] private Weapon weapon;
 
@@ -31,6 +33,8 @@ public class CharacterHandleWeapon : CharacterAbility
         if (characterInput.GetFireButton())
         {
             weapon.WeaponUse();
+            weaponUseFeedback?.PlayFeedbacks();
+            Debug.Log("VAR");
         }
     }
 }

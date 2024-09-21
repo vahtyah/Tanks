@@ -36,6 +36,6 @@ public class CharacterInput : MonoBehaviour
     
     public bool GetFireButton()
     {
-        return Input.GetButton(fireButton);
+        return Input.GetButtonDown(fireButton);
     }
 }
