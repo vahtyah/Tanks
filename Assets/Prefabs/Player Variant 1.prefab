@@ -10,7 +10,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1338564499178793641, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: Player Variant 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: FeedbacksList.Array.data[0]
+      value: 7419244366506491948
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: FeedbacksList.Array.data[1]
+      value: 7419244366506491949
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: FeedbacksList.Array.data[2]
+      value: 7419244366506491950
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: FeedbacksList.Array.data[3]
+      value: 7419244366506491951
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491948].Channel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491950].Channel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491951].Channel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491953].Channel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491954].Channel
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3999956492640288641, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
       propertyPath: m_LocalPosition.x

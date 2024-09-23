@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class DamageOnTouch : MonoBehaviour
@@ -9,11 +10,16 @@ public class DamageOnTouch : MonoBehaviour
     [SerializeField] private float damageTaken;
     
     [SerializeField] private List<GameObject> ignoreObjects = new();
+    [SerializeField] private MMFeedbacks onHitFeedback;
+    [SerializeField] private ParticleSystem projectileHitParticles;
+
+
     private Health damageTakenHealth;
 
     private void Initialization()
     {
         damageTakenHealth = GetComponent<Health>();
+        Pool.Register(projectileHitParticles.gameObject);
         //clear
     }
     
@@ -40,6 +46,10 @@ public class DamageOnTouch : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(!EvaluateAvailability(other.gameObject)) return;
+        var hitParticles = Pool.Get(projectileHitParticles.gameObject).GetComponent<ParticleSystem>();
+        hitParticles.transform.position = transform.position;
+        hitParticles.Play();
+        onHitFeedback?.PlayFeedbacks();
         var health = other.gameObject.GetComponent<Health>();
         if (health != null)
             health.TakeDamage(damage);

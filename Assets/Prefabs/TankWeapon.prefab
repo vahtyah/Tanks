@@ -45,4 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 2226167052209142831, guid: 1d3cd51c90107624e88ee6069ecfc0bf, type: 3}
+  projectileHitParticles: {fileID: 5872024002559539078, guid: 3c30d724e56bde6468ab105811555e4c, type: 3}
   reloadTime: 0.2

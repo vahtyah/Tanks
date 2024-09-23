@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public interface IPoolable
 {
@@ -106,6 +109,13 @@ public class PoolManager : Singleton<PoolManager>
 {
     private readonly Dictionary<GameObject, Pool> pools = new();
     private readonly Dictionary<GameObject, Pool> trackedObjects = new();
+    
+    public List<GameObject> ListPool;
+
+    private void Update()
+    {
+        ListPool = pools.Keys.ToList();
+    }
 
     public Pool GetPool(GameObject prefab) => pools.GetValueOrDefault(prefab);
 

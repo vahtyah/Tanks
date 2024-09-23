@@ -12,6 +12,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Variant 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491948].Channel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491950].Channel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491951].Channel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491953].Channel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491954].Channel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360481709652695030, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
+      propertyPath: managedReferences[7419244366506491949].m_ImpulseDefinition.m_ImpulseChannel
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3147997137722637763, guid: 07fb371935cddaa479944c45d08ce8e1, type: 3}
       propertyPath: playerID
       value: Player2
