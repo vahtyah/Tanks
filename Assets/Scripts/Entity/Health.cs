@@ -13,13 +13,13 @@ public abstract class Health : MonoBehaviour
     private Action<float> onHit { get; set; }
     private Collider col;
     
-    private void Awake()
+    protected virtual void Awake()
     {
         col = GetComponent<Collider>();
         character = GetComponent<Character>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         Reset();
     }
