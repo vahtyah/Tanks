@@ -7,7 +7,6 @@ public class GUIMainMenuManger : MonoBehaviour
     [SerializeField] private Button threePlayersButton;
     [SerializeField] private Button fourPlayersButton;
     
-    
     private void Start()
     {
         twoPlayersButton.onClick.AddListener(() => ButtonSelectAmountPlayerOnClick(2));
@@ -17,6 +16,7 @@ public class GUIMainMenuManger : MonoBehaviour
 
     private void ButtonSelectAmountPlayerOnClick(int value)
     {
+        GameManager.Instance.NumberOfPlayers = value;
         Scene.Load("MultiDisplay");
     }
 }

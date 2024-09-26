@@ -20,6 +20,7 @@ public class LevelManager : Singleton<LevelManager>, IEventListener<Event>
     protected override void Awake()
     {
         base.Awake();
+        PlayerNumber = GameManager.Instance.NumberOfPlayers;
         cameraRig.InitializeCameras(PlayerNumber);
         for (int i = 0; i < PlayerNumber; i++)
         {
