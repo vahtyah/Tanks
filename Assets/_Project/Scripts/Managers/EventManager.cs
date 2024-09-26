@@ -6,7 +6,10 @@ public enum EventType
 {
     PlayerDeath,
     GameStart,
-    GameOver
+    GamePause,
+    GameUnPause,
+    GameOver,
+    TogglePause,
 }
 
 public struct Event

@@ -12,7 +12,6 @@ public class PlayerHUD : MonoBehaviour, IEventListener<Event>
 
     public void OnEvent(Event e)
     {
-        Debug.Log(e.OriginCharacter.PlayerID);
         switch (e.EventType)
         {
             case EventType.PlayerDeath:
@@ -29,8 +28,6 @@ public class PlayerHUD : MonoBehaviour, IEventListener<Event>
                     this.StopListening();
                 }
                 break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
     }
 

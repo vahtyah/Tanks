@@ -15139,6 +15139,7 @@ GameObject:
   - component: {fileID: 7332176708080450871}
   - component: {fileID: 5618505793702071545}
   - component: {fileID: 4559004612429888208}
+  - component: {fileID: 4833610963948559085}
   m_Layer: 0
   m_Name: Abilities
   m_TagString: Untagged
@@ -15203,6 +15204,18 @@ MonoBehaviour:
   projectilePrefab: {fileID: 2226167052209142831, guid: 1d3cd51c90107624e88ee6069ecfc0bf, type: 3}
   weaponUseFeedback: {fileID: 3684481838550191307}
   weapon: {fileID: 1397809076225302274, guid: eb7d96a298d84d34593c460432d0beab, type: 3}
+--- !u!114 &4833610963948559085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8284391633101792783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 547e049449664c0081ae27f99063badc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8762192059991302682
 GameObject:
   m_ObjectHideFlags: 0
