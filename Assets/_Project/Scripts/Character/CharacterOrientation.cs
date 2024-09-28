@@ -9,7 +9,6 @@ public class CharacterOrientation : CharacterAbility
 
     [SerializeField] private bool shouldRotateWeapon;
     [SerializeField] private GameObject weaponModel;
-    [SerializeField] private GameObject model;
 
     private Vector3 rotationDirection;
     private Quaternion tmpWeaponRotation;
@@ -50,7 +49,7 @@ public class CharacterOrientation : CharacterAbility
         if (_lastMovement != Vector3.zero)
         {
             _tmpRotation = Quaternion.LookRotation(_lastMovement);
-            newModelRotation = Quaternion.Slerp(model.transform.rotation, _tmpRotation, Time.deltaTime * 5);
+            newModelRotation = Quaternion.Slerp(character.transform.rotation, _tmpRotation, Time.deltaTime * 5);
         }
     }
 
@@ -69,8 +68,8 @@ public class CharacterOrientation : CharacterAbility
 
     private void RotateModel()
     {
-        model.transform.rotation = newModelRotation;
-        // if (rotationDirection != Vector3.zero)
+        character.transform.rotation = newModelRotation;
+        if (rotationDirection != Vector3.zero)
             weaponModel.transform.rotation = newWeaponRotation;
     }
 }
