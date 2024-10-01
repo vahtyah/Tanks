@@ -21,10 +21,10 @@ public class Weapon : MonoBehaviour
         reloadTimer = Timer.Register(reloadTime).AlreadyDone();
     }
 
-    public void WeaponUse()
+    public bool WeaponUse()
     {
         if(!reloadTimer.IsCompleted)
-            return;
+            return false;
         
         reloadTimer.Reset();
         var nextProjectile = Pool.Get(projectilePrefab, false);
@@ -38,6 +38,7 @@ public class Weapon : MonoBehaviour
         }
         
         nextProjectile.SetActive(true);
+        return true;
     }
 
     public void SetProjectileSpawnTransform(Transform projectileSpawnPoint)

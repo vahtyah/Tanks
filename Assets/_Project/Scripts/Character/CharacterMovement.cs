@@ -1,10 +1,9 @@
-﻿using MoreMountains.Feedbacks;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CharacterMovement : CharacterAbility
 {
     [SerializeField] private float moveSpeed = 150f;
-    Vector3 directionInput;
+    public Vector3 direction { get; private set; }
 
     public override void FixedProcessAbility()
     {
@@ -15,15 +14,17 @@ public class CharacterMovement : CharacterAbility
     private void HandleMovement()
     {
         HandleInput();
-        SetMoveDirection();
+        MoveCharacter();
     }
 
     protected override void HandleInput()
     {
         base.HandleInput();
-        directionInput = new Vector3(characterInput.GetAxisHorizontal(), 0, characterInput.GetAxisVertical()).normalized *
-                         (moveSpeed * Time.deltaTime);
+        direction = controller.GetDirection().With(y:0).normalized * (moveSpeed * Time.fixedDeltaTime);
     }
 
-    private void SetMoveDirection() { controller.SetDirection(directionInput); }
+    private void MoveCharacter()
+    {
+        controller.Move(direction);
+    }
 }

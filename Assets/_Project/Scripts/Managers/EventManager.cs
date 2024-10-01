@@ -15,15 +15,15 @@ public enum EventType
 public struct Event
 {
     public EventType EventType;
-    public Character OriginCharacter;
+    public PlayerCharacter OriginCharacter;
 
-    public Event(EventType eventType, Character originCharacter)
+    public Event(EventType eventType, PlayerCharacter originCharacter)
     {
         EventType = eventType;
         OriginCharacter = originCharacter;
     }
 
-    public static void Trigger(EventType eventType, Character originCharacter)
+    public static void Trigger(EventType eventType, PlayerCharacter originCharacter)
     {
         EventManger.TriggerEvent(new Event(eventType, originCharacter));
     }

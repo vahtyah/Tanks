@@ -12,10 +12,9 @@ public class CharacterOrientation : CharacterAbility
 
     private Vector3 rotationDirection;
     private Quaternion tmpWeaponRotation;
-    private Vector3 mouseWorldPosition;
     private Quaternion newWeaponRotation;
 
-    private Plane plane;
+    private CharacterMovement movement;
 
     protected override void Initialization()
     {
@@ -25,8 +24,7 @@ public class CharacterOrientation : CharacterAbility
             // Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
         }
-
-        plane = new Plane(Vector3.up, Vector3.zero);
+        movement = GetComponent<CharacterMovement>();
     }
 
     public override void FixedProcessAbility()
@@ -35,12 +33,11 @@ public class CharacterOrientation : CharacterAbility
         RotateToFaceWeaponDirection();
         RotateToFaceMovementDirection();
         RotateModel();
-        plane.SetNormalAndPosition(Vector3.up, transform.position);
     }
 
     void RotateToFaceMovementDirection()
     {
-        currentDirection = controller.CurrentDirection.normalized;
+        currentDirection = movement.direction.normalized;
         if (currentDirection.sqrMagnitude >= .5f)
         {
             _lastMovement = currentDirection;
@@ -56,9 +53,7 @@ public class CharacterOrientation : CharacterAbility
     private void RotateToFaceWeaponDirection()
     {
         if (!shouldRotateWeapon) return;
-        mouseWorldPosition = characterInput.GetMouseWorldPosition(weaponModel.transform.position);
-        rotationDirection = new Vector3(mouseWorldPosition.x - weaponModel.transform.position.x, 0,
-            mouseWorldPosition.z - weaponModel.transform.position.z);
+        rotationDirection = controller.GetAimDirection();
         if (rotationDirection != Vector3.zero)
         {
             _tmpRotation = Quaternion.LookRotation(rotationDirection);

@@ -5,6 +5,7 @@ public interface ISpawnPoint
 {
     Vector3 NextSpawnPoint();
     Vector3 ClosestSpawnPoint(Vector3 position);
+    Vector3 NextRandomSpawnPoint();
 }
 
 public class LinearSpawnPoint : ISpawnPoint
@@ -22,6 +23,12 @@ public class LinearSpawnPoint : ISpawnPoint
         Vector3 spawnPoint = spawnPoints[currentIndex];
         currentIndex = (currentIndex + 1) % spawnPoints.Count;
         return spawnPoint;
+    }
+    
+    public Vector3 NextRandomSpawnPoint()
+    {
+        int randomIndex = Random.Range(0, spawnPoints.Count);
+        return spawnPoints[randomIndex];
     }
     
     public Vector3 ClosestSpawnPoint(Vector3 position)

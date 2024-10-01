@@ -8,7 +8,7 @@ public class CharacterHandleWeapon : CharacterAbility
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private MMF_Player weaponUseFeedback;
-    
+
     [SerializeField] private Weapon weapon;
 
     protected override void Initialization()
@@ -29,11 +29,11 @@ public class CharacterHandleWeapon : CharacterAbility
 
     protected override void HandleInput()
     {
-        base.HandleInput(); 
-        if (characterInput.GetFireButton())
+        base.HandleInput();
+        if (controller.GetFire())
         {
-            weapon.WeaponUse();
-            weaponUseFeedback?.PlayFeedbacks();
+            if (weapon.WeaponUse())
+                weaponUseFeedback?.PlayFeedbacks();
         }
     }
 }

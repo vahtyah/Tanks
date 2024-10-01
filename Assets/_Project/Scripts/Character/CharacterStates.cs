@@ -5,4 +5,12 @@
         Normal,
         Dead
     }
+    
+    public enum CharacterAbility
+    {
+        Move,
+        Orientation,
+        Fire,
+        Pause
+    }
 }

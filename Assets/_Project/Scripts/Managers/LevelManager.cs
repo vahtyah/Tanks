@@ -12,8 +12,8 @@ public class LevelManager : Singleton<LevelManager>, IEventListener<Event>
     public List<Transform> spawnPoints = new();
     public MultiplayerSplitCameraRig cameraRig;
 
-    private List<Character> characters = new();
-    private Character winner;
+    private List<PlayerCharacter> characters = new();
+    private PlayerCharacter winner;
     
     private bool isGameOver;
 
@@ -25,7 +25,7 @@ public class LevelManager : Singleton<LevelManager>, IEventListener<Event>
         for (int i = 0; i < PlayerNumber; i++)
         {
             GameObject player = Instantiate(players[i], spawnPoints[i].position, spawnPoints[i].rotation);
-            characters.Add(player.GetComponent<Character>());
+            characters.Add(player.GetComponent<PlayerCharacter>());
         }
     }
 
@@ -51,7 +51,7 @@ public class LevelManager : Singleton<LevelManager>, IEventListener<Event>
         }
     }
 
-    public Character GetCharacter(string playerID)
+    public PlayerCharacter GetCharacter(string playerID)
     {
         return characters.Find(character => character.PlayerID == playerID);
     }

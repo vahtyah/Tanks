@@ -10,7 +10,7 @@ public class CharacterPause : CharacterAbility
 
     protected override void HandleInput()
     {
-        if (characterInput.isButtonPauseDown)
+        if (controller.isButtonPauseDown)
         {
             TriggerPause();
         }

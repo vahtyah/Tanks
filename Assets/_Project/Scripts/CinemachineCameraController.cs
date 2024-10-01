@@ -10,7 +10,7 @@ public class CinemachineCameraController : MonoBehaviour
 
     public virtual bool FollowsPlayer { get; set; }
     public bool FollowsAPlayer = true;
-    public Character TargetCharacter;
+    public PlayerCharacter TargetCharacter;
     public Collider BoundsCollider;
 
     private void Awake()
@@ -20,7 +20,7 @@ public class CinemachineCameraController : MonoBehaviour
         confiner.m_BoundingVolume = BoundsCollider;
     }
 
-    public virtual void SetTarget(Character character) { TargetCharacter = character; }
+    public virtual void SetTarget(PlayerCharacter character) { TargetCharacter = character; }
 
     public virtual void StartFollowing()
     {

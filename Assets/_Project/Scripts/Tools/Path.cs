@@ -22,6 +22,11 @@ public class Path : MonoBehaviour
         return CurrentPoint;
     }
     
+    public Vector3 NextRandomSpawnPoint()
+    {
+        return spawner.NextRandomSpawnPoint();
+    }
+    
     public Vector3 ClosestSpawnPoint(Vector3 position)
     {
         return spawner.ClosestSpawnPoint(position);

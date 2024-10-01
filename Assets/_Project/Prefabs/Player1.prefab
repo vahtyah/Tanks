@@ -14253,13 +14253,12 @@ GameObject:
   - component: {fileID: 5572397301981965264}
   - component: {fileID: 5612514935687654778}
   - component: {fileID: 1910468378757403701}
-  - component: {fileID: 2198972725358787548}
   - component: {fileID: 400140953870760107}
   - component: {fileID: 7756742666417990760}
-  - component: {fileID: 4945456841075571412}
+  - component: {fileID: 6659396510282842395}
   m_Layer: 3
   m_Name: Player1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14331,21 +14330,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &2198972725358787548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6787519147282370622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78fbc17d977f4332befbe3c3cc980c82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerID: Player1
-  abilityNode: {fileID: 8284391633101792783}
-  CameraTarget: {fileID: 6897460506213948675}
 --- !u!114 &400140953870760107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14374,7 +14358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae1cd99f53b4e45b5bbd16044486866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4945456841075571412
+--- !u!114 &6659396510282842395
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14383,9 +14367,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6787519147282370622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41dde890acc640288fa32409cde162e3, type: 3}
+  m_Script: {fileID: 11500000, guid: ebbbfb2d557e4ceeb68bf34e0e18d1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityNode: {fileID: 8284391633101792783}
+  playerID: Player1
+  CameraTarget: {fileID: 6897460506213948675}
 --- !u!1 &6825220371553401604
 GameObject:
   m_ObjectHideFlags: 0
@@ -15174,6 +15161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d25273b7f72d479cad62e1a6799f60f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityType: 0
   moveSpeed: 200
 --- !u!114 &5618505793702071545
 MonoBehaviour:
@@ -15187,6 +15175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3854b9b3af428d96a3524168856250, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityType: 0
   shouldRotateWeapon: 1
   weaponModel: {fileID: 5761444889889914195}
 --- !u!114 &4559004612429888208
@@ -15201,6 +15190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07122442230c4341a9d7ce94cd3a25c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityType: 0
   weaponHolder: {fileID: 750085803338230788}
   projectileSpawnPoint: {fileID: 9175228072611221083}
   projectilePrefab: {fileID: 2226167052209142831, guid: 1d3cd51c90107624e88ee6069ecfc0bf, type: 3}
@@ -15218,6 +15208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547e049449664c0081ae27f99063badc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityType: 0
 --- !u!1 &8762192059991302682
 GameObject:
   m_ObjectHideFlags: 0

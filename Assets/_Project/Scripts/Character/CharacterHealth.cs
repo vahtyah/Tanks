@@ -13,7 +13,7 @@ public class CharacterHealth : Health
     protected override void OnDeath()
     {
         character.conditionState.ChangeState(CharacterStates.CharacterCondition.Dead);
-        Event.Trigger(EventType.PlayerDeath, GetComponent<Character>());
+        Event.Trigger(EventType.PlayerDeath, GetComponent<PlayerCharacter>());
         var effect = Pool.Get(tankExplosionEffect).GetComponent<ParticleSystem>();
         effect.transform.position = transform.position;
         effect.Play();
