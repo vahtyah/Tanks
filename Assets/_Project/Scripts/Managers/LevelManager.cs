@@ -12,24 +12,34 @@ public class LevelManager : Singleton<LevelManager>, IEventListener<Event>
     public List<Transform> spawnPoints = new();
     public MultiplayerSplitCameraRig cameraRig;
 
-    private List<PlayerCharacter> characters = new();
-    private PlayerCharacter winner;
+    protected List<PlayerCharacter> characters = new();
+    protected PlayerCharacter winner;
     
     private bool isGameOver;
 
     protected override void Awake()
     {
         base.Awake();
+        PreInitialization();
+    }
+    
+    protected virtual void PreInitialization()
+    {
         PlayerNumber = GameManager.Instance.NumberOfPlayers;
         cameraRig.InitializeCameras(PlayerNumber);
         for (int i = 0; i < PlayerNumber; i++)
         {
-            GameObject player = Instantiate(players[i], spawnPoints[i].position, spawnPoints[i].rotation);
+            var player = Instantiate(players[i], spawnPoints[i].position, spawnPoints[i].rotation);
             characters.Add(player.GetComponent<PlayerCharacter>());
         }
     }
 
     private void Start()
+    {
+        Initialization();
+    }
+
+    protected virtual void Initialization()
     {
         for (int i = 0; i < PlayerNumber; i++)
         {
@@ -47,6 +57,7 @@ public class LevelManager : Singleton<LevelManager>, IEventListener<Event>
         if (!isGameOver) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            GameEvent.Trigger(GameEventType.GamePreStart, null);
             Scene.Load(SceneManager.GetActiveScene().name);
         }
     }
@@ -66,7 +77,7 @@ public class LevelManager : Singleton<LevelManager>, IEventListener<Event>
         }
     }
 
-    private void PlayerDead(Character character)
+    protected virtual void PlayerDead(PlayerCharacter character)
     {
         if (character == null) return;
         int alivePlayers =
@@ -79,7 +90,7 @@ public class LevelManager : Singleton<LevelManager>, IEventListener<Event>
         }
     }
 
-    private IEnumerator GameOver()
+    protected IEnumerator GameOver()
     {
         yield return new WaitForSecondsRealtime(1);
         isGameOver = true;

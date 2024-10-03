@@ -900,7 +900,7 @@ MonoBehaviour:
   projectileSpawnPoint: {fileID: 1338619769506402154}
   projectilePrefab: {fileID: 2226167052209142831, guid: 1d3cd51c90107624e88ee6069ecfc0bf, type: 3}
   weaponUseFeedback: {fileID: 6838336090008980986}
-  weapon: {fileID: 1397809076225302274, guid: eb7d96a298d84d34593c460432d0beab, type: 3}
+  weapon: {fileID: 1397809076225302274, guid: 0e6e15f0992d7de40a9b5b8f276129be, type: 3}
 --- !u!114 &3374077141955632092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3257,9 +3257,9 @@ GameObject:
   - component: {fileID: 6629239802860111049}
   - component: {fileID: 8506808422963431024}
   - component: {fileID: 4129388754019428102}
-  m_Layer: 3
+  m_Layer: 12
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3366,8 +3366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4bfaadc2b5d400ebc4f14a473630892, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  disableColliderOnDeath: 1
+  maxHealth: 1
+  disableColliderOnDeath: 0
   currentHealth: 100
   tankExplosionEffect: {fileID: 3980047163374904550, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
 --- !u!114 &3603862717246853580
@@ -3400,6 +3400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityNode: {fileID: 2251620092604426046}
+  health: {fileID: 0}
 --- !u!114 &8506808422963431024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3413,6 +3414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 0}
+  agent: {fileID: 0}
   character: {fileID: 0}
   playerDetector: {fileID: 0}
   CurrentState: 

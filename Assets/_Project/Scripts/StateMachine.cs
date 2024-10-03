@@ -43,6 +43,7 @@ public class Transition : ITransition
 
 public class StateMachine
 {
+    private StateNode defaultState;
     private StateNode current;
     private Dictionary<Type, StateNode> nodes = new();
     private HashSet<ITransition> anyTransitions = new();
@@ -60,6 +61,7 @@ public class StateMachine
 
     public void SetState(IState state)
     {
+        defaultState ??= GetOrAddStateNode(state);
         current = GetOrAddStateNode(state);
         current.State?.OnEnter();
     }
@@ -80,7 +82,7 @@ public class StateMachine
 
     public void Any(IState to, IPredicate condition) { anyTransitions.Add(new Transition(to, condition)); }
 
-    public void Any(IState to, Action action)
+    public void Any(IState to,ref Action action)
     {
         var toNode = GetOrAddStateNode(to);
         action += () => ChangeState(toNode.State);
@@ -100,6 +102,12 @@ public class StateMachine
         foreach (var transition in anyTransitions.Where(transition => transition.Condition.Evaluate()))
             return transition;
         return current.Transitions.FirstOrDefault(transition => transition.Condition.Evaluate());
+    }
+    
+    public void Reset()
+    {
+        current = defaultState;
+        current.State?.OnEnter();
     }
 
     private class StateNode

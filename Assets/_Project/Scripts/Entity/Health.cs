@@ -9,7 +9,7 @@ public abstract class Health : MonoBehaviour
     [SerializeField] protected float currentHealth;
 
     protected Character character;
-    private Action onDeath;
+    public Action onDeath;
     private Action<float> onHit { get; set; }
     private Collider col;
     

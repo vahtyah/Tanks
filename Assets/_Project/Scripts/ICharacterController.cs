@@ -7,4 +7,5 @@ public interface ICharacterController
     bool GetFire();
     Vector3 GetAimDirection();
     void Move(Vector3 direction);
+    void Reset();
 }

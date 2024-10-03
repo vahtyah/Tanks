@@ -12,20 +12,20 @@ public class PlayerHUD : MonoBehaviour, IEventListener<Event>
 
     public void OnEvent(Event e)
     {
+        if(e.OriginCharacter == null) return;
         switch (e.EventType)
         {
             case EventType.PlayerDeath:
                 if (e.OriginCharacter.PlayerID == playerID)
                 {
+                    if(deadMask == null) return;
                     deadMask.gameObject.SetActive(true);
-                    this.StopListening();
                 }
                 break;
             case EventType.GameOver:
                 if(e.OriginCharacter.PlayerID == playerID)
                 {
                     winScreen.gameObject.SetActive(true);
-                    this.StopListening();
                 }
                 break;
         }

@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class GUIManager : Singleton<GUIManager>
+public class GUIManager : Singleton<GUIManager>, IEventListener<GameEventType>
 {
-    [SerializeField] private GameObject pausePanel;
+    [SerializeField] protected GameObject pausePanel;
+    // [SerializeField] private GameObject usernamePanel;
     
-    private void Start()
+    protected virtual void Start()
     {
         SetPausePanel(false);
     }
@@ -14,4 +16,26 @@ public class GUIManager : Singleton<GUIManager>
         if(pausePanel == null) return;
         pausePanel.SetActive(value);
     }
+
+    public virtual void SetUsernamePanel(bool value)
+    {
+        Debug.Log("GUIManager");
+        // if(usernamePanel == null) return;
+        // usernamePanel.SetActive(value);
+    }
+    
+    public void OnEvent(GameEventType e) {  }
+
+    public virtual void SetUserName(string inputFieldText)
+    {
+        
+    }
+    
+    public virtual void SetScoreText(int score)
+    {
+        
+    }
+    
+    //TODO: VCL NGU
+    public virtual void SetScoreTextMaskDie(int score) { throw new NotImplementedException(); }
 }

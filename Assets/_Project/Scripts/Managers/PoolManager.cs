@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations;
 using Object = UnityEngine.Object;
 
 public interface IPoolable
@@ -14,15 +15,19 @@ public class Pool
 {
     private static PoolManager _manager;
     private readonly Queue<GameObject> availableObjects = new Queue<GameObject>();
+    private Transform parent;
 
-    public static Pool Register(GameObject prefab, int initialSize = 0)
+    public static Pool Register(GameObject prefab, Transform parent = null,  int initialSize = 0)
     {
         EnsureManagerExists();
-
-        var pool = new Pool();
+        parent ??= _manager.transform;
+        var pool = new Pool
+        {
+            parent = parent
+        };
         for (var i = 0; i < initialSize; i++)
         {
-            var obj = Object.Instantiate(prefab, _manager.transform);
+            var obj = Object.Instantiate(prefab, parent);
             obj.SetActive(false);
             pool.availableObjects.Enqueue(obj);
             _manager.TrackObject(obj, pool);
@@ -42,7 +47,7 @@ public class Pool
             return obj;
         }
         
-        var newObj = Object.Instantiate(availableObjects.Peek(), _manager.transform);
+        var newObj = Object.Instantiate(availableObjects.Peek(), parent);
         _manager.TrackObject(newObj, this);
         newObj.SetActive(true);
         return newObj;
@@ -76,7 +81,7 @@ public class Pool
             return obj;
         }
 
-        var newObj = Object.Instantiate(prefab, _manager.transform);
+        var newObj = Object.Instantiate(prefab, pool.parent);
         _manager.TrackObject(newObj, pool);
         newObj.SetActive(enable);
         return newObj;

@@ -1,10 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+
+public enum GameEventType
+{
+    GameMainMenu,
+    GamePreStart,
+    GameStart,
+    GameOver,
+    GamePause,
+    GameUnPause,
+}
+
+public struct GameEvent
+{
+    public GameEventType EventType;
+    public GameObject Canvas;
+    
+    public GameEvent(GameEventType eventType, GameObject canvas)
+    {
+        EventType = eventType;
+        Canvas = canvas;
+    }
+    
+    public static void Trigger(GameEventType eventType, GameObject canvas)
+    {
+        EventManger.TriggerEvent(new GameEvent(eventType, canvas));
+    }
+}
 
 public enum EventType
 {
     PlayerDeath,
+    GamePreStart,
     GameStart,
     GamePause,
     GameUnPause,

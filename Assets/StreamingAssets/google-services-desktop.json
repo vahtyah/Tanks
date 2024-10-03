@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "360247574609",
+    "project_id": "tanks-c93ec",
+    "storage_bucket": "tanks-c93ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360247574609:android:f03e48de19a9027ac77870",
+        "android_client_info": {
+          "package_name": "com.tanks.db"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtqtPpxeOzZ-msdfVIkUVKujm4Rpej9h0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

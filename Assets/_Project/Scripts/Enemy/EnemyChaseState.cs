@@ -52,6 +52,5 @@ public class EnemyChaseState : EnemyState
         NavMeshPath navPath = new NavMeshPath();
         Vector3 destination = controller.playerDetector.player.transform.position;
         pathCorners = NavMesh.CalculatePath(controller.transform.position, destination, NavMesh.AllAreas, navPath) ? navPath.corners : Array.Empty<Vector3>();
-        Debug.Log(pathCorners.Length);
     }
 }

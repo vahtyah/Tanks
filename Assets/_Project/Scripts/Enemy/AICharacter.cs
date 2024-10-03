@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class AICharacter : Character
 {
@@ -17,5 +18,12 @@ public class AICharacter : Character
         {
             abilities.Add(ability.AbilityType, ability);
         }
+    }
+
+    public void Reset()
+    {
+        health.Reset();
+        Controller.Reset();
+        gameObject.SetActive(true);
     }
 }

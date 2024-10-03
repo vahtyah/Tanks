@@ -64,4 +64,9 @@ public class PlayerController : MonoBehaviour, ICharacterController
         Direction = direction;
         rb.AddForce(direction, ForceMode.VelocityChange);
     }
+
+    public void Reset()
+    {
+        
+    }
 }

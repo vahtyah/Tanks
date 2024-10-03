@@ -7,7 +7,9 @@ public class Scene
     {
         MainMenu,
         MultiDisplay,
-        SingleDisplay
+        SingleDisplay,
+        BotMatch,
+        OnlineMatch,
     }
     public static void Load(string sceneToLoad)
     {
