@@ -4,27 +4,24 @@ using Firebase;
 using Firebase.Database;
 using UnityEngine;
 
-public class DatabaseManager : Singleton<DatabaseManager>
+public class DatabaseManager : Singleton<DatabaseManager>, IEventListener<GameEvent>
 {
     private DatabaseReference reference;
-    public string userName;
-    public List<User> users = new List<User>();
+    private string userName;
+    public readonly List<User> users = new List<User>();
 
     protected override void Awake()
     {
         base.Awake();
-        // Kiểm tra và thiết lập các phụ thuộc Firebase trước
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             var dependencyStatus = task.Result;
             if (dependencyStatus == DependencyStatus.Available)
             {
-                // Khởi tạo Firebase Database với URL chính xác
                 var app = FirebaseApp.DefaultInstance;
                 var databaseURL = "https://tanks-c93ec-default-rtdb.firebaseio.com/";
                 reference = FirebaseDatabase.GetInstance(app, databaseURL).RootReference;
                 GetUsersSortedByScore();
-                // Sau khi khởi tạo thành công, bạn có thể gọi các hàm khác như WriteNewUser()
                 Debug.Log("Firebase Database initialized successfully.");
             }
             else
@@ -34,14 +31,8 @@ public class DatabaseManager : Singleton<DatabaseManager>
         });
     }
 
-    private void Start()
+    private void WriteNewUser(int score)
     {
-       
-    }
-
-    public void WriteNewUser(int score)
-    {
-        // Chỉ thực hiện ghi dữ liệu nếu reference đã được khởi tạo
         if (reference != null)
         {
             User user = new User(userName, score);
@@ -68,7 +59,6 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     public void GetUsersSortedByScore()
     {
-        // Chỉ thực hiện đọc dữ liệu nếu reference đã được khởi tạo
         if (reference != null)
         {
             reference.Child("users").OrderByChild("score").GetValueAsync().ContinueWith(task =>
@@ -94,5 +84,28 @@ public class DatabaseManager : Singleton<DatabaseManager>
         {
             Debug.LogError("Database reference is not initialized yet.");
         }
+    }
+
+    public void OnEvent(GameEvent e)
+    {
+        switch (e.EventType)
+        {
+            case GameEventType.GameStart:
+                SetUserName(LevelManagerBotMatch.Instance.Username);
+                break;
+            case GameEventType.GameOver:
+                WriteNewUser(LevelManagerBotMatch.Instance.Score);
+                break;
+        }
+    }
+    
+    private void OnEnable()
+    {
+        this.StartListening();
+    }
+    
+    private void OnDisable()
+    {
+        this.StopListening();
     }
 }

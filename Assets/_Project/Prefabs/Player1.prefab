@@ -14371,6 +14371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityNode: {fileID: 8284391633101792783}
+  health: {fileID: 0}
   playerID: Player1
   CameraTarget: {fileID: 6897460506213948675}
 --- !u!1 &6825220371553401604
@@ -15176,7 +15177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityType: 0
-  shouldRotateWeapon: 1
+  shouldRotateWeapon: 0
   weaponModel: {fileID: 5761444889889914195}
 --- !u!114 &4559004612429888208
 MonoBehaviour:

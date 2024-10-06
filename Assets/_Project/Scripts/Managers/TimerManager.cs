@@ -8,7 +8,7 @@ public class Timer
     private readonly float duration;
     private float startTime;
     private float? timeElapsedBeforePause;
-    public MonoBehaviour owner;
+    private MonoBehaviour owner;
     private bool hasOwner;
 
     private Action onStart;
@@ -23,7 +23,7 @@ public class Timer
     public bool IsLooped { get; private set; }
     public bool IsCancelled { get; private set; }
     public bool UsesRealTime { get; private set; }
-    public bool IsDone => IsCompleted || IsPaused || IsCancelled || isOwnerDisappear;
+    public bool IsDone => IsCompleted || IsCancelled || isOwnerDisappear;
     public bool IsRunning => !IsDone;
     public float Progress => GetTimeElapsed() / duration;
     public float TimeRemaining => duration - GetTimeElapsed();
@@ -104,13 +104,13 @@ public class Timer
         onStart?.Invoke();
         return this;
     }
-    
+
     public Timer AlreadyDone()
     {
         IsCompleted = true;
         return this;
     }
-    
+
     public void Reset()
     {
         startTime = GetWorldTime();
@@ -120,10 +120,7 @@ public class Timer
         manager.RegisterTimer(this);
     }
 
-    public void Cancel()
-    {
-        IsCancelled = true;
-    }
+    public void Cancel() { IsCancelled = true; }
 
     public void Pause()
     {
@@ -136,7 +133,6 @@ public class Timer
         if (!IsPaused) return;
         startTime = GetWorldTime() - timeElapsedBeforePause.Value;
         timeElapsedBeforePause = null;
-        manager.RegisterTimer(this);
     }
 
     private float GetTimeElapsed()
@@ -154,6 +150,8 @@ public class Timer
             return;
         }
 
+        if (IsPaused) return;
+
         onUpdate?.Invoke(GetTimeElapsed());
         onProgress?.Invoke(Progress);
 
@@ -169,24 +167,20 @@ public class Timer
     }
 }
 
-public class TimerManager : Singleton<TimerManager>
+public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<GameEvent>
 {
     private readonly List<Timer> timers = new List<Timer>();
+    public int sizeOfTimers ; //TODO: Delete
 
     private void Update()
     {
-        UpdateAllTimers();
+        UpdateAllTimers(); 
+        sizeOfTimers = timers.Count;
     }
 
-    public void RegisterTimer(Timer timer)
-    {
-        timers.Add(timer);
-    }
+    public void RegisterTimer(Timer timer) { timers.Add(timer); }
 
-    public void RemoveTimer(Timer timer)
-    {
-        timers.Remove(timer);
-    }
+    public void RemoveTimer(Timer timer) { timers.Remove(timer); }
 
     private void UpdateAllTimers()
     {
@@ -196,27 +190,55 @@ public class TimerManager : Singleton<TimerManager>
         }
     }
 
-    public void PauseAllTimers()
+    private void PauseAllTimers()
     {
-        foreach (var timer in timers)
+        for (int i = timers.Count - 1; i >= 0; i--)
         {
-            timer.Pause();
+            timers[i].Pause();
         }
     }
 
-    public void ResumeAllTimers()
+    private void ResumeAllTimers()
     {
-        foreach (var timer in timers)
+        for (int i = timers.Count - 1; i >= 0; i--)
         {
-            timer.Resume();
+            timers[i].Resume();
         }
     }
 
-    public void CancelAllTimers()
+    private void CancelAllTimers()
     {
-        foreach (var timer in timers)
+        for (int i = timers.Count - 1; i >= 0; i--)
         {
-            timer.Cancel();
+            timers[i].Cancel();
+        }
+
+        timers.Clear();
+    }
+
+    public void OnEvent(GameEvent e)
+    {
+        switch (e.EventType)
+        {
+            case GameEventType.GamePreStart:
+                CancelAllTimers();
+                Time.timeScale = 0;
+                break;
+            case GameEventType.GamePause:
+                PauseAllTimers();
+                Time.timeScale = 0;
+                break;
+            case GameEventType.GameStart:
+                ResumeAllTimers();
+                Time.timeScale = 1;
+                break;
+            case GameEventType.GameOver:
+                CancelAllTimers();
+                break;
         }
     }
+
+    private void OnEnable() { this.StartListening(); }
+
+    private void OnDisable() { this.StopListening(); }
 }

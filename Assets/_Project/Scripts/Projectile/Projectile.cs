@@ -43,14 +43,14 @@ public class Projectile : MonoBehaviour, IPoolable
 
     private void OnDisable() { OnDespawn(); }
 
-    private void Update() { Movement(); }
+    private void FixedUpdate() { Movement(); }
 
     //Chuyển sang sử dụng Abilities
     void Movement()
     {
-        moveDirection = transform.forward * ((currentSpeed / 10) * Time.deltaTime);
+        moveDirection = transform.forward * ((currentSpeed / 10) * Time.fixedDeltaTime);
         rb.MovePosition(rb.position + moveDirection);
-        currentSpeed += Acceleration * Time.deltaTime;
+        currentSpeed += Acceleration * Time.fixedDeltaTime;
     }
 
     public void OnSpawn()

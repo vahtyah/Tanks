@@ -18,6 +18,6 @@ public class CharacterPause : CharacterAbility
 
     private void TriggerPause()
     {
-        Event.Trigger(EventType.TogglePause, null);        
+        GameEvent.Trigger(GameEventType.TogglePause);
     }
 }

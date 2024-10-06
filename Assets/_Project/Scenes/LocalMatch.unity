@@ -1507,11 +1507,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 373381404}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 410ef15062db36e40a82e5f0c32857b3, type: 3}
+  m_Script: {fileID: 11500000, guid: fdbcb978021643c483a5110d486ee270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerNumber: 3
-  players:
+  playerPrefabs:
   - {fileID: 6787519147282370622, guid: 63b8565f6ef41c844883e40cae0bafd3, type: 3}
   - {fileID: 2816209050959894423, guid: 8a1ce3f0797c21147bd5ea54bbbb0a44, type: 3}
   - {fileID: 3743989325620842767, guid: b3145042652203d429bb0046364f1f0e, type: 3}
@@ -6437,7 +6436,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5786a1b1cb2c4da9911ab56bee879d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ListPool: []
 --- !u!1 &1028446738
 GameObject:
   m_ObjectHideFlags: 0
@@ -7081,50 +7079,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1109404157}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1150943256
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1150943257}
-  - component: {fileID: 1150943258}
-  m_Layer: 0
-  m_Name: TimerManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1150943257
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1150943256}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1775402170}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1150943258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1150943256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c67497697d5f400094c64b78b4d882e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1174495764
 GameObject:
   m_ObjectHideFlags: 0
@@ -7388,8 +7342,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1277537697}
   - component: {fileID: 1277537698}
+  - component: {fileID: 1277537699}
   m_Layer: 0
-  m_Name: UICameras
+  m_Name: GUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7463,6 +7418,19 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1277537699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277537696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abea3dc2dcda4884961faed37aeee023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pausePanel: {fileID: 74555922}
 --- !u!1001 &1299964501
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9702,7 +9670,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 373381405}
-  - {fileID: 1150943257}
   - {fileID: 1019474680}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10338,7 +10305,6 @@ GameObject:
   - component: {fileID: 2104302449}
   - component: {fileID: 2104302448}
   - component: {fileID: 2104302447}
-  - component: {fileID: 2104302450}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -10430,19 +10396,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &2104302450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2104302445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abea3dc2dcda4884961faed37aeee023, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pausePanel: {fileID: 74555922}
 --- !u!1001 &3128010954025618171
 PrefabInstance:
   m_ObjectHideFlags: 0

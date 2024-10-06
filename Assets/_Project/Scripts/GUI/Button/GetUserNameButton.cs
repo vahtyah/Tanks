@@ -17,13 +17,11 @@ public class GetUserNameButton : MonoBehaviour
     {
         if (inputField.text.Length > 0)
         {
-            DatabaseManager.Instance.SetUserName(inputField.text);
-            GUIManagerBotMatch.Instance.SetUserName(inputField.text);
-            GameEvent.Trigger(GameEventType.GameStart, null);
+            LevelManagerBotMatch.Instance.Username = inputField.text;
+            GameEvent.Trigger(GameEventType.GameStart);
         }
         else
         {
-            Debug.LogWarning("Username cannot be empty");
             inputField.placeholder.color = Color.red;
         }
     }

@@ -9,10 +9,6 @@ public class LevelSelectorButton : MonoBehaviour
 
     private void OnLevelSelect()
     {
-        if (GameManager.Instance.IsPaused)
-        {
-            Event.Trigger(EventType.GameUnPause, null);
-        }
         Scene.Load(levelName.ToString());
     }
 }

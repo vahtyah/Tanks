@@ -6,13 +6,9 @@ public abstract class CharacterAbility : MonoBehaviour
     protected Character character;
     protected ICharacterController controller;
 
-    public bool AbilityInitialized { get; private set; }
     protected virtual void Awake() { PreInitialization(); }
 
-    private void PreInitialization()
-    {
-        character = GetComponentInParent<Character>();
-    }
+    private void PreInitialization() { character = GetComponentInParent<Character>(); }
 
     protected virtual void Start()
     {
@@ -20,7 +16,7 @@ public abstract class CharacterAbility : MonoBehaviour
         Initialization();
     }
 
-    protected virtual void Initialization() { AbilityInitialized = true; }
+    protected virtual void Initialization() { }
 
     public virtual void ProcessAbility()
     {

@@ -21,7 +21,8 @@ public class PlayerDetector : MonoBehaviour
                 float angle = Vector3.Angle(transform.forward, directionToPlayer);
                 if (angle < detectionAngle)
                 {
-                    if (Physics.Raycast(transform.position, directionToPlayer.normalized, out RaycastHit hit, detectionRadius))
+                    if (Physics.Raycast(transform.position, directionToPlayer.normalized, out RaycastHit hit,
+                            detectionRadius))
                     {
                         if (hit.collider == collider)
                         {
@@ -32,6 +33,7 @@ public class PlayerDetector : MonoBehaviour
                 }
             }
         }
+
         return false;
     }
 
@@ -42,7 +44,9 @@ public class PlayerDetector : MonoBehaviour
         // Gizmos.color = Color.yellow;
         // Gizmos.DrawWireSphere(transform.position, innerDetectionRadius);
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + Quaternion.Euler(0, detectionAngle, 0) * transform.forward * detectionRadius);
-        Gizmos.DrawLine(transform.position, transform.position + Quaternion.Euler(0, -detectionAngle, 0) * transform.forward * detectionRadius);
+        Gizmos.DrawLine(transform.position,
+            transform.position + Quaternion.Euler(0, detectionAngle, 0) * transform.forward * detectionRadius);
+        Gizmos.DrawLine(transform.position,
+            transform.position + Quaternion.Euler(0, -detectionAngle, 0) * transform.forward * detectionRadius);
     }
 }

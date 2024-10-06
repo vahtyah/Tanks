@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class TriggerGameEventButton : MonoBehaviour
+public class TriggerGameModeEventButton : MonoBehaviour
 {
-    [SerializeField] private GameEventType eventType;
+    [SerializeField] private GameModeType eventType;
 
     private void Awake()
     {
@@ -12,6 +12,6 @@ public class TriggerGameEventButton : MonoBehaviour
 
     private void OnButtonClick()
     {
-        GameEvent.Trigger(eventType);
+        GameModeEvent.Trigger(eventType);
     }
 }

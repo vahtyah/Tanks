@@ -31,10 +31,10 @@ public class AIController : MonoBehaviour, ICharacterController
         var patrolState = new EnemyPatrolState(this, character);
         var chaseState = new EnemyChaseState(this, character);
         var dieState = new EnemyDieState(this, character);
-        
-        stateMachine.At(patrolState, chaseState, new FuncPredicate( () => playerDetector.CanDetectPlayer()));
-        stateMachine.At(chaseState, patrolState, new FuncPredicate( () => !playerDetector.CanDetectPlayer()));
-        stateMachine.Any(dieState, ref character.health.onDeath);
+
+        stateMachine.At(patrolState, chaseState, new FuncPredicate(() => playerDetector.CanDetectPlayer()));
+        stateMachine.At(chaseState, patrolState, new FuncPredicate(() => !playerDetector.CanDetectPlayer()));
+        stateMachine.Any(dieState, ref character.Health.onDeath);
         stateMachine.SetState(patrolState);
     }
 
@@ -65,8 +65,5 @@ public class AIController : MonoBehaviour, ICharacterController
 
     public void Move(Vector3 directionInput) { rb.AddForce(directionInput, ForceMode.VelocityChange); }
 
-    public void Reset()
-    {
-        stateMachine.Reset();
-    }
+    public void Reset() { stateMachine.Reset(); }
 }

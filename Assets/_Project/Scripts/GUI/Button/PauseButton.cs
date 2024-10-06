@@ -11,6 +11,6 @@ public class PauseButton : MonoBehaviour
 
     public void UnPauseOnClick()
     {
-        Event.Trigger(EventType.TogglePause, null);
+        GameEvent.Trigger(GameEventType.TogglePause);
     }
 }

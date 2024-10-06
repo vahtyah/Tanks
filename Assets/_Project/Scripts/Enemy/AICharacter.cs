@@ -5,11 +5,8 @@ public class AICharacter : Character
 {
     Dictionary<CharacterStates.CharacterAbility, CharacterAbility> abilities = new();
     protected CharacterStates.CharacterAbility currentAbility;
-    
-    public CharacterAbility GetAbility(CharacterStates.CharacterAbility abilityType)
-    {
-        return abilities[abilityType];
-    }
+
+    public CharacterAbility GetAbility(CharacterStates.CharacterAbility abilityType) { return abilities[abilityType]; }
 
     protected override void Initialization()
     {
@@ -22,7 +19,7 @@ public class AICharacter : Character
 
     public void Reset()
     {
-        health.Reset();
+        Health.Reset();
         Controller.Reset();
         gameObject.SetActive(true);
     }
