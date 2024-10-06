@@ -17,7 +17,7 @@ public class Pool
     private readonly Queue<GameObject> availableObjects = new Queue<GameObject>();
     private Transform parent;
 
-    public static Pool Register(GameObject prefab, Transform parent = null,  int initialSize = 0)
+    public static Pool Register(GameObject prefab, Transform parent = null, int initialSize = 0)
     {
         EnsureManagerExists();
         parent ??= _manager.transform;
@@ -39,14 +39,14 @@ public class Pool
     public GameObject Get()
     {
         EnsureManagerExists();
-        if(availableObjects.Count > 0)
+        if (availableObjects.Count > 0)
         {
             var obj = availableObjects.Dequeue();
             _manager.TrackObject(obj, this);
             obj.SetActive(true);
             return obj;
         }
-        
+
         var newObj = Object.Instantiate(availableObjects.Peek(), parent);
         _manager.TrackObject(newObj, this);
         newObj.SetActive(true);
@@ -105,7 +105,7 @@ public class Pool
 
     private static void EnsureManagerExists()
     {
-        if (_manager == null) 
+        if (_manager == null)
             _manager = PoolManager.Instance ?? throw new System.Exception("PoolManager not found");
     }
 }
@@ -114,13 +114,6 @@ public class PoolManager : Singleton<PoolManager>
 {
     private readonly Dictionary<GameObject, Pool> pools = new();
     private readonly Dictionary<GameObject, Pool> trackedObjects = new();
-    
-    public List<GameObject> ListPool;
-
-    private void Update()
-    {
-        ListPool = pools.Keys.ToList();
-    }
 
     public Pool GetPool(GameObject prefab) => pools.GetValueOrDefault(prefab);
 

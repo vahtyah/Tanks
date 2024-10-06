@@ -8,7 +8,7 @@ public class SplitterCanvasController : MonoBehaviour
     
     private void Start()
     {
-        var screenCount = LevelManager.Instance.PlayerNumber;
+        var screenCount = LevelManagerLocalMatch.Instance.NumberOfPlayers;
         switch (screenCount)
         {
             case 2:

@@ -2,62 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
-public enum GameEventType
-{
-    GameMainMenu,
-    GamePreStart,
-    GameStart,
-    GameOver,
-    GamePause,
-    GameUnPause,
-}
-
-public struct GameEvent
-{
-    public GameEventType EventType;
-    public GameObject Canvas;
-    
-    public GameEvent(GameEventType eventType, GameObject canvas)
-    {
-        EventType = eventType;
-        Canvas = canvas;
-    }
-    
-    public static void Trigger(GameEventType eventType, GameObject canvas)
-    {
-        EventManger.TriggerEvent(new GameEvent(eventType, canvas));
-    }
-}
-
-public enum EventType
-{
-    PlayerDeath,
-    GamePreStart,
-    GameStart,
-    GamePause,
-    GameUnPause,
-    GameOver,
-    TogglePause,
-}
-
-public struct Event
-{
-    public EventType EventType;
-    public PlayerCharacter OriginCharacter;
-
-    public Event(EventType eventType, PlayerCharacter originCharacter)
-    {
-        EventType = eventType;
-        OriginCharacter = originCharacter;
-    }
-
-    public static void Trigger(EventType eventType, PlayerCharacter originCharacter)
-    {
-        EventManger.TriggerEvent(new Event(eventType, originCharacter));
-    }
-}
-
 public interface IEventListenerBase
 {
 };
@@ -69,7 +13,7 @@ public interface IEventListener<T> : IEventListenerBase
 
 public static class EventManger
 {
-    private static Dictionary<Type, List<IEventListenerBase>> subscribers = new();
+    private static readonly Dictionary<Type, List<IEventListenerBase>> subscribers = new();
 
     public static void AddListener<T>(IEventListener<T> listener) where T : struct
     {
@@ -125,6 +69,32 @@ public static class EventRegister
         EventManger.RemoveListener(listener);
     }
 }
+
+// public enum GameEventType
+// {
+//     GameMainMenu,
+//     GamePreStart,
+//     GameStart,
+//     GameOver,
+//     GamePause,
+// }
+//
+// public struct GameEvent
+// {
+//     public GameEventType EventType;
+//     public GameObject Canvas;
+//     
+//     public GameEvent(GameEventType eventType, GameObject canvas)
+//     {
+//         EventType = eventType;
+//         Canvas = canvas;
+//     }
+//     
+//     public static void Trigger(GameEventType eventType, GameObject canvas)
+//     {
+//         EventManger.TriggerEvent(new GameEvent(eventType, canvas));
+//     }
+// }
 
 //How to use:
 //1. Create an event class that implements IEventListenerBase

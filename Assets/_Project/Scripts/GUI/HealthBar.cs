@@ -6,10 +6,13 @@ public class HealthBar : MonoBehaviour
     [SerializeField] private Transform foregroundBar;
     [SerializeField] private Transform delayedBarDecreasing;
     [SerializeField] private string playerID = "Player1";
-    
+
+    private Health health;
+
     private void Start()
     {
-        var health = LevelManager.Instance.GetCharacter(playerID).GetComponent<CharacterHealth>();
+        health = LevelManagerBotMatch.Instance ? LevelManagerBotMatch.Instance.GetPlayer().Health : LevelManagerLocalMatch.Instance.GetPlayer(playerID).Health;
+
         health.AddOnHitListener(UpdateBar);
     }
 

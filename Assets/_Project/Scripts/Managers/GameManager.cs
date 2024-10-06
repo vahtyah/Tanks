@@ -1,108 +1,81 @@
 ﻿using System;
-using UnityEditor;
+using System.Collections;
 using UnityEngine;
 
-public class GameManager : PersistentSingleton<GameManager>, IEventListener<Event>, IEventListener<GameEvent>
+public class GameManager : PersistentSingleton<GameManager>, IEventListener<GameEvent>
 {
-    public int NumberOfPlayers = 2;
-
-    public int score = 0;
-
-    public GameEventType CurrentGameType;
-
-    //State
-    public bool IsPaused { get; private set; }
-
-    protected override void Awake()
+    private int numberOfPlayers = 2;
+    public GameEventType currentGameType;
+    private GameEventType previousGameType { get; set; }
+    
+    public int NumberOfPlayers
     {
-        base.Awake();
-        GameEvent.Trigger(GameEventType.GameMainMenu, null);
-        Cursor.lockState = CursorLockMode.Confined;
-    }
-
-    public void OnEvent(Event e)
-    {
-        switch (e.EventType)
+        get => numberOfPlayers;
+        set
         {
-            case EventType.PlayerDeath:
-                if (e.OriginCharacter is null)
-                {
-                    score++;
-                    GUIManager.Instance.SetScoreText(score);
-                }
-                else
-                {
-                    GUIManager.Instance.SetScoreTextMaskDie(score);
-                    DatabaseManager.Instance.WriteNewUser(score);
-                }
-                break;
-            case EventType.TogglePause:
-                TogglePause();
-                break;
-            case EventType.GamePause:
-                Pause();
-                break;
-            case EventType.GameUnPause:
-                UnPause();
-                break;
+            if(value is < 1 or > 4) throw new ArgumentOutOfRangeException($"Number of players must be between 1 and 4");
+            numberOfPlayers = value;
         }
     }
+
+    protected void Start() { GameEvent.Trigger(GameEventType.GameMainMenu); }
 
     public void OnEvent(GameEvent e)
     {
-        SetCurrentGameType(e.EventType);
         switch (e.EventType)
         {
             case GameEventType.GameMainMenu:
-                Cursor.visible = true;
+                GameMainMenu();
                 break;
             case GameEventType.GamePreStart:
-                score = 0;
-                Cursor.visible = true;
-                Time.timeScale = 0;
+                GamePreStart();
                 break;
             case GameEventType.GameStart:
-                Cursor.visible = false;
-                GUIManager.Instance.SetUsernamePanel(false);
-                Time.timeScale = 1;
+                GameStart();
+                break;
+            case GameEventType.GamePause:
+                GamePause();
+                break;
+            case GameEventType.TogglePause:
+                TogglePause();
                 break;
         }
+
+        if (e.EventType == GameEventType.TogglePause) return;
+        previousGameType = currentGameType;
+        currentGameType = e.EventType;
     }
 
-    private void SetCurrentGameType(GameEventType gameType)
-    {
-        Debug.Log("Current " + CurrentGameType);
-        CurrentGameType = gameType;
-    }
+    private void GameMainMenu() { Cursor.visible = true; }
 
-    private void TogglePause() { Event.Trigger(IsPaused ? EventType.GameUnPause : EventType.GamePause, null); }
+    private void GamePreStart() { Cursor.visible = true; }
 
-    private void Pause()
+    private void GameStart()
     {
-        GUIManager.Instance.SetPausePanel(true);
-        IsPaused = true;
-        Cursor.visible = true;
-        Time.timeScale = 0;
-    }
-
-    private void UnPause()
-    {
-        Time.timeScale = 1;
         Cursor.visible = false;
-        GUIManager.Instance.SetPausePanel(false);
-        IsPaused = false;
-        GameEvent.Trigger(CurrentGameType, null);
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    protected virtual void GamePause() { Cursor.visible = true; }
+
+    protected IEnumerator GameOver(Character character)
+    {
+        yield return new WaitForSecondsRealtime(1);
+        GameEvent.Trigger(GameEventType.GameOver);
+    }
+
+    private void TogglePause()
+    {
+        GameEvent.Trigger(currentGameType == GameEventType.GamePause ? previousGameType : GameEventType.GamePause);
     }
 
     private void OnEnable()
     {
-        this.StartListening<Event>();
         this.StartListening<GameEvent>();
     }
 
     private void OnDisable()
     {
-        this.StopListening<Event>();
         this.StopListening<GameEvent>();
     }
 }

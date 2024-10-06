@@ -6,8 +6,7 @@ public class Scene
     public enum SceneName
     {
         MainMenu,
-        MultiDisplay,
-        SingleDisplay,
+        LocalMatch,
         BotMatch,
         OnlineMatch,
     }

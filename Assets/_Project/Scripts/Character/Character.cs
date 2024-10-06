@@ -7,14 +7,14 @@ public class Character : MonoBehaviour
     [SerializeField] protected GameObject abilityNode;
     public ICharacterController Controller;
     protected readonly List<CharacterAbility>  characterAbilities = new();
-    public Health health;
+    public Health Health { get; private set; }
     
     //StateMachine
-    public StateMachine<CharacterStates.CharacterCondition> conditionState { get; private set; }
+    public StateMachine<CharacterStates.CharacterCondition> conditionState { get; private set; } //TODO: chua biet lam gi
     protected virtual void Awake()
     {
         Controller = GetComponent<ICharacterController>();
-        health = GetComponent<Health>();
+        Health = GetComponent<Health>();
         Initialization();
     }
     

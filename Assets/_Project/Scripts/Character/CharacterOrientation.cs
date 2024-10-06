@@ -19,11 +19,6 @@ public class CharacterOrientation : CharacterAbility
     protected override void Initialization()
     {
         base.Initialization();
-        // if (shouldRotateWeapon)
-        // {
-        //     Cursor.visible = false;
-        //     Cursor.lockState = CursorLockMode.Confined;
-        // }
         movement = GetComponent<CharacterMovement>();
     }
 

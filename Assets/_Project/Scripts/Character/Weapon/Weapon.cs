@@ -25,7 +25,6 @@ public class Weapon : MonoBehaviour
     {
         if(!reloadTimer.IsCompleted)
             return false;
-        
         reloadTimer.Reset();
         var nextProjectile = Pool.Get(projectilePrefab, false);
         nextProjectile.transform.position = projectileSpawnTransform.position;
