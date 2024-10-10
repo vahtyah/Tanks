@@ -221,24 +221,41 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
         switch (e.EventType)
         {
             case GameEventType.GamePreStart:
-                CancelAllTimers();
-                Time.timeScale = 0;
+                GamePreStart();
                 break;
             case GameEventType.GamePause:
-                PauseAllTimers();
-                Time.timeScale = 0;
+                GamePause();
                 break;
             case GameEventType.GameStart:
-                ResumeAllTimers();
-                Time.timeScale = 1;
+                GameStart();
                 break;
             case GameEventType.GameOver:
-                CancelAllTimers();
+                GameOver();
                 break;
         }
     }
 
-    private void OnEnable() { this.StartListening(); }
+    protected virtual void GameOver() { CancelAllTimers(); }
+
+    protected virtual void GameStart()
+    {
+        ResumeAllTimers();
+        Time.timeScale = 1;
+    }
+
+    protected virtual void GamePause()
+    {
+        PauseAllTimers();
+        // Time.timeScale = 0;
+    }
+
+    protected virtual void GamePreStart()
+    {
+        CancelAllTimers();
+        Time.timeScale = 0;
+    }
+
+    protected virtual void OnEnable() { this.StartListening(); }
 
     private void OnDisable() { this.StopListening(); }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
 using MoreMountains.Feedbacks;
+using Unity.Netcode;
 using UnityEngine;
 
-public abstract class Health : MonoBehaviour
+public abstract class Health : NetworkBehaviour
 {
     [SerializeField] protected float maxHealth = 100;
     [SerializeField] protected bool disableColliderOnDeath = true;
@@ -12,18 +13,15 @@ public abstract class Health : MonoBehaviour
     public Action onDeath;
     private Action<float> onHit { get; set; }
     private Collider col;
-    
+
     protected virtual void Awake()
     {
         col = GetComponent<Collider>();
         character = GetComponent<Character>();
     }
 
-    protected virtual void Start()
-    {
-        Reset();
-    }
-    
+    protected virtual void Start() { Reset(); }
+
     protected float CurrentHealth
     {
         get => currentHealth;
@@ -35,18 +33,18 @@ public abstract class Health : MonoBehaviour
                 Die();
         }
     }
-    
+
     protected float MaxHealth
     {
         get => maxHealth;
         private set => Mathf.Max(value, 0);
     }
-    
+
     public void TakeDamage(float damage)
     {
-        CurrentHealth -= damage;
+        CurrentHealth -= damage; // Gọi phương thức giảm sức khỏe trên server
     }
-    
+
     protected void Die()
     {
         //Feedback, particles, etc.
@@ -54,13 +52,15 @@ public abstract class Health : MonoBehaviour
         {
             col.enabled = false;
         }
-        
+
         onDeath?.Invoke();
         OnDeath();
     }
 
     protected abstract void OnDeath();
+
     public void Reset() { CurrentHealth = MaxHealth; }
+
     public float GetHealthAmountNormalized() => (float)CurrentHealth / MaxHealth;
     public void AddOnDeathListener(Action _onDeath) { onDeath += _onDeath; }
     public void RemoveOnDeathListener(Action _onDeath) { onDeath -= _onDeath; }

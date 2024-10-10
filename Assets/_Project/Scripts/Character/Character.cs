@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : NetworkBehaviour
 {
     [SerializeField] protected GameObject abilityNode;
     public ICharacterController Controller;
@@ -28,9 +29,6 @@ public class Character : MonoBehaviour
     {
 
     }
-    
-    protected virtual void FixedProcessAbilities()
-    {
-        
-    }
+
+    protected virtual void FixedProcessAbilities() { }
 }

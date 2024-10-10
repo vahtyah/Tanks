@@ -12,7 +12,6 @@ public class HealthBar : MonoBehaviour
     private void Start()
     {
         health = LevelManagerBotMatch.Instance ? LevelManagerBotMatch.Instance.GetPlayer().Health : LevelManagerLocalMatch.Instance.GetPlayer(playerID).Health;
-
         health.AddOnHitListener(UpdateBar);
     }
 

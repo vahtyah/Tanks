@@ -1,7 +1,8 @@
 ﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class WeaponNetwork : NetworkBehaviour
 {
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float reloadTime = 1;
@@ -20,24 +21,44 @@ public class Weapon : MonoBehaviour
         Pool.Register(projectilePrefab);
         reloadTimer = Timer.Register(reloadTime).AlreadyDone();
     }
-
     public bool WeaponUse()
     {
         if(!reloadTimer.IsCompleted)
             return false;
         reloadTimer.Reset();
-        var nextProjectile = Pool.Get(projectilePrefab, false);
-        nextProjectile.transform.position = projectileSpawnTransform.position;
-        nextProjectile.transform.rotation = projectileSpawnTransform.rotation;
+        
+        if(NetworkManager == null)
+        {
+            SpawnProjectile();
+            return true;
+        }
+        
+        SpawnProjectileServerRpc();
+        return true;
+    }
+    [ServerRpc]
+    private void SpawnProjectileServerRpc()
+    {
+        var nextProjectile = NetworkObjectSpawner.Spawn(projectilePrefab, projectileSpawnTransform.position, projectileSpawnTransform.rotation);
         var projectile = nextProjectile.GetComponent<Projectile>();
         if(projectile != null)
         {
             projectile.SetOwner(Owner.gameObject);
             projectile.SetWeapon(this);
+            projectile.OnSpawn();
         }
-        
-        nextProjectile.SetActive(true);
-        return true;
+    }
+
+    private void SpawnProjectile()
+    {
+        var nextProjectile = Pool.Spawn(projectilePrefab, projectileSpawnTransform.position, projectileSpawnTransform.rotation);
+        var projectile = nextProjectile.GetComponent<Projectile>();
+        if(projectile != null)
+        {
+            projectile.SetOwner(Owner.gameObject);
+            projectile.SetWeapon(this);
+            projectile.OnSpawn();
+        }
     }
 
     public void SetProjectileSpawnTransform(Transform projectileSpawnPoint)

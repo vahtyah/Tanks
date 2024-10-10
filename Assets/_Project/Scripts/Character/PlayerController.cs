@@ -1,7 +1,8 @@
 ﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, ICharacterController
+public class PlayerController : NetworkBehaviour, ICharacterController
 {
     private PlayerCharacter character;
     private Rigidbody rb;
@@ -44,4 +45,13 @@ public class PlayerController : MonoBehaviour, ICharacterController
     }
 
     public void Reset() { }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (!IsOwner) return;
+        CinemachineCameraControllerNetCode.Instance.SetFollowTarget(character.CameraTarget.transform);
+        GUIManagerNetcode.Instance.SetHealthBar(character.HealthNetwork);
+        character.transform.position = LevelManagerNetCode.Instance.spawner.NextRandomSpawnPoint();
+    }
 }

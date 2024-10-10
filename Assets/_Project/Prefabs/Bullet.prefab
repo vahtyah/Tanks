@@ -186,6 +186,7 @@ MonoBehaviour:
   speed: 600
   lifeTime: 3
   Acceleration: 200
+  owner: {fileID: 0}
 --- !u!114 &73489939828762687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,6 +207,7 @@ MonoBehaviour:
   ignoreObjects: []
   onHitFeedback: {fileID: 6969855248542257395}
   projectileHitParticles: {fileID: 2693672709390255330, guid: 3c30d724e56bde6468ab105811555e4c, type: 3}
+  projectile: {fileID: 0}
 --- !u!114 &1141311314027810831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,7 +361,7 @@ MonoBehaviour:
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 0
-  PlayCount: 95
+  PlayCount: 97
   references:
     version: 2
     RefIds:
@@ -384,7 +386,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 5
+          PlayCount: 2
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -500,7 +502,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 4
+          PlayCount: 2
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -676,7 +678,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 7
+          PlayCount: 2
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -790,7 +792,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 4
+          PlayCount: 2
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -938,7 +940,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 0
+          PlayCount: 2
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0

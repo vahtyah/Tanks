@@ -4,6 +4,7 @@ using UnityEngine;
 public class GUIManagerLocalMatch : Singleton<GUIManagerLocalMatch>, IEventListener<GameEvent>
 {
     [SerializeField] protected GameObject pausePanel;
+    [SerializeField] private GameObject selectNumberOfPlayersPanel;
     
     protected virtual void Start()
     {
@@ -13,27 +14,34 @@ public class GUIManagerLocalMatch : Singleton<GUIManagerLocalMatch>, IEventListe
     private void SetPausePanel(bool value)
     {
         if(pausePanel == null) return;
+        Debug.Log("SetPausePanel");
         pausePanel.SetActive(value);
     }
-
-    public virtual void OnEvent(GameEvent e)
-    {
-        switch (e.EventType)
-        {
-            case GameEventType.GameStart:
-                SetPausePanel(false);
-                break;
-            case GameEventType.GamePause:
-                SetPausePanel(true);
-                break;
-        }
-    }
     
+    private void SetSelectNumberOfPlayersPanel(bool value)
+    {
+        if(selectNumberOfPlayersPanel == null) return;
+        selectNumberOfPlayersPanel.SetActive(value);
+    }
+
+    public void OnEvent(GameEvent e)
+    {
+        if(e.EventType == GameEventType.TogglePause) return;
+        SwitchPanel(e.EventType);
+    }
+
+    private void SwitchPanel(GameEventType eventType)
+    {
+        Debug.Log(eventType);
+        SetPausePanel(eventType == GameEventType.GamePause);
+        SetSelectNumberOfPlayersPanel(eventType == GameEventType.GamePreStart);
+    }
+
     private void OnEnable()
     {
         this.StartListening();
     }
-    
+
     private void OnDisable()
     {
         this.StopListening();

@@ -4,6 +4,7 @@ using UnityEngine;
 public interface ISpawnPoint
 {
     Vector3 NextSpawnPoint();
+    Vector3 NextSpawnPoint(int index);
     Vector3 ClosestSpawnPoint(Vector3 position);
     Vector3 NextRandomSpawnPoint();
 }
@@ -13,9 +14,23 @@ public class LinearSpawnPoint : ISpawnPoint
     private List<Vector3> spawnPoints;
     private int currentIndex = 0;
     
+    public LinearSpawnPoint(List<Transform> spawnPoints)
+    {
+        this.spawnPoints = new List<Vector3>();
+        foreach (var spawnPoint in spawnPoints)
+        {
+            this.spawnPoints.Add(spawnPoint.position);
+        }
+    }
+    
     public LinearSpawnPoint(List<Vector3> spawnPoints)
     {
-        this.spawnPoints = spawnPoints;
+        this.spawnPoints = new List<Vector3>(spawnPoints);
+    }
+    
+    public LinearSpawnPoint(Vector3[] spawnPoints)
+    {
+        this.spawnPoints = new List<Vector3>(spawnPoints);
     }
 
     public Vector3 NextSpawnPoint()
@@ -24,6 +39,8 @@ public class LinearSpawnPoint : ISpawnPoint
         currentIndex = (currentIndex + 1) % spawnPoints.Count;
         return spawnPoint;
     }
+    
+    public Vector3 NextSpawnPoint(int index) => spawnPoints[index];
     
     public Vector3 NextRandomSpawnPoint()
     {

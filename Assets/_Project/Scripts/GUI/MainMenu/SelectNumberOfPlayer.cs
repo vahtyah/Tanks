@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class GUIMainMenuManger : MonoBehaviour
+public class SelectNumberOfPlayer : MonoBehaviour
 {
     [SerializeField] private Button twoPlayersButton;
     [SerializeField] private Button threePlayersButton;
@@ -16,7 +16,7 @@ public class GUIMainMenuManger : MonoBehaviour
 
     private void ButtonSelectAmountPlayerOnClick(int value)
     {
-        GameManager.Instance.NumberOfPlayers = value;
-        Scene.Load("MultiDisplay");
+        LevelManagerLocalMatch.Instance.NumberOfPlayers = value;
+        GameEvent.Trigger(GameEventType.GameStart);
     }
 }

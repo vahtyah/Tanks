@@ -7,13 +7,14 @@ public class GameManager : PersistentSingleton<GameManager>, IEventListener<Game
     private int numberOfPlayers = 2;
     public GameEventType currentGameType;
     private GameEventType previousGameType { get; set; }
-    
+
     public int NumberOfPlayers
     {
         get => numberOfPlayers;
         set
         {
-            if(value is < 1 or > 4) throw new ArgumentOutOfRangeException($"Number of players must be between 1 and 4");
+            if (value is < 1 or > 4)
+                throw new ArgumentOutOfRangeException($"Number of players must be between 1 and 4");
             numberOfPlayers = value;
         }
     }
@@ -52,8 +53,8 @@ public class GameManager : PersistentSingleton<GameManager>, IEventListener<Game
 
     private void GameStart()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        // Cursor.lockState = CursorLockMode.Confined;
     }
 
     protected virtual void GamePause() { Cursor.visible = true; }
@@ -69,13 +70,7 @@ public class GameManager : PersistentSingleton<GameManager>, IEventListener<Game
         GameEvent.Trigger(currentGameType == GameEventType.GamePause ? previousGameType : GameEventType.GamePause);
     }
 
-    private void OnEnable()
-    {
-        this.StartListening<GameEvent>();
-    }
+    private void OnEnable() { this.StartListening<GameEvent>(); }
 
-    private void OnDisable()
-    {
-        this.StopListening<GameEvent>();
-    }
+    private void OnDisable() { this.StopListening<GameEvent>(); }
 }

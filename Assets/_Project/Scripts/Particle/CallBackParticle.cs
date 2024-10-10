@@ -1,10 +1,20 @@
 ﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 
-public class CallBackParticle : MonoBehaviour
+public class CallBackParticle : NetworkBehaviour
 {
     private void OnParticleSystemStopped()
     {
-        Pool.Return(gameObject);
+        if (NetworkObject != null)
+        {
+            if (!IsServer)
+                return;
+            NetworkObject.Despawn(true);
+        }
+        else
+        {
+            Pool.Return(gameObject);
+        }
     }
 }

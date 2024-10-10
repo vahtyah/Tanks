@@ -36,7 +36,7 @@ public class Pool
         return _manager.RegisterPool(prefab, pool);
     }
 
-    public GameObject Get()
+    public GameObject Spawn()
     {
         EnsureManagerExists();
         if (availableObjects.Count > 0)
@@ -65,7 +65,7 @@ public class Pool
     //     availableObjects.Enqueue(obj);
     // }
 
-    public static GameObject Get(GameObject prefab, bool enable = true)
+    public static GameObject Spawn(GameObject prefab, bool enable = true)
     {
         EnsureManagerExists();
 
@@ -85,6 +85,15 @@ public class Pool
         _manager.TrackObject(newObj, pool);
         newObj.SetActive(enable);
         return newObj;
+    }
+    
+    public static GameObject Spawn(GameObject prefab, Vector3 position = default, Quaternion rotation = default, bool enable = true)
+    {
+        var obj = Spawn(prefab, false);
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
+        obj.SetActive(enable);
+        return obj;
     }
 
     public static void Return(GameObject obj)

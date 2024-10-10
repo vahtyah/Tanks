@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
-public abstract class CharacterAbility : MonoBehaviour
+public abstract class CharacterAbility : NetworkBehaviour
 {
     [SerializeField] private CharacterStates.CharacterAbility abilityType;
     protected Character character;

@@ -27,6 +27,7 @@ public enum GameEventType
 public struct GameEvent
 {
     public GameEventType EventType;
+    
 
     private GameEvent(GameEventType eventType) { EventType = eventType; }
 

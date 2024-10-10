@@ -441,7 +441,7 @@ InputManager:
     m_Name: Player1_Fire
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: 
+    negativeButton: f
     positiveButton: mouse 0
     altNegativeButton: 
     altPositiveButton: f

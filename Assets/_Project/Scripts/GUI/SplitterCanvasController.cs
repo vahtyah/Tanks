@@ -6,20 +6,10 @@ public class SplitterCanvasController : MonoBehaviour
     [SerializeField] private GameObject splitterFor3Screens;
     [SerializeField] private GameObject splitterFor4Screens;
     
-    private void Start()
+    public void SetSplitterCanvasActive(int numberOfPlayers)
     {
-        var screenCount = LevelManagerLocalMatch.Instance.NumberOfPlayers;
-        switch (screenCount)
-        {
-            case 2:
-                splitterFor2Screens.SetActive(true);
-                break;
-            case 3:
-                splitterFor3Screens.SetActive(true);
-                break;
-            case 4:
-                splitterFor4Screens.SetActive(true);
-                break;
-        }
+        splitterFor2Screens.SetActive(numberOfPlayers == 2);
+        splitterFor3Screens.SetActive(numberOfPlayers == 3);
+        splitterFor4Screens.SetActive(numberOfPlayers == 4);
     }
 }

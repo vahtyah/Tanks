@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerHUD : MonoBehaviour, IEventListener<Event>
+public class PlayerHUD : MonoBehaviour, IEventListener<CharacterEvent>, IEventListener<GameEvent>
 {
     [SerializeField] private string playerID = "Player1";
     [SerializeField] private HealthBar healthBar;
@@ -10,28 +10,47 @@ public class PlayerHUD : MonoBehaviour, IEventListener<Event>
     [SerializeField] private CanvasGroup deadMask;
     [SerializeField] private CanvasGroup winScreen;
 
-    public void OnEvent(Event e)
+    public void OnEvent(CharacterEvent e)
     {
-        if(e.OriginCharacter == null) return;
+        if(e.Character == null) return;
         switch (e.EventType)
         {
-            case EventType.PlayerDeath:
-                if (e.OriginCharacter.PlayerID == playerID)
+            case CharacterEventType.CharacterDeath:
+                var dead = e.Character as PlayerCharacter;
+                if (dead == null) return;
+                if (dead.PlayerID == playerID)
                 {
                     if(deadMask == null) return;
                     deadMask.gameObject.SetActive(true);
                 }
                 break;
-            case EventType.GameOver:
-                if(e.OriginCharacter.PlayerID == playerID)
+        }
+    }
+
+    private void OnEnable()
+    {
+        this.StartListening<GameEvent>();
+        this.StartListening<CharacterEvent>();
+    }
+
+    private void OnDisable()
+    {
+        this.StopListening<GameEvent>();
+        this.StopListening<CharacterEvent>();
+    }
+
+    public void OnEvent(GameEvent e)
+    {
+        switch (e.EventType)
+        {
+            case GameEventType.GameOver:
+                var winner = LevelManagerLocalMatch.Instance.GetWinner();
+                if(winner.PlayerID == playerID)
                 {
+                    if(winScreen == null) return;
                     winScreen.gameObject.SetActive(true);
                 }
                 break;
         }
     }
-
-    private void OnEnable() { this.StartListening(); }
-
-    private void OnDisable() { this.StopListening(); }
 }

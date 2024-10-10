@@ -19,7 +19,7 @@ public class ListHighScore : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             if(i >= users.Count) break;
-            var element = Pool.Get(elementPrefab);
+            var element = Pool.Spawn(elementPrefab, true);
             element.GetComponent<HighScoreElement>().SetData(i + 1, users[i].username, users[i].score);
             elements.Add(element);
         }
