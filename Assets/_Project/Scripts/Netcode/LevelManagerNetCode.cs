@@ -11,7 +11,7 @@ public class LevelManagerNetCode : SingletonNetwork<LevelManagerNetCode>, IEvent
     public ISpawnPoint spawner;
 
     public Dictionary<ulong, PlayerCharacter> playerCharacters = new Dictionary<ulong, PlayerCharacter>();
-    
+
     protected override void Awake()
     {
         base.Awake();
@@ -38,6 +38,12 @@ public class LevelManagerNetCode : SingletonNetwork<LevelManagerNetCode>, IEvent
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape) &&
+            (GameManager.Instance.currentGameType is GameEventType.GameStart or GameEventType.GamePause))
+        {
+            GameEvent.Trigger(GameEventType.TogglePause);
+        }
+
         if (!isGameOver) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -56,7 +62,7 @@ public class LevelManagerNetCode : SingletonNetwork<LevelManagerNetCode>, IEvent
                 break;
         }
     }
-    
+
     private void CharacterDeath(Character eCharacter)
     {
         isGameOver = true;

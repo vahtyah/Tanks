@@ -1,6 +1,7 @@
 ﻿using System;
 using TMPro;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,12 +11,13 @@ public class ButtonController : MonoBehaviour
     [SerializeField] private Button clientButton;
     [SerializeField] private Button serverButton;
     [SerializeField] private TextMeshProUGUI notificationText;
+    [SerializeField] private TMP_InputField inputField;
+
 
     private void Awake()
     {
         hostButton.onClick.AddListener(Host);
         clientButton.onClick.AddListener(Client);
-        serverButton.onClick.AddListener(Server);
     }
 
     private void OnEnable()
@@ -48,7 +50,9 @@ public class ButtonController : MonoBehaviour
         // }
 
         // Bắt đầu host
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(IPManager.Instance.GetLocalIPAddress(), 7777);
         NetworkManager.Singleton.StartHost();
+
         notificationText.gameObject.SetActive(true);
         notificationText.text = "Host started";
         GameEvent.Trigger(GameEventType.GameStart);
@@ -65,7 +69,16 @@ public class ButtonController : MonoBehaviour
         // }
 
         Debug.Log("Client is starting...");
-        // Bắt đầu client
+        // if (inputField.text != IPManager.Instance.GetLocalIPAddress())
+        // {
+        //     notificationText.gameObject.SetActive(true);
+        //     notificationText.text = "Invalid IP address";
+        //     return;
+        // }
+        
+        
+        
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(inputField.text, 7777);
         NetworkManager.Singleton.StartClient();
         notificationText.gameObject.SetActive(true);
         notificationText.text = "Client started";
