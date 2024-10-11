@@ -55,6 +55,11 @@ public class LevelManagerLocalMatch : Singleton<LevelManagerLocalMatch>, IEventL
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape) &&
+            (GameManager.Instance.currentGameType is GameEventType.GameStart or GameEventType.GamePause))
+        {
+            GameEvent.Trigger(GameEventType.TogglePause);
+        }
         if(!isGameOver) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
