@@ -11,7 +11,6 @@ public class GameManager : PersistentSingleton<GameManager>, IEventListener<Game
 
     private void Update()
     {
-        Debug.Log(Input.GetKeyDown(KeyCode.Escape) + " " + currentGameType);
         if (Input.GetKeyDown(KeyCode.Escape) &&
             currentGameType is GameEventType.GameStart or GameEventType.GamePause)
             GameEvent.Trigger(GameEventType.TogglePause);
