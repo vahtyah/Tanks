@@ -1,18 +1,24 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 public abstract class CharacterAbility : MonoBehaviour
 {
     [SerializeField] private CharacterStates.CharacterAbility abilityType;
     protected Character character;
     protected ICharacterController controller;
+    protected PhotonView photonView;
 
     protected virtual void Awake() { PreInitialization(); }
 
-    private void PreInitialization() { character = GetComponentInParent<Character>(); }
+    protected virtual void PreInitialization()
+    {
+        character = GetComponentInParent<Character>(); 
+        controller = character.Controller;
+        photonView = PhotonView.Get(character);
+    }
 
     protected virtual void Start()
     {
-        controller = character.Controller;
         Initialization();
     }
 

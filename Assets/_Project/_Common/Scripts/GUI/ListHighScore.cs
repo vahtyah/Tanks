@@ -7,11 +7,6 @@ public class ListHighScore : MonoBehaviour
     [SerializeField] private GameObject elementPrefab;
     private List<GameObject> elements = new List<GameObject>();
 
-    private void Awake()
-    {
-        Pool.Register(elementPrefab, transform);
-    }
-
     private void OnEnable()
     {
         if(DatabaseManager.Instance.users == null) return;
@@ -19,7 +14,7 @@ public class ListHighScore : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             if(i >= users.Count) break;
-            var element = Pool.Get(elementPrefab);
+            var element = Pool.Spawn(elementPrefab, null);
             element.GetComponent<HighScoreElement>().SetData(i + 1, users[i].username, users[i].score);
             elements.Add(element);
         }
@@ -29,7 +24,7 @@ public class ListHighScore : MonoBehaviour
     {
         foreach (var element in elements)
         {
-            Pool.Return(element);
+            Pool.Despawn(element);
         }
         elements.Clear();
     }

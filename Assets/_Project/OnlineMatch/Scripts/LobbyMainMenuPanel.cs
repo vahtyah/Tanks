@@ -23,31 +23,70 @@ public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
         playerName += UnityEngine.Random.Range(0, 1000);
         
         playerListEntries = new Dictionary<int, PlayerEntry>();
+        startGameButton.onClick.AddListener(OnStartGameButtonClicked);
     }
 
     private void Start() { OnLoginButtonClicked(); }
 
-    public void OnLoginButtonClicked()
+    private void OnLoginButtonClicked()
     {
         PhotonNetwork.NickName = playerName;
         PhotonNetwork.ConnectUsingSettings();
     }
+    
+    private void OnStartGameButtonClicked()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+            PhotonNetwork.LoadLevel(Scene.SceneName.OnlineMatch.ToString());
+        }
+    }
+    
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("Connected to master");
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnJoinedLobby()
     {
-        Debug.Log("Joined lobby");
         PhotonNetwork.JoinOrCreateRoom("Room", new Photon.Realtime.RoomOptions { MaxPlayers = 4 }, null);
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out var playerEntry))
+        {
+            if (changedProps.TryGetValue(GlobalString.PLAYER_READY, out var isReady))
+            {
+                playerEntry.SetReadyButton((bool)isReady);
+            }
+        }
+
+        LocalPlayerPropertiesUpdated();
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        var playerEntry = PlayerEntry.Create(playerEntryPrefab, newPlayer.NickName, newPlayer.ActorNumber, playerListEntry);
+        playerListEntries.Add(newPlayer.ActorNumber, playerEntry);
+        LocalPlayerPropertiesUpdated();
+    }
+    
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        if (playerListEntries.Remove(otherPlayer.ActorNumber, out var playerEntry))
+        {
+            Destroy(playerEntry.gameObject);
+        }
+        
+        LocalPlayerPropertiesUpdated();
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("Joined room");
         roomPanel.SetActive(true);
 
         foreach (var player in PhotonNetwork.PlayerList)
@@ -89,36 +128,6 @@ public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
         }
 
         return true;
-    }
-
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
-    {
-        if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out var playerEntry))
-        {
-            if (changedProps.TryGetValue(GlobalString.PLAYER_READY, out var isReady))
-            {
-                playerEntry.SetReadyButton((bool)isReady);
-            }
-        }
-
-        LocalPlayerPropertiesUpdated();
-    }
-    
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        var playerEntry = PlayerEntry.Create(playerEntryPrefab, newPlayer.NickName, newPlayer.ActorNumber, playerListEntry);
-        playerListEntries.Add(newPlayer.ActorNumber, playerEntry);
-        LocalPlayerPropertiesUpdated();
-    }
-    
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        if (playerListEntries.Remove(otherPlayer.ActorNumber, out var playerEntry))
-        {
-            Destroy(playerEntry.gameObject);
-        }
-        
-        LocalPlayerPropertiesUpdated();
     }
 
     private void LocalPlayerPropertiesUpdated() { startGameButton.gameObject.SetActive(CheckAllPlayersReady()); }

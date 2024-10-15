@@ -2,12 +2,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class GameManager : PersistentSingleton<GameManager>, IEventListener<GameEvent>
+public sealed class GameManager : PersistentSingleton<GameManager>, IEventListener<GameEvent>
 {
     public GameEventType currentGameType;
     private GameEventType previousGameType { get; set; }
 
-    protected void Start() { GameEvent.Trigger(GameEventType.GameMainMenu); }
+    private void Start() { GameEvent.Trigger(GameEventType.GameMainMenu); }
 
     private void Update()
     {
@@ -52,11 +52,11 @@ public class GameManager : PersistentSingleton<GameManager>, IEventListener<Game
 
     private void GameStart()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+        // Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Confined;
     }
 
-    protected virtual void GamePause() { Cursor.visible = true; }
+    private void GamePause() { Cursor.visible = true; }
 
     private void TogglePause()
     {

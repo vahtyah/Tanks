@@ -18,7 +18,6 @@ public class Projectile : MonoBehaviour, IPoolable
     private float currentSpeed;
 
     //Pooling
-    private Health health;
     
     Weapon weapon;
 
@@ -28,15 +27,12 @@ public class Projectile : MonoBehaviour, IPoolable
     {
         rb = GetComponent<Rigidbody>(); 
         damageOnTouch = GetComponent<DamageOnTouch>();
-        health = GetComponent<Health>();
     }
-
-    private void OnEnable() { OnSpawn(); }
 
     private void Start()
     {
         timer = Timer.Register(lifeTime)
-            .OnComplete(() => Pool.Return(gameObject))
+            .OnComplete(() => Pool.Despawn(gameObject))
             .AutoDestroyWhenOwnerDisappear(this)
             .Start();
     }
@@ -55,24 +51,32 @@ public class Projectile : MonoBehaviour, IPoolable
 
     public void OnSpawn()
     {
-        timer?.Reset(); 
+        timer?.Reset();
         damageOnTouch.AddIgnoreObject(owner);
         currentSpeed = speed;
     }
 
     public void OnDespawn()
     {
-        health.Reset(); 
         damageOnTouch.ClearIgnoreObjects();
     }
 
-    public void SetOwner(GameObject o)
+    public Projectile SetOwner(GameObject o)
     {
         owner = o;
+        damageOnTouch.SetOwner(owner.GetComponent<Character>());
+        return this;
     }
 
-    public void SetWeapon(Weapon weapon)
+    public Projectile SetWeapon(Weapon weapon)
     {
         this.weapon = weapon;
+        return this;
+    }
+    
+    public Projectile SetLag(float lag)
+    {
+        transform.position += rb.velocity * lag;
+        return this;
     }
 }

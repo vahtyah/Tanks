@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 public class CharacterMovement : CharacterAbility
 {
@@ -27,4 +28,8 @@ public class CharacterMovement : CharacterAbility
     {
         controller.Move(direction);
     }
+    
+
+
+    
 }

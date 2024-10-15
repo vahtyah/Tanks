@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Photon.Pun;
 using UnityEngine;
 
 public class PlayerCharacter : Character
@@ -7,7 +8,7 @@ public class PlayerCharacter : Character
     public GameObject CameraTarget;
     
     public string PlayerID => playerID;
-    
+
     private void Update()
     {
         ProcessAbilities();
@@ -20,6 +21,7 @@ public class PlayerCharacter : Character
 
     protected override void ProcessAbilities()
     {
+        if(!PhotonView.IsMine) return;
         base.ProcessAbilities();
         foreach (var ability in characterAbilities.Where(ability => ability.enabled))
         {
@@ -29,6 +31,7 @@ public class PlayerCharacter : Character
 
     protected override void FixedProcessAbilities()
     {
+        if(!PhotonView.IsMine) return;
         base.FixedProcessAbilities();
         foreach (var ability in characterAbilities.Where(ability => ability.enabled))
         {

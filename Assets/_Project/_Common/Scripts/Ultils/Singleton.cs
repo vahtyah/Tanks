@@ -1,6 +1,28 @@
-﻿using UnityEngine;
+﻿using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
+using UnityEngine;
 
 public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
+{
+    private static T _instance;
+    public static T Instance => _instance;
+
+    protected virtual void Awake()
+    {
+        if (_instance == null) _instance = this as T;
+        else Destroy(gameObject);
+    }
+
+    protected virtual void OnApplicationQuit() { Destroy(_instance); }
+
+    protected virtual void OnDestroy()
+    {
+        if (_instance == this) _instance = null;
+    }
+}
+
+public abstract class SingletonPunCallbacks<T> : MonoBehaviourPunCallbacks where T : SingletonPunCallbacks<T>
 {
     private static T _instance;
     public static T Instance => _instance;

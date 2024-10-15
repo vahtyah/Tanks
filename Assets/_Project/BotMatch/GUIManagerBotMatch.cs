@@ -10,11 +10,17 @@ public class GUIManagerBotMatch : Singleton<GUIManagerBotMatch>, IEventListener<
     [SerializeField] private TextMeshProUGUI scoreTextMaskDie;
     [SerializeField] private TextMeshProUGUI usernameText;
     [SerializeField] private GameObject diePanel;
+    private LevelManagerBotMatch levelManagerBotMatch;
 
     private void Start()
     {
+        levelManagerBotMatch = (LevelManagerBotMatch)LevelManager.Instance;
+        if(levelManagerBotMatch== null)
+        {
+            throw new Exception("LevelManagerBotMatch is null");
+        }
         SetUsernamePanel(true);
-        LevelManagerBotMatch.Instance.AddOnGameEventListener(SetScoreText);
+        levelManagerBotMatch.AddOnGameEventListener(SetScoreText);
     }
 
     public void OnEvent(GameEvent e)
@@ -26,7 +32,7 @@ public class GUIManagerBotMatch : Singleton<GUIManagerBotMatch>, IEventListener<
                 SetPausePanel(false);
                 break;
             case GameEventType.GameStart:
-                SetUserName(LevelManagerBotMatch.Instance.Username);
+                SetUserName(levelManagerBotMatch.Username);
                 SetPausePanel(false);
                 SetUsernamePanel(false);
                 break;
@@ -34,7 +40,7 @@ public class GUIManagerBotMatch : Singleton<GUIManagerBotMatch>, IEventListener<
                 SetPausePanel(true);
                 break;
             case GameEventType.GameOver:
-                SetScoreTextMaskDie(LevelManagerBotMatch.Instance.Score);
+                SetScoreTextMaskDie(levelManagerBotMatch.Score);
                 SetDiePanel(true);
                 break;
         }        

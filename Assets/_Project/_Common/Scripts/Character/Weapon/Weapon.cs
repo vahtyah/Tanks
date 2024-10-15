@@ -1,43 +1,50 @@
 ﻿using System;
+using MoreMountains.Feedbacks;
+using Photon.Pun;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private MMF_Player rpcWeaponUseFeedback;
+    [SerializeField] private MMF_Player localWeaponUseFeedback;
     [SerializeField] private float reloadTime = 1;
     public Character Owner { get; set; }
-    
+
+    private PhotonView photonView;
     private Transform projectileSpawnTransform;
     private Timer reloadTimer;
 
-    private void Start()
-    {
-        Initialization();
-    }
+    private void Awake() { photonView = GetComponent<PhotonView>(); }
+
+    private void Start() { Initialization(); }
 
     private void Initialization()
     {
-        Pool.Register(projectilePrefab);
         reloadTimer = Timer.Register(reloadTime).AlreadyDone();
     }
 
-    public bool WeaponUse()
+    [PunRPC]
+    void WeaponUse(PhotonMessageInfo info)
     {
-        if(!reloadTimer.IsCompleted)
-            return false;
+        if (!reloadTimer.IsCompleted)
+            return;
         reloadTimer.Reset();
-        var nextProjectile = Pool.Get(projectilePrefab, false);
-        nextProjectile.transform.position = projectileSpawnTransform.position;
-        nextProjectile.transform.rotation = projectileSpawnTransform.rotation;
+        var nextProjectile = Pool.Spawn(projectilePrefab, projectileSpawnTransform.position,
+            projectileSpawnTransform.rotation);
         var projectile = nextProjectile.GetComponent<Projectile>();
-        if(projectile != null)
+        if (projectile != null)
         {
-            projectile.SetOwner(Owner.gameObject);
-            projectile.SetWeapon(this);
+            var lag = (float)(PhotonNetwork.Time - info.SentServerTime);
+            projectile.SetOwner(Owner.gameObject)
+                .SetWeapon(this)
+                .SetLag(Mathf.Abs(lag))
+                .OnSpawn();
         }
-        
-        nextProjectile.SetActive(true);
-        return true;
+
+        if (photonView.IsMine)
+            localWeaponUseFeedback?.PlayFeedbacks();
+        rpcWeaponUseFeedback?.PlayFeedbacks();
     }
 
     public void SetProjectileSpawnTransform(Transform projectileSpawnPoint)

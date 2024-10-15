@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
+using Photon.Pun;
 using UnityEngine;
 
 public class DamageOnTouch : MonoBehaviour
@@ -12,15 +13,11 @@ public class DamageOnTouch : MonoBehaviour
     [SerializeField] private List<GameObject> ignoreObjects = new();
     [SerializeField] private MMFeedbacks onHitFeedback;
     [SerializeField] private ParticleSystem projectileHitParticles;
-
-
-    private Health damageTakenHealth;
-
+    
+    [SerializeField] private Character owner;
+    
     private void Initialization()
     {
-        damageTakenHealth = GetComponent<Health>();
-        Pool.Register(projectileHitParticles.gameObject);
-        //clear
     }
     
     private void Start()
@@ -46,25 +43,33 @@ public class DamageOnTouch : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(!EvaluateAvailability(other.gameObject)) return;
-        var hitParticles = Pool.Get(projectileHitParticles.gameObject).GetComponent<ParticleSystem>();
-        hitParticles.transform.position = transform.position;
+        CreateHitParticles();
+        var health = other.gameObject.GetComponent<CharacterHealth>();
+        if (health != null)
+            health.TakeDamage(damage, owner);
+        SelfDamage();
+    }
+    
+    private void CreateHitParticles()
+    {
+        var hitParticles = Pool.Spawn(projectileHitParticles.gameObject, transform.position).GetComponent<ParticleSystem>();
         hitParticles.Play();
         onHitFeedback?.PlayFeedbacks();
-        var health = other.gameObject.GetComponent<Health>();
-        if (health != null)
-            health.TakeDamage(damage);
-        SelfDamage();
+    }
+    
+    public void SetOwner(Character character)
+    {
+        owner = character;
     }
 
     private void SelfDamage()
     {
-        if (damageTakenHealth == null) return;
-        damageTakenHealth.TakeDamage(damageTaken);        
+        Pool.Despawn(gameObject);
     }
 
     private bool EvaluateAvailability(GameObject otherGameObject)
     {
-        return !ignoreObjects.Contains(otherGameObject) && IsLayerValid(otherGameObject);
+        return (!ignoreObjects.Contains(otherGameObject) && IsLayerValid(otherGameObject));
     }
 
     private bool IsLayerValid(GameObject otherGameObject)

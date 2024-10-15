@@ -2,16 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public abstract class LevelManager : Singleton<LevelManager>, IEventListener<CharacterEvent>, IEventListener<GameEvent>
+public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEventListener<CharacterEvent>,
+    IEventListener<GameEvent>
 {
     protected PlayerCharacter winner;
 
-    protected bool isGameOver;
-
-    protected override void Awake() { PreInitialization(); }
+    protected override void Awake()
+    {
+        base.Awake();
+        PreInitialization();
+    }
 
     protected virtual void PreInitialization() { }
 
@@ -19,11 +24,11 @@ public abstract class LevelManager : Singleton<LevelManager>, IEventListener<Cha
 
     protected virtual void Initialization() { }
 
-    private void Update() { CheckForGameOver(); }
+    protected virtual void Update() { CheckForGameOver(); }
 
     private void CheckForGameOver()
     {
-        if (!isGameOver) return;
+        if (GameManager.Instance.currentGameType != GameEventType.GameOver) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GameEvent.Trigger(GameEventType.GamePreStart);
@@ -31,7 +36,7 @@ public abstract class LevelManager : Singleton<LevelManager>, IEventListener<Cha
         }
     }
 
-    public abstract PlayerCharacter GetCharacter(string playerID);
+    public abstract PlayerCharacter GetPlayer(string playerID);
 
     public void OnEvent(CharacterEvent e)
     {
@@ -42,14 +47,15 @@ public abstract class LevelManager : Singleton<LevelManager>, IEventListener<Cha
                 break;
         }
     }
+    
+    public virtual PlayerCharacter GetWinner() { return winner; }
+
     protected virtual void CharacterDeath(Character character) { }
 
     protected IEnumerator IETriggerGameOver()
     {
         yield return new WaitForSecondsRealtime(1);
-        isGameOver = true;
-        Event.Trigger(EventType.GameOver, winner);
-        Debug.Log($"Player {winner.PlayerID} wins!");
+        GameEvent.Trigger(GameEventType.GameOver);
     }
 
     public void OnEvent(GameEvent e)
@@ -71,21 +77,23 @@ public abstract class LevelManager : Singleton<LevelManager>, IEventListener<Cha
         }
     }
 
-    protected virtual void GamePause() {  }
+    protected virtual void GamePause() { }
 
-    protected virtual void GameStart() {  }
+    protected virtual void GameStart() { }
 
-    protected virtual void GamePreStart() {  }
-    protected virtual void GameOver() {  }
+    protected virtual void GamePreStart() { }
+    protected virtual void GameOver() { }
 
-    private void OnEnable()
+    public override void OnEnable()
     {
+        base.OnEnable();
         this.StartListening<GameEvent>();
         this.StartListening<CharacterEvent>();
     }
 
-    private void OnDisable()
+    public override void OnDisable()
     {
+        base.OnDisable();
         this.StopListening<GameEvent>();
         this.StopListening<CharacterEvent>();
     }

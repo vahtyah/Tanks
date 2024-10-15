@@ -17,7 +17,7 @@ public class GetUserNameButton : MonoBehaviour
     {
         if (inputField.text.Length > 0)
         {
-            LevelManagerBotMatch.Instance.Username = inputField.text;
+            ((LevelManagerBotMatch)LevelManager.Instance).Username = inputField.text;
             GameEvent.Trigger(GameEventType.GameStart);
         }
         else

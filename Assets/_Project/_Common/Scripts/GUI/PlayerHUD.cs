@@ -12,20 +12,23 @@ public class PlayerHUD : MonoBehaviour, IEventListener<GameEvent>, IEventListene
 
     public void OnEvent(CharacterEvent e)
     {
-        if (e.Character == null) return;
-        switch (e.EventType)
-        {
-            case CharacterEventType.CharacterDeath:
-                var dead = e.Character as PlayerCharacter;
-                if (dead == null) return;
-                if (dead.PlayerID == playerID)
-                {
-                    if (deadMask == null) return;
-                    deadMask.gameObject.SetActive(true);
-                }
-
-                break;
-        }
+        // if (e.Character == null || !e.Character.PhotonView.IsMine) return;
+        // switch (e.EventType)
+        // {
+        //     case CharacterEventType.CharacterDeath:
+        //         var dead = e.Character as PlayerCharacter;
+        //         if (dead == null) return;
+        //         if (dead.PlayerID == playerID)
+        //         {
+        //             if (deadMask == null) return;
+        //             deadMask.gameObject.SetActive(true);
+        //         }
+        //         dead.PhotonView.Owner.SetCustomProperties(new ExitGames.Client.Photon.Hashtable
+        //         {
+        //             {GlobalString.PLAYER_DIED, true}
+        //         });
+        //         break;
+        // }
     }
 
     public void OnEvent(GameEvent e)
@@ -33,15 +36,12 @@ public class PlayerHUD : MonoBehaviour, IEventListener<GameEvent>, IEventListene
         switch (e.EventType)
         {
             case GameEventType.GameOver:
-                var winner = LevelManagerLocalMatch.Instance != null
-                    ? LevelManagerLocalMatch.Instance.GetWinner()
-                    : LevelManagerBotMatch.Instance.GetWinner();
+                var winner = LevelManager.Instance.GetPlayer(playerID);
                 if (winner.PlayerID == playerID)
                 {
                     if (winScreen == null) return;
                     winScreen.gameObject.SetActive(true);
                 }
-
                 break;
         }
     }

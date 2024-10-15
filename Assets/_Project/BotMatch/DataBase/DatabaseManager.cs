@@ -9,10 +9,15 @@ public class DatabaseManager : Singleton<DatabaseManager>, IEventListener<GameEv
     private DatabaseReference reference;
     private string userName;
     public readonly List<User> users = new List<User>();
+    private LevelManagerBotMatch levelManagerBotMatch;
 
     protected override void Awake()
     {
         base.Awake();
+        levelManagerBotMatch = (LevelManagerBotMatch)LevelManager.Instance;
+        if(levelManagerBotMatch == null)
+            throw new NullReferenceException("LevelManagerBotMatch is null.");
+        
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             var dependencyStatus = task.Result;
@@ -91,10 +96,10 @@ public class DatabaseManager : Singleton<DatabaseManager>, IEventListener<GameEv
         switch (e.EventType)
         {
             case GameEventType.GameStart:
-                SetUserName(LevelManagerBotMatch.Instance.Username);
+                SetUserName(levelManagerBotMatch.Username);
                 break;
             case GameEventType.GameOver:
-                WriteNewUser(LevelManagerBotMatch.Instance.Score);
+                WriteNewUser(levelManagerBotMatch.Score);
                 break;
         }
     }

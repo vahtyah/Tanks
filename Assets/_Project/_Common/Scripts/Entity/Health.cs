@@ -1,5 +1,7 @@
 ﻿using System;
+using ExitGames.Client.Photon;
 using MoreMountains.Feedbacks;
+using Photon.Pun;
 using UnityEngine;
 
 public abstract class Health : MonoBehaviour
@@ -8,22 +10,20 @@ public abstract class Health : MonoBehaviour
     [SerializeField] protected bool disableColliderOnDeath = true;
     [SerializeField] protected float currentHealth;
 
-    protected Character character;
     public Action onDeath;
     private Action<float> onHit { get; set; }
     private Collider col;
-    
+    public PhotonView photonView;
+    private int lastHitBy;
+
     protected virtual void Awake()
     {
         col = GetComponent<Collider>();
-        character = GetComponent<Character>();
+        photonView = GetComponent<PhotonView>();
     }
 
-    protected virtual void Start()
-    {
-        Reset();
-    }
-    
+    protected virtual void Start() { Reset(); }
+
     protected float CurrentHealth
     {
         get => currentHealth;
@@ -35,31 +35,38 @@ public abstract class Health : MonoBehaviour
                 Die();
         }
     }
-    
+
     protected float MaxHealth
     {
         get => maxHealth;
         private set => Mathf.Max(value, 0);
     }
-    
-    public void TakeDamage(float damage)
+
+    public void TakeDamage(float damage, Character lastHitBy)
     {
-        CurrentHealth -= damage;
+        photonView.RPC(nameof(TakeDamageRPC), RpcTarget.Others, damage, lastHitBy.PhotonView.ViewID);
     }
-    
-    protected void Die()
+
+    [PunRPC]
+    public void TakeDamageRPC(float damage, int lastHitBy)
+    {
+        this.lastHitBy = lastHitBy;
+        if (photonView.IsMine)
+            CurrentHealth -= damage;
+    }
+
+    private void Die()
     {
         //Feedback, particles, etc.
         if (disableColliderOnDeath)
         {
             col.enabled = false;
         }
-        
         onDeath?.Invoke();
-        OnDeath();
+        OnDeath(lastHitBy);
     }
 
-    protected abstract void OnDeath();
+    protected abstract void OnDeath(int lastHitBy);
     public void Reset() { CurrentHealth = MaxHealth; }
     public float GetHealthAmountNormalized() => (float)CurrentHealth / MaxHealth;
     public void AddOnDeathListener(Action _onDeath) { onDeath += _onDeath; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Photon.Pun;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, ICharacterController
@@ -9,6 +10,10 @@ public class PlayerController : MonoBehaviour, ICharacterController
     private InputManager input;
     private bool isButtonPauseDown1;
     public Vector3 Direction { get; private set; }
+    
+    private Vector3 networkPosition;
+    private Quaternion networkRotation;
+
 
     private void Awake()
     {
@@ -42,6 +47,7 @@ public class PlayerController : MonoBehaviour, ICharacterController
         Direction = direction;
         rb.AddForce(direction, ForceMode.VelocityChange);
     }
+    
+    public void Reset() {  }
 
-    public void Reset() { }
 }

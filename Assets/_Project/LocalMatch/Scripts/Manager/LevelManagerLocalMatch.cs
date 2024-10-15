@@ -5,8 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManagerLocalMatch : Singleton<LevelManagerLocalMatch>, IEventListener<CharacterEvent>,
-    IEventListener<GameEvent>
+public class LevelManagerLocalMatch : LevelManager
 {
     [SerializeField] private List<GameObject> playerPrefabs;
     [SerializeField] private List<Transform> spawnPoints;
@@ -15,10 +14,6 @@ public class LevelManagerLocalMatch : Singleton<LevelManagerLocalMatch>, IEventL
 
     private int numberOfPlayers;
     private List<PlayerCharacter> characters = new();
-
-    private PlayerCharacter winner;
-
-    protected bool isGameOver;
     private bool isSetup;
 
     public int NumberOfPlayers
@@ -34,22 +29,7 @@ public class LevelManagerLocalMatch : Singleton<LevelManagerLocalMatch>, IEventL
 
     private void Start() { GameEvent.Trigger(GameEventType.GamePreStart); }
 
-    private void Update()
-    {
-        CheckForGameOver(); 
-    }
-
-    private void CheckForGameOver()
-    {
-        if (!isGameOver) return;
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            GameEvent.Trigger(GameEventType.GamePreStart);
-            Scene.LoadCurrentScene();
-        }
-    }
-
-    private void PreInitialization()
+    protected override void PreInitialization()
     {
         cameraRig.InitializeCameras(numberOfPlayers);
         for (int i = 0; i < numberOfPlayers; i++)
@@ -59,7 +39,7 @@ public class LevelManagerLocalMatch : Singleton<LevelManagerLocalMatch>, IEventL
         }
     }
 
-    private void Initialization()
+    protected override void Initialization()
     {
         for (int i = 0; i < numberOfPlayers; i++)
         {
@@ -67,13 +47,12 @@ public class LevelManagerLocalMatch : Singleton<LevelManagerLocalMatch>, IEventL
         }
     }
 
-    public PlayerCharacter GetPlayer(string playerID)
+    public override PlayerCharacter GetPlayer(string playerID)
     {
-        Debug.Log(characters.Count);
         return characters.Find(character => character.PlayerID == playerID);
     }
 
-    private void CharacterDeath(Character character)
+    protected override void CharacterDeath(Character character)
     {
         character = character as PlayerCharacter;
         if (character == null) return;
@@ -85,53 +64,5 @@ public class LevelManagerLocalMatch : Singleton<LevelManagerLocalMatch>, IEventL
                 c.conditionState.CurrentState != CharacterStates.CharacterCondition.Dead);
             StartCoroutine(IETriggerGameOver());
         }
-    }
-
-    public void OnEvent(GameEvent e)
-    {
-        switch (e.EventType)
-        {
-            case GameEventType.GameStart:
-                if (isSetup) return;
-                PreInitialization();
-                Initialization();
-                splitterCanvasController.SetSplitterCanvasActive(NumberOfPlayers);
-                isSetup = true;
-                break;
-        }
-    }
-
-    public void OnEvent(CharacterEvent e)
-    {
-        switch (e.EventType)
-        {
-            case CharacterEventType.CharacterDeath:
-                CharacterDeath(e.Character);
-                break;
-        }
-    }
-
-    private IEnumerator IETriggerGameOver()
-    {
-        yield return new WaitForSecondsRealtime(1);
-        isGameOver = true;
-        GameEvent.Trigger(GameEventType.GameOver);
-    }
-    
-    public PlayerCharacter GetWinner()
-    {
-        return winner;
-    }
-
-    private void OnEnable()
-    {
-        this.StartListening<GameEvent>();
-        this.StartListening<CharacterEvent>();
-    }
-
-    private void OnDisable()
-    {
-        this.StopListening<GameEvent>();
-        this.StopListening<CharacterEvent>();
     }
 }

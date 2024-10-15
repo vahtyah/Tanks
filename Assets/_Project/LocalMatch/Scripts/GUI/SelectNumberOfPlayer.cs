@@ -16,7 +16,7 @@ public class GUIMainMenuManger : MonoBehaviour
 
     private void ButtonSelectAmountPlayerOnClick(int value)
     {
-        LevelManagerLocalMatch.Instance.NumberOfPlayers = value;
+        ((LevelManagerLocalMatch)LevelManagerLocalMatch.Instance).NumberOfPlayers = value;
         GameEvent.Trigger(GameEventType.GameStart);
     }
 }

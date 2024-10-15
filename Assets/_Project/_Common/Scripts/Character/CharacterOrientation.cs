@@ -16,10 +16,11 @@ public class CharacterOrientation : CharacterAbility
 
     private CharacterMovement movement;
 
-    protected override void Initialization()
+    protected override void PreInitialization()
     {
-        base.Initialization();
+        base.PreInitialization();
         movement = GetComponent<CharacterMovement>();
+
     }
 
     public override void FixedProcessAbility()

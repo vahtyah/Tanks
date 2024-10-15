@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManagerBotMatch : Singleton<LevelManagerBotMatch>, IEventListener<CharacterEvent>
+public class LevelManagerBotMatch : LevelManager
 {
     private string username;
     private int score;
@@ -28,9 +28,6 @@ public class LevelManagerBotMatch : Singleton<LevelManagerBotMatch>, IEventListe
         }
     }
 
-    private PlayerCharacter winner;
-    protected bool isGameOver;
-
     //Event
     private Action<int> onScoreChange;
     private Action<string> onUsernameChange;
@@ -38,30 +35,22 @@ public class LevelManagerBotMatch : Singleton<LevelManagerBotMatch>, IEventListe
     //TODO: Instance the player character if needed
     [SerializeField] private PlayerCharacter character;
 
-    private void Start()
+    protected override void Initialization()
     {
+        base.Initialization();
         Score = 0;
     }
-    private void Update() { CheckForGameOver(); }
 
-    private void CheckForGameOver()
+    public override PlayerCharacter GetPlayer(string playerID)
     {
-        if (!isGameOver) return;
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            GameEvent.Trigger(GameEventType.GamePreStart);
-            Scene.LoadCurrentScene();
-        }
+        return character;
     }
 
-    public PlayerCharacter GetPlayer() { return character; }
-
-    private void CharacterDeath(Character character)
+    protected override void CharacterDeath(Character character)
     {
         if (character is PlayerCharacter playerCharacter)
         {
             winner = playerCharacter;
-            isGameOver = true;
             StartCoroutine(IETriggerGameOver());
         }
         else
@@ -69,29 +58,6 @@ public class LevelManagerBotMatch : Singleton<LevelManagerBotMatch>, IEventListe
             Score++;
         }
     }
-
-    public void OnEvent(CharacterEvent e)
-    {
-        switch (e.EventType)
-        {
-            case CharacterEventType.CharacterDeath:
-                CharacterDeath(e.Character);
-                break;
-        }
-    }
-
-    private IEnumerator IETriggerGameOver()
-    {
-        yield return new WaitForSecondsRealtime(1);
-        isGameOver = true;
-        GameEvent.Trigger(GameEventType.GameOver);
-    }
-    
-    public PlayerCharacter GetWinner() { return winner; }
-
-    private void OnEnable() { this.StartListening(); }
-
-    private void OnDisable() { this.StopListening(); }
 
     public void AddOnGameEventListener(Action<int> setScoreText) { onScoreChange += setScoreText; }
 }

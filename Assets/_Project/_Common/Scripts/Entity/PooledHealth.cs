@@ -2,8 +2,8 @@
 
 public class PooledHealth : Health
 {
-    protected override void OnDeath()
+    protected override void OnDeath(int lastHitBy)
     {
-        Pool.Return(gameObject);
+        Pool.Despawn(gameObject);
     }
 }

@@ -5,6 +5,6 @@ public class CallBackParticle : MonoBehaviour
 {
     private void OnParticleSystemStopped()
     {
-        Pool.Return(gameObject);
+        Pool.Despawn(gameObject);
     }
 }

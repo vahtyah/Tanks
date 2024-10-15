@@ -2,9 +2,10 @@
 using Cinemachine;
 using UnityEngine;
 
-public class CinemachineCameraController : MonoBehaviour
+public class CinemachineCameraController : MonoBehaviour, IEventListener<GameEvent>
 {
     [SerializeField] Camera cam;
+    [SerializeField] private string playerID = "Player1";
     private CinemachineVirtualCamera virtualCamera;
     private CinemachineConfiner confiner;
 
@@ -39,4 +40,17 @@ public class CinemachineCameraController : MonoBehaviour
     public void SetViewportRect(Rect rect) { cam.rect = rect; }
 
     public void Hide() { cam.enabled = false; }
+
+    public void OnEvent(GameEvent e)
+    {
+        switch (e.EventType)
+        {
+            case GameEventType.GameStart:
+                SetFollowTarget(LevelManager.Instance.GetPlayer(playerID).CameraTarget.transform);
+                break;
+        }
+    }
+    
+    private void OnEnable() { this.StartListening(); }
+    private void OnDisable() { this.StopListening(); }
 }

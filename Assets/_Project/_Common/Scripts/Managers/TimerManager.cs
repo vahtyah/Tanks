@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class Timer
@@ -14,6 +15,7 @@ public class Timer
     private Action onStart;
     private Action<float> onUpdate;
     private Action<float> onProgress;
+    private Action<float> onRemaining;
     private Action onComplete;
     private Action onDone;
 
@@ -62,6 +64,12 @@ public class Timer
     public Timer OnProgress(Action<float> onProgress)
     {
         this.onProgress += onProgress;
+        return this;
+    }
+    
+    public Timer OnRemaining(Action<float> onRemaining)
+    {
+        this.onRemaining += onRemaining;
         return this;
     }
 
@@ -140,7 +148,7 @@ public class Timer
         return IsCompleted ? duration : timeElapsedBeforePause ?? GetWorldTime() - startTime;
     }
 
-    private float GetWorldTime() => UsesRealTime ? Time.realtimeSinceStartup : Time.time;
+    private float GetWorldTime() => (float)(UsesRealTime ? Time.realtimeSinceStartup : PhotonNetwork.Time);
 
     public void Update()
     {
@@ -154,6 +162,7 @@ public class Timer
 
         onUpdate?.Invoke(GetTimeElapsed());
         onProgress?.Invoke(Progress);
+        onRemaining?.Invoke(TimeRemaining);
 
         if (!(GetWorldTime() >= startTime + duration)) return;
         onComplete?.Invoke();
@@ -221,22 +230,22 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
         switch (e.EventType)
         {
             case GameEventType.GameMainMenu:
-                Time.timeScale = 1;
+                // Time.timeScale = 1;
                 break;
             case GameEventType.GamePreStart:
-                CancelAllTimers();
-                Time.timeScale = 0;
+                // CancelAllTimers();
+                // Time.timeScale = 0;
                 break;
             case GameEventType.GamePause:
-                PauseAllTimers();
-                Time.timeScale = 0;
+                // PauseAllTimers();
+                // Time.timeScale = 0;
                 break;
             case GameEventType.GameStart:
-                ResumeAllTimers();
-                Time.timeScale = 1;
+                // ResumeAllTimers();
+                // Time.timeScale = 1;
                 break;
             case GameEventType.GameOver:
-                CancelAllTimers();
+                // CancelAllTimers();
                 break;
         }
     }
