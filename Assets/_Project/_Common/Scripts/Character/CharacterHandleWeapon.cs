@@ -10,12 +10,13 @@ public class CharacterHandleWeapon : CharacterAbility
     [SerializeField] private Weapon weapon;
     [SerializeField] private PhotonView view;
 
-    protected override void Initialization()
+    protected override void PreInitialization()
     {
+        base.PreInitialization();
         // weapon = Instantiate(weapon, weaponHolder);
+        character.SetWeapon(weapon);
         weapon.Owner = character;
         weapon.SetProjectileSpawnTransform(projectileSpawnPoint);
-        base.Initialization();
         view = weapon.GetComponent<PhotonView>();
         //NOTE: Clear
     }
@@ -29,9 +30,9 @@ public class CharacterHandleWeapon : CharacterAbility
     protected override void HandleInput()
     {
         base.HandleInput();
-        if (controller.GetFire() && GameManager.Instance.currentGameType == GameEventType.GameStart)
+        if (controller.GetFire() && GameManager.Instance.currentGameType == GameEventType.GameRunning)
         {
-            view.RPC("WeaponUse", RpcTarget.All);
+            weapon.WeaponUse();
             // if (weapon.WeaponUse())
             //     weaponUseFeedback?.PlayFeedbacks();
         }

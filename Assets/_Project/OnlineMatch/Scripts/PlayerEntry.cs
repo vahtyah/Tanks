@@ -18,6 +18,11 @@ public class PlayerEntry : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI playerName;
     [SerializeField] Button readyButton;
+    
+    [SerializeField] private Image buttonImage;
+    [SerializeField] private Image borderImage;
+    [SerializeField] private Image blurImage;
+    
     public bool isReady;
     private int ownerId;
 
@@ -47,12 +52,23 @@ public class PlayerEntry : MonoBehaviour
     {
         if (isReady)
         {
-            readyButton.GetComponent<Image>().color = Color.green;
+            buttonImage.color = Color.green;
+            borderImage.color = Color.green;
+            
+            Color color = Color.green;
+            color.a = 0.3f;
+            
+            blurImage.color = color;
             readyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Ready!";
         }
         else
         {
-            readyButton.GetComponent<Image>().color = Color.red;
+            buttonImage.color = Color.red;
+            borderImage.color = Color.red;
+            Color color = Color.red;
+            color.a = 0.3f;
+            
+            blurImage.color = color;
             readyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Ready?";
         }
     }

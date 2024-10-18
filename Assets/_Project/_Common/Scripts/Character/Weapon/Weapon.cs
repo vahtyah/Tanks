@@ -15,21 +15,28 @@ public class Weapon : MonoBehaviour
     private Transform projectileSpawnTransform;
     private Timer reloadTimer;
 
-    private void Awake() { photonView = GetComponent<PhotonView>(); }
+    private void Awake()
+    {
+        photonView = GetComponent<PhotonView>();
+        reloadTimer = Timer.Register(reloadTime).AlreadyDone().AutoDestroyWhenOwnerDisappear(this);
+    }
 
     private void Start() { Initialization(); }
 
-    private void Initialization()
-    {
-        reloadTimer = Timer.Register(reloadTime).AlreadyDone();
-    }
+    private void Initialization() { }
 
-    [PunRPC]
-    void WeaponUse(PhotonMessageInfo info)
+    public void WeaponUse()
     {
         if (!reloadTimer.IsCompleted)
             return;
         reloadTimer.Reset();
+        photonView.RPC(nameof(WeaponUseRPC), RpcTarget.All);
+        localWeaponUseFeedback?.PlayFeedbacks();
+    }
+
+    [PunRPC]
+    void WeaponUseRPC(PhotonMessageInfo info)
+    {
         var nextProjectile = Pool.Spawn(projectilePrefab, projectileSpawnTransform.position,
             projectileSpawnTransform.rotation);
         var projectile = nextProjectile.GetComponent<Projectile>();
@@ -41,9 +48,6 @@ public class Weapon : MonoBehaviour
                 .SetLag(Mathf.Abs(lag))
                 .OnSpawn();
         }
-
-        if (photonView.IsMine)
-            localWeaponUseFeedback?.PlayFeedbacks();
         rpcWeaponUseFeedback?.PlayFeedbacks();
     }
 
@@ -51,4 +55,6 @@ public class Weapon : MonoBehaviour
     {
         projectileSpawnTransform = projectileSpawnPoint;
     }
+
+    public void AddOnReloadListener(Action<float> updateBar) { reloadTimer.OnProgress(updateBar); }
 }

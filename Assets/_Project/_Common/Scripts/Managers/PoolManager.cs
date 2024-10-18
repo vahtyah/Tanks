@@ -59,6 +59,7 @@ public class Pool
         {
             var obj = pool.availableObjects.Dequeue();
             _manager.TrackObject(obj, pool);
+            obj.SetActive(true);
             return obj;
         }
 
@@ -67,8 +68,9 @@ public class Pool
         newObj.SetActive(true);
         return newObj;
     }
-    
-    public static GameObject Spawn(GameObject prefab, Vector3 position = default, Quaternion rotation = default, bool enable = true)
+
+    public static GameObject Spawn(GameObject prefab, Vector3 position = default, Quaternion rotation = default,
+        bool enable = true)
     {
         EnsureManagerExists();
 
@@ -89,11 +91,11 @@ public class Pool
         newObj.SetActive(enable);
         return newObj;
     }
-    
+
     public static GameObject PhotonSpawn(GameObject prefab, Vector3 position = default, Quaternion rotation = default)
     {
         EnsureManagerExists();
-    
+
         var pool = _manager.GetPool(prefab) ?? Register(prefab);
 
         if (pool.availableObjects.Count > 0)
@@ -105,7 +107,7 @@ public class Pool
             obj.SetActive(true);
             return obj;
         }
-    
+
         var newObj = PhotonNetwork.Instantiate(prefab.name, position, rotation);
         _manager.TrackObject(newObj, pool);
         newObj.SetActive(true);
@@ -128,10 +130,33 @@ public class Pool
         }
     }
 
+    public static void PhotonDespawn(PhotonView obj)
+    {
+        EnsureManagerExists();
+
+        var pool = _manager.UntrackObject(obj.gameObject);
+        if (pool != null)
+        {
+            obj.RPC(nameof(pool.DespawnRPC), RpcTarget.All, obj.ViewID);
+            pool.availableObjects.Enqueue(obj.gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Attempted to return an object that doesn't belong to any pool.");
+        }
+    }
+
+    [PunRPC]
+    private void DespawnRPC(int id)
+    {
+        var obj = PhotonView.Find(id).gameObject;
+        obj.gameObject.SetActive(false);
+    }
+
     private static void EnsureManagerExists()
     {
         if (_manager == null)
-            _manager = PoolManager.Instance ?? throw new System.Exception("PoolManager not found");
+            _manager = PoolManager.Instance ?? new GameObject("PoolManager").AddComponent<PoolManager>();
     }
 }
 

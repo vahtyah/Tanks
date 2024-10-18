@@ -9,6 +9,8 @@ public abstract class Health : MonoBehaviour
     [SerializeField] protected float maxHealth = 100;
     [SerializeField] protected bool disableColliderOnDeath = true;
     [SerializeField] protected float currentHealth;
+    [SerializeField] private MMF_Player onHitFeedbacks;
+    public bool Invulnerable;
 
     public Action onDeath;
     private Action<float> onHit { get; set; }
@@ -42,9 +44,12 @@ public abstract class Health : MonoBehaviour
         private set => Mathf.Max(value, 0);
     }
 
-    public void TakeDamage(float damage, Character lastHitBy)
+    public bool TakeDamage(float damage, Character lastHitBy)
     {
+        if (Invulnerable) return false;
+        onHitFeedbacks?.PlayFeedbacks();
         photonView.RPC(nameof(TakeDamageRPC), RpcTarget.Others, damage, lastHitBy.PhotonView.ViewID);
+        return true;
     }
 
     [PunRPC]
@@ -52,7 +57,9 @@ public abstract class Health : MonoBehaviour
     {
         this.lastHitBy = lastHitBy;
         if (photonView.IsMine)
+        {
             CurrentHealth -= damage;
+        }
     }
 
     private void Die()

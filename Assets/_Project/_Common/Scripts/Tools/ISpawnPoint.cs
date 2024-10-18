@@ -6,16 +6,29 @@ public interface ISpawnPoint
     Vector3 NextSpawnPoint();
     Vector3 ClosestSpawnPoint(Vector3 position);
     Vector3 NextRandomSpawnPoint();
+    Vector3 NextSpawnPointByIndex(int index);
 }
 
 public class LinearSpawnPoint : ISpawnPoint
 {
     private List<Vector3> spawnPoints;
+    private List<Vector3> unusedPoint;
     private int currentIndex = 0;
     
     public LinearSpawnPoint(List<Vector3> spawnPoints)
     {
         this.spawnPoints = spawnPoints;
+        unusedPoint = new List<Vector3>(spawnPoints);
+    }
+    
+    public LinearSpawnPoint(List<Transform> spawnPoints)
+    {
+        this.spawnPoints = new List<Vector3>();
+        foreach (Transform spawnPoint in spawnPoints)
+        {
+            this.spawnPoints.Add(spawnPoint.position);
+        }
+        unusedPoint = new List<Vector3>(this.spawnPoints);
     }
 
     public Vector3 NextSpawnPoint()
@@ -27,10 +40,22 @@ public class LinearSpawnPoint : ISpawnPoint
     
     public Vector3 NextRandomSpawnPoint()
     {
-        int randomIndex = Random.Range(0, spawnPoints.Count);
-        return spawnPoints[randomIndex];
+        if (unusedPoint.Count == 0)
+        {
+            unusedPoint = new List<Vector3>(spawnPoints);
+        }
+        int randomIndex = Random.Range(0, unusedPoint.Count);
+        Vector3 spawnPoint = unusedPoint[randomIndex];
+        unusedPoint.RemoveAt(randomIndex);
+        return spawnPoint;
     }
-    
+
+    public Vector3 NextSpawnPointByIndex(int index)
+    {
+        int spawnIndex = index % spawnPoints.Count;
+        return spawnPoints[spawnIndex];
+    }
+
     public Vector3 ClosestSpawnPoint(Vector3 position)
     {
         Vector3 closestSpawnPoint = spawnPoints[0];

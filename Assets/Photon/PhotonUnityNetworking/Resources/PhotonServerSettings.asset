@@ -44,6 +44,9 @@ MonoBehaviour:
   - TakeDamage
   - OnDeathRPC
   - TakeDamageRPC
+  - SetInvulnerable
+  - DespawnRPC
+  - WeaponUseRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

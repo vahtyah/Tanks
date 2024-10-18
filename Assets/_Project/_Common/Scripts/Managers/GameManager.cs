@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections;
+using Photon.Pun;
 using UnityEngine;
 
 public sealed class GameManager : PersistentSingleton<GameManager>, IEventListener<GameEvent>
 {
+    public int gameTime;
+    public int invulnerableTime;
+    public int respawnTime;
+    
+    
     public GameEventType currentGameType;
     private GameEventType previousGameType { get; set; }
 
@@ -12,7 +18,7 @@ public sealed class GameManager : PersistentSingleton<GameManager>, IEventListen
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) &&
-            currentGameType is GameEventType.GameStart or GameEventType.GamePause)
+            currentGameType is GameEventType.GameRunning or GameEventType.GamePause)
             GameEvent.Trigger(GameEventType.TogglePause);
     }
 
@@ -45,10 +51,12 @@ public sealed class GameManager : PersistentSingleton<GameManager>, IEventListen
     private void GameMainMenu()
     {
         Cursor.visible = true;
-        Scene.Load(Scene.SceneName.MainMenu);
     }
 
-    private void GamePreStart() { Cursor.visible = true; }
+    private void GamePreStart()
+    {
+        Cursor.visible = true;
+    }
 
     private void GameStart()
     {

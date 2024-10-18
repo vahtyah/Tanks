@@ -9,63 +9,54 @@ public class DamageOnTouch : MonoBehaviour
     [SerializeField] private LayerMask targetLayerMask;
     [SerializeField] private float damage = 1;
     [SerializeField] private float damageTaken;
-    
+
     [SerializeField] private List<GameObject> ignoreObjects = new();
     [SerializeField] private MMFeedbacks onHitFeedback;
     [SerializeField] private ParticleSystem projectileHitParticles;
-    
+
     [SerializeField] private Character owner;
-    
-    private void Initialization()
-    {
-    }
-    
-    private void Start()
-    {
-        Initialization();
-    }
-    
-    public void AddIgnoreObject(GameObject gameObject)
-    {
-        ignoreObjects.Add(gameObject);
-    }
-    
-    public void RemoveIgnoreObject(GameObject gameObject)
-    {
-        ignoreObjects.Remove(gameObject);
-    }
-    
-    public void ClearIgnoreObjects()
-    {
-        ignoreObjects.Clear();
-    }
+
+    private void Initialization() { }
+
+    private void Start() { Initialization(); }
+
+    public void AddIgnoreObject(GameObject gameObject) { ignoreObjects.Add(gameObject); }
+
+    public void RemoveIgnoreObject(GameObject gameObject) { ignoreObjects.Remove(gameObject); }
+
+    public void ClearIgnoreObjects() { ignoreObjects.Clear(); }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!EvaluateAvailability(other.gameObject)) return;
-        CreateHitParticles();
+        if (!EvaluateAvailability(other.gameObject)) return;
+
         var health = other.gameObject.GetComponent<CharacterHealth>();
         if (health != null)
+        {
+            if (health.Invulnerable)
+            {
+                SelfDamage();
+                return;
+            }
+
             health.TakeDamage(damage, owner);
+        }
+
+        CreateHitParticles();
         SelfDamage();
     }
-    
+
     private void CreateHitParticles()
     {
-        var hitParticles = Pool.Spawn(projectileHitParticles.gameObject, transform.position).GetComponent<ParticleSystem>();
+        var hitParticles = Pool.Spawn(projectileHitParticles.gameObject, transform.position)
+            .GetComponent<ParticleSystem>();
         hitParticles.Play();
         onHitFeedback?.PlayFeedbacks();
     }
-    
-    public void SetOwner(Character character)
-    {
-        owner = character;
-    }
 
-    private void SelfDamage()
-    {
-        Pool.Despawn(gameObject);
-    }
+    public void SetOwner(Character character) { owner = character; }
+
+    private void SelfDamage() { Pool.Despawn(gameObject); }
 
     private bool EvaluateAvailability(GameObject otherGameObject)
     {
@@ -74,6 +65,6 @@ public class DamageOnTouch : MonoBehaviour
 
     private bool IsLayerValid(GameObject otherGameObject)
     {
-        return (targetLayerMask & 1 << otherGameObject.layer) != 0;        
+        return (targetLayerMask & 1 << otherGameObject.layer) != 0;
     }
 }

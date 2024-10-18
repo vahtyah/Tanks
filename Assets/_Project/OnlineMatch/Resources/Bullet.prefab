@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 73489939828762687}
   m_Layer: 0
   m_Name: Bullet
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -205,6 +205,7 @@ MonoBehaviour:
   ignoreObjects: []
   onHitFeedback: {fileID: 6969855248542257395}
   projectileHitParticles: {fileID: 2693672709390255330, guid: 04f913ee24498ad40b8cc8cb0a67652e, type: 3}
+  owner: {fileID: 0}
 --- !u!1 &4967174754121617628
 GameObject:
   m_ObjectHideFlags: 0

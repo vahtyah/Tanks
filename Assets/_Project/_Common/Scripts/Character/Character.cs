@@ -11,6 +11,7 @@ public class Character : MonoBehaviour
     
     protected readonly List<CharacterAbility>  characterAbilities = new();
     public PhotonView PhotonView { get; private set; }
+    public Weapon Weapon { get; private set; }
     
     //StateMachine
     public StateMachine<CharacterStates.CharacterCondition> conditionState { get; private set; } //TODO: chua biet lam gi
@@ -36,5 +37,10 @@ public class Character : MonoBehaviour
     protected virtual void FixedProcessAbilities()
     {
         
+    }
+    
+    public void SetWeapon(Weapon weapon)
+    {
+        Weapon = weapon;
     }
 }

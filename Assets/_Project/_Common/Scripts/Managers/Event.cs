@@ -3,6 +3,7 @@
     GameMainMenu,
     GamePreStart,
     GameStart,
+    GameRunning,
     GameOver,
     GamePause,
     TogglePause,

@@ -19,6 +19,7 @@ public class Timer
     private Action onComplete;
     private Action onDone;
 
+    public bool IsRegistered { get; private set; }
     public float Duration => duration;
     public bool IsCompleted { get; private set; }
     public bool IsPaused => timeElapsedBeforePause.HasValue;
@@ -33,25 +34,26 @@ public class Timer
 
     private bool isOwnerDisappear => hasOwner && (owner == null || !owner.gameObject.activeSelf);
 
-    private Timer(float duration)
-    {
-        this.duration = duration;
-        startTime = GetWorldTime();
-    }
+    private Timer(float duration) { this.duration = duration; }
 
     public static Timer Register(float duration)
     {
         if (manager == null)
-            manager = TimerManager.Instance ?? throw new Exception("TimerManager is not found in the scene");
+            manager = TimerManager.Instance ?? new GameObject("TimerManager").AddComponent<TimerManager>();
 
         var timer = new Timer(duration);
-        timer.onDone = () => manager.RemoveTimer(timer);
+        timer.OnStart(() => timer.IsRegistered = true);
+        timer.OnDone(() =>
+        {
+            timer.IsRegistered = false;
+            manager.RemoveTimer(timer);
+        });
         return timer;
     }
 
     public Timer OnStart(Action onStart)
     {
-        this.onStart = onStart;
+        this.onStart += onStart;
         return this;
     }
 
@@ -66,7 +68,7 @@ public class Timer
         this.onProgress += onProgress;
         return this;
     }
-    
+
     public Timer OnRemaining(Action<float> onRemaining)
     {
         this.onRemaining += onRemaining;
@@ -75,13 +77,13 @@ public class Timer
 
     public Timer OnComplete(Action onComplete)
     {
-        this.onComplete = onComplete;
+        this.onComplete += onComplete;
         return this;
     }
 
     public Timer OnDone(Action onDone)
     {
-        this.onDone = onDone;
+        this.onDone += onDone;
         return this;
     }
 
@@ -105,27 +107,42 @@ public class Timer
         return this;
     }
 
+    /// <summary>
+    /// Your timer will start counting down from the moment you call this method. This method just runs only once no matter how many times you call it.
+    /// </summary>
+    /// <returns></returns>
     public Timer Start()
     {
+        if (IsRegistered) return this;
         if (IsDone) return null;
+        startTime = GetWorldTime();
         manager.RegisterTimer(this);
         onStart?.Invoke();
         return this;
     }
 
+    /// <summary>
+    /// Your timer will ready to be completed. Usefully when you want to skip the timer.
+    /// </summary>
+    /// <returns></returns>
     public Timer AlreadyDone()
     {
         IsCompleted = true;
         return this;
     }
 
-    public void Reset()
+    /// <summary>
+    /// Your timer will start counting down from the moment you call this method. This method can be called multiple times and it will reset the timer.
+    /// </summary>
+    /// <returns></returns>
+    public Timer Reset()
     {
+        if(IsRegistered) manager.RemoveTimer(this);
         startTime = GetWorldTime();
         IsCompleted = false;
         IsCancelled = false;
         timeElapsedBeforePause = null;
-        manager.RegisterTimer(this);
+        return Start();
     }
 
     public void Cancel() { IsCancelled = true; }
@@ -179,11 +196,11 @@ public class Timer
 public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<GameEvent>
 {
     private readonly List<Timer> timers = new List<Timer>();
-    public int sizeOfTimers ; //TODO: Delete
+    public int sizeOfTimers; //TODO: Delete
 
     private void Update()
     {
-        UpdateAllTimers(); 
+        UpdateAllTimers();
         sizeOfTimers = timers.Count;
     }
 

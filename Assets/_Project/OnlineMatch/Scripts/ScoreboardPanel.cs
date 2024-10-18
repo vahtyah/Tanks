@@ -20,7 +20,7 @@ public class ScoreboardPanel : MonoBehaviour
         }
     }
 
-    public ScoreboardItem AddScoreboardItem(string name, int skills, int deaths, int score)
+    private ScoreboardItem AddScoreboardItem(string name, int skills, int deaths, int score)
     {
         var scoreboardItem = ScoreboardItem.Create(scoreboardItemPrefab, scoreboardContent, name, skills, deaths, score);
         if(PhotonNetwork.LocalPlayer.NickName == name)

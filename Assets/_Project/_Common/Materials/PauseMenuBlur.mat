@@ -99,7 +99,7 @@ Material:
     m_Floats:
     - PixelSnap: 0
     - _Amount: 0
-    - _BumpAmt: 0
+    - _BumpAmt: 10
     - _BumpScale: 1
     - _ColorMask: 15
     - _Cutoff: 0.5
@@ -129,7 +129,7 @@ Material:
     - _RippleAlpha: 1
     - _RippleIntensity: 1
     - _Scale: 1
-    - _Size: 0
+    - _Size: 5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

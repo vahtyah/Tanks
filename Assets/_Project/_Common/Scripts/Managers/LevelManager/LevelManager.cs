@@ -26,7 +26,7 @@ public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEvent
 
     protected virtual void Update() { CheckForGameOver(); }
 
-    private void CheckForGameOver()
+    protected virtual void CheckForGameOver()
     {
         if (GameManager.Instance.currentGameType != GameEventType.GameOver) return;
         if (Input.GetKeyDown(KeyCode.Space))
@@ -47,7 +47,7 @@ public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEvent
                 break;
         }
     }
-    
+
     public virtual PlayerCharacter GetWinner() { return winner; }
 
     protected virtual void CharacterDeath(Character character) { }
@@ -68,6 +68,9 @@ public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEvent
             case GameEventType.GameStart:
                 GameStart();
                 break;
+            case GameEventType.GameRunning:
+                GameRunning();
+                break;
             case GameEventType.GamePause:
                 GamePause();
                 break;
@@ -80,6 +83,7 @@ public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEvent
     protected virtual void GamePause() { }
 
     protected virtual void GameStart() { }
+    protected virtual void GameRunning() { }
 
     protected virtual void GamePreStart() { }
     protected virtual void GameOver() { }
