@@ -66,4 +66,9 @@ public class AIController : MonoBehaviour, ICharacterController
     public void Move(Vector3 directionInput) { rb.AddForce(directionInput, ForceMode.VelocityChange); }
 
     public void Reset() { stateMachine.Reset(); }
+
+    public Rigidbody GetRigidbody()
+    {
+        return rb;
+    }
 }

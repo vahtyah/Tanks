@@ -10,10 +10,9 @@ public class PlayerController : MonoBehaviour, ICharacterController
     private InputManager input;
     private bool isButtonPauseDown1;
     public Vector3 Direction { get; private set; }
-    
+
     private Vector3 networkPosition;
     private Quaternion networkRotation;
-
 
     private void Awake()
     {
@@ -26,8 +25,6 @@ public class PlayerController : MonoBehaviour, ICharacterController
     private void Update() { isButtonPauseDown1 = GetPauseButton(); }
 
     public bool GetPauseButton() { return input.GetPauseButton(); }
-
-    bool ICharacterController.isButtonPauseDown => GetPauseButton();
 
     public Vector3 GetDirection() { return input.GetDirection(); }
 
@@ -47,7 +44,8 @@ public class PlayerController : MonoBehaviour, ICharacterController
         Direction = direction;
         rb.AddForce(direction, ForceMode.VelocityChange);
     }
-    
-    public void Reset() {  }
 
+    public void Reset() { }
+
+    public Rigidbody GetRigidbody() { return rb; }
 }

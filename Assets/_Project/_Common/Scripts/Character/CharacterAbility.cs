@@ -12,15 +12,12 @@ public abstract class CharacterAbility : MonoBehaviour
 
     protected virtual void PreInitialization()
     {
-        character = GetComponentInParent<Character>(); 
+        character = GetComponentInParent<Character>();
         controller = character.Controller;
-        photonView = PhotonView.Get(character);
+        photonView = character.PhotonView;
     }
 
-    protected virtual void Start()
-    {
-        Initialization();
-    }
+    protected virtual void Start() { Initialization(); }
 
     protected virtual void Initialization() { }
 
@@ -33,6 +30,8 @@ public abstract class CharacterAbility : MonoBehaviour
     {
         // Process ability
     }
+    public virtual void FixedLagCompensation() { }
+    public virtual void LagCompensation() { }
 
     protected virtual void HandleInput() { }
 

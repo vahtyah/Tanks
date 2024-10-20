@@ -22,7 +22,6 @@ public class PlayerCharacter : Character
     protected override void ProcessAbilities()
     {
         if(!PhotonView.IsMine) return;
-        base.ProcessAbilities();
         foreach (var ability in characterAbilities.Where(ability => ability.enabled))
         {
             ability.ProcessAbility();
@@ -32,7 +31,6 @@ public class PlayerCharacter : Character
     protected override void FixedProcessAbilities()
     {
         if(!PhotonView.IsMine) return;
-        base.FixedProcessAbilities();
         foreach (var ability in characterAbilities.Where(ability => ability.enabled))
         {
             ability.FixedProcessAbility();

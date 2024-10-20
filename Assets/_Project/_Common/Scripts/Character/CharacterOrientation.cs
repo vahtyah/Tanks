@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using Photon.Pun;
+using UnityEngine;
 
-public class CharacterOrientation : CharacterAbility
+public class CharacterOrientation : CharacterAbility, IPunObservable
 {
     private Vector3 currentDirection;
     private Vector3 _lastMovement;
@@ -20,12 +22,10 @@ public class CharacterOrientation : CharacterAbility
     {
         base.PreInitialization();
         movement = GetComponent<CharacterMovement>();
-
     }
 
-    public override void FixedProcessAbility()
+    public override void ProcessAbility()
     {
-        base.FixedProcessAbility();
         RotateToFaceWeaponDirection();
         RotateToFaceMovementDirection();
         RotateModel();
@@ -60,7 +60,34 @@ public class CharacterOrientation : CharacterAbility
     private void RotateModel()
     {
         character.transform.rotation = newModelRotation;
-        if (rotationDirection != Vector3.zero)
-            weaponModel.transform.rotation = newWeaponRotation;
+        weaponModel.transform.rotation = newWeaponRotation;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(character.transform.rotation);
+            stream.SendNext(weaponModel.transform.rotation);
+        }
+        else
+        {
+            newModelRotation = (Quaternion)stream.ReceiveNext();
+            newWeaponRotation = (Quaternion)stream.ReceiveNext();
+        }
+    }
+
+    public override void LagCompensation()
+    {
+        character.transform.rotation =
+            Quaternion.RotateTowards(character.transform.rotation, newModelRotation, Time.deltaTime * 5);
+        weaponModel.transform.rotation =
+            Quaternion.RotateTowards(weaponModel.transform.rotation, newWeaponRotation, Time.deltaTime * 5);
+    }
+
+    private void Update()
+    {
+        if(photonView.IsMine) return;
+        LagCompensation();
     }
 }

@@ -48,7 +48,7 @@ public abstract class Health : MonoBehaviour
     {
         if (Invulnerable) return false;
         onHitFeedbacks?.PlayFeedbacks();
-        photonView.RPC(nameof(TakeDamageRPC), RpcTarget.Others, damage, lastHitBy.PhotonView.ViewID);
+        if(photonView.IsMine) photonView.RPC(nameof(TakeDamageRPC), RpcTarget.All, damage, lastHitBy.PhotonView.ViewID);
         return true;
     }
 
@@ -56,10 +56,7 @@ public abstract class Health : MonoBehaviour
     public void TakeDamageRPC(float damage, int lastHitBy)
     {
         this.lastHitBy = lastHitBy;
-        if (photonView.IsMine)
-        {
-            CurrentHealth -= damage;
-        }
+        CurrentHealth -= damage;
     }
 
     private void Die()
@@ -69,6 +66,7 @@ public abstract class Health : MonoBehaviour
         {
             col.enabled = false;
         }
+
         onDeath?.Invoke();
         OnDeath(lastHitBy);
     }
