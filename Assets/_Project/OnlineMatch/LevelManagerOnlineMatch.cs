@@ -34,6 +34,7 @@ public class LevelManagerOnlineMatch : LevelManager
             Scene.Load(Scene.SceneName.MainMenu);
         }
         
+        
         gameTimeLength = GameManager.Instance.gameTime == 0 ? gameTimeLength : GameManager.Instance.gameTime;
         deathTimeLength = GameManager.Instance.respawnTime == 0 ? deathTimeLength : GameManager.Instance.respawnTime;
     }

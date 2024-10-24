@@ -67,6 +67,7 @@ public abstract class PersistentSingleton<T> : MonoBehaviour where T : Persisten
 
     protected virtual void Awake()
     {
+        if(transform.parent != null) transform.SetParent(null);
         if (_instance == null) _instance = this as T;
         else Destroy(gameObject);
         DontDestroyOnLoad(gameObject);

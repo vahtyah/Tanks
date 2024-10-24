@@ -5,18 +5,23 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
 {
     //DEBUG
+    [Header("DEBUG")]
     [SerializeField] private GameObject debugPanel;
     //Loading
+    [Header("Loading")]
     [SerializeField] private GameObject loadingPanel;
     [SerializeField] private TextMeshProUGUI loadingText;
     
-    [SerializeField] private GameObject multiplayerPanel;
+    [FormerlySerializedAs("multiplayerPanel")]
+    [Header("Main Panel")]
+    [SerializeField] private GameObject mainPanel;
 
     //Button
     [SerializeField] private Button createRoomButton;
@@ -141,7 +146,7 @@ public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         loadingPanel.SetActive(false);
-        multiplayerPanel.SetActive(true);
+        mainPanel.SetActive(true);
         createRoomButton.interactable = true;
     }
 
