@@ -16,6 +16,8 @@ public class LevelManagerOnlineMatch : LevelManager
     [SerializeField] private int deathTimeLength = 5;
     [SerializeField] private float minimumDistanceToSpawn = 2f;
     [SerializeField] private List<Transform> spawnPoints;
+    
+    private Dictionary<string, List<PlayerCharacter>> teamPlayers = new();
 
     private ISpawnPoint spawner;
     private PlayerCharacter player;

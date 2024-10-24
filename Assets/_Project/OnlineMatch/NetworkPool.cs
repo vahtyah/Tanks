@@ -18,7 +18,7 @@ public class NetworkPool : IPunPrefabPool
                 Debug.LogError("Failed to load resource: " + prefabId);
                 return null;
             }
-            this.ResourceCache.Add(prefabId, res);
+            ResourceCache.Add(prefabId, res);
         }
         
         return Pool.Spawn(res, position, rotation);

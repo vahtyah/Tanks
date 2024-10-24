@@ -12,6 +12,7 @@ public class Character : MonoBehaviour
     protected readonly List<CharacterAbility>  characterAbilities = new();
     public PhotonView PhotonView { get; private set; }
     public Weapon Weapon { get; private set; }
+    public string nameTeam;
     
     //StateMachine
     public StateMachine<CharacterStates.CharacterCondition> conditionState { get; private set; } //TODO: chua biet lam gi
