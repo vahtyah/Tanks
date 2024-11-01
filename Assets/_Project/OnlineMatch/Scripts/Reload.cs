@@ -12,9 +12,9 @@ public class Reload : MonoBehaviour, IEventListener<GameEvent>
         switch (e.EventType)
         {
             case GameEventType.GameRunning:
-                weapon = LevelManager.Instance.GetPlayer("1").Weapon;
+                weapon = LevelManager.Instance.GetPlayer("1").EquippedWeapon;
                 if (weapon != null)
-                    weapon.AddOnReloadListener(UpdateBar);
+                    weapon.RegisterOnReloadListener(UpdateBar);
                 else
                     Debug.Log("Weapon is null");
                 break;

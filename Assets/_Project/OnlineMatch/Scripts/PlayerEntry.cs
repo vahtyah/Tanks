@@ -15,6 +15,11 @@ public class PlayerEntry : MonoBehaviour
         entry.SetOwner(ownerID);
         return entry;
     }
+    
+    public static void Remove(PlayerEntry entry)
+    {
+        Destroy(entry.gameObject);
+    }
 
     [SerializeField] TextMeshProUGUI playerName;
     [SerializeField] Button readyButton;

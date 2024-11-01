@@ -8,40 +8,36 @@ public class Character : MonoBehaviour
     [SerializeField] protected GameObject abilityNode;
     public ICharacterController Controller { get; private set; }
     public Health Health { get; private set; }
-    
-    protected readonly List<CharacterAbility>  characterAbilities = new();
+
+    protected readonly List<CharacterAbility> abilities = new();
     public PhotonView PhotonView { get; private set; }
-    public Weapon Weapon { get; private set; }
-    public string nameTeam;
-    
+    public Collider Collider { get; private set; }
+    public Weapon EquippedWeapon { get; private set; }
+    public TeamType Team { get; protected set; }
+    public List<Character> Teammates { get; protected set; } = new();
+
     //StateMachine
-    public StateMachine<CharacterStates.CharacterCondition> conditionState { get; private set; } //TODO: chua biet lam gi
+    public StateMachine<CharacterStates.CharacterCondition>
+        ConditionState { get; private set; } //TODO: chua biet lam gi
+
     protected virtual void Awake()
     {
         Controller = GetComponent<ICharacterController>();
         Health = GetComponent<Health>();
         PhotonView = GetComponent<PhotonView>();
-        Initialization();
+        Collider = GetComponent<Collider>();
+        Initialize();
     }
-    
-    protected virtual void Initialization()
-    {
-        conditionState = new StateMachine<CharacterStates.CharacterCondition>(gameObject);
-        characterAbilities.AddRange(abilityNode.GetComponents<CharacterAbility>());
-    }
-    
-    protected virtual void ProcessAbilities()
-    {
 
-    }
-    
-    protected virtual void FixedProcessAbilities()
+    protected virtual void Initialize()
     {
-        
+        ConditionState = new StateMachine<CharacterStates.CharacterCondition>(gameObject);
+        abilities.AddRange(abilityNode.GetComponents<CharacterAbility>());
     }
-    
-    public void SetWeapon(Weapon weapon)
+
+
+    public void EquipWeapon(Weapon weapon)
     {
-        Weapon = weapon;
+        EquippedWeapon = weapon;
     }
 }

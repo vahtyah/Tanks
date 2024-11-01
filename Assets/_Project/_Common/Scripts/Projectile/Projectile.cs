@@ -52,13 +52,14 @@ public class Projectile : MonoBehaviour, IPoolable
     public void OnSpawn()
     {
         timer?.Reset();
-        damageOnTouch.AddIgnoreObject(owner);
+        damageOnTouch.AddToIgnoreList(owner);
+        damageOnTouch.IgnoreTeamMembers();
         currentSpeed = speed;
     }
 
     public void OnDespawn()
     {
-        damageOnTouch.ClearIgnoreObjects();
+        damageOnTouch.ClearIgnoreList();
     }
 
     public Projectile SetOwner(GameObject o)

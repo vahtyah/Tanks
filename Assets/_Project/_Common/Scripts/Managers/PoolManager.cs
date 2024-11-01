@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Animations;
 using Object = UnityEngine.Object;
 
 public interface IPoolable
@@ -16,19 +13,19 @@ public class Pool
 {
     private static PoolManager _manager;
     private readonly Queue<GameObject> availableObjects = new Queue<GameObject>();
-    private Transform parent;
+    private Transform parentTransform;
 
-    public static Pool Register(GameObject prefab, Transform parent = null, int initialSize = 0)
+    private static Pool Register(GameObject prefab, Transform parentTransform = null, int initialSize = 0)
     {
         EnsureManagerExists();
-        parent ??= _manager.transform;
+        parentTransform ??= _manager.transform;
         var pool = new Pool
         {
-            parent = parent
+            parentTransform = parentTransform
         };
         for (var i = 0; i < initialSize; i++)
         {
-            var obj = Object.Instantiate(prefab, parent);
+            var obj = Object.Instantiate(prefab, parentTransform);
             obj.SetActive(false);
             pool.availableObjects.Enqueue(obj);
             _manager.TrackObject(obj, pool);
@@ -63,7 +60,7 @@ public class Pool
             return obj;
         }
 
-        var newObj = Object.Instantiate(prefab, pool.parent);
+        var newObj = Object.Instantiate(prefab, pool.parentTransform);
         _manager.TrackObject(newObj, pool);
         newObj.SetActive(true);
         return newObj;
@@ -86,7 +83,7 @@ public class Pool
             return obj;
         }
 
-        var newObj = Object.Instantiate(prefab, position, rotation, pool.parent);
+        var newObj = Object.Instantiate(prefab, position, rotation, pool.parentTransform);
         _manager.TrackObject(newObj, pool);
         newObj.SetActive(enable);
         return newObj;

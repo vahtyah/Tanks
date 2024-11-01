@@ -35,9 +35,9 @@ public class LevelManagerBotMatch : LevelManager
     //TODO: Instance the player character if needed
     [SerializeField] private PlayerCharacter character;
 
-    protected override void Initialization()
+    protected override void Initialize()
     {
-        base.Initialization();
+        base.Initialize();
         Score = 0;
     }
 
@@ -46,12 +46,12 @@ public class LevelManagerBotMatch : LevelManager
         return character;
     }
 
-    protected override void CharacterDeath(Character character)
+    protected override void HandleCharacterDeath(Character character)
     {
         if (character is PlayerCharacter playerCharacter)
         {
             winner = playerCharacter;
-            StartCoroutine(IETriggerGameOver());
+            StartCoroutine(TriggerGameOverAfterDelay());
         }
         else
         {

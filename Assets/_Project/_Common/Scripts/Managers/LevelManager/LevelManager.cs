@@ -15,14 +15,14 @@ public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEvent
     protected override void Awake()
     {
         base.Awake();
-        PreInitialization();
+        PreInitialize();
     }
 
-    protected virtual void PreInitialization() { }
+    protected virtual void PreInitialize() { }
 
-    private void Start() { Initialization(); }
+    private void Start() { Initialize(); }
 
-    protected virtual void Initialization() { }
+    protected virtual void Initialize() { }
 
     protected virtual void Update() { CheckForGameOver(); }
 
@@ -43,16 +43,16 @@ public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEvent
         switch (e.EventType)
         {
             case CharacterEventType.CharacterDeath:
-                CharacterDeath(e.Character);
+                HandleCharacterDeath(e.Character);
                 break;
         }
     }
 
     public virtual PlayerCharacter GetWinner() { return winner; }
 
-    protected virtual void CharacterDeath(Character character) { }
+    protected virtual void HandleCharacterDeath(Character character) { }
 
-    protected IEnumerator IETriggerGameOver()
+    protected IEnumerator TriggerGameOverAfterDelay()
     {
         yield return new WaitForSecondsRealtime(1);
         GameEvent.Trigger(GameEventType.GameOver);

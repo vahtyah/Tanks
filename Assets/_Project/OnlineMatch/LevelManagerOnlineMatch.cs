@@ -1,51 +1,51 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon;
-using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using UnityEngine;
 
+
 public class LevelManagerOnlineMatch : LevelManager
 {
     [SerializeField] private PlayerCharacter playerPrefab;
-    [SerializeField] private int gameTimeLength = 20;
-    [SerializeField] private int preStartTimeLength = 5;
-    [SerializeField] private int deathTimeLength = 5;
-    [SerializeField] private float minimumDistanceToSpawn = 2f;
+    [SerializeField] private int gameDuration = 180;
+    [SerializeField] private int preStartDuration = 5;
+    [SerializeField] private int respawnDuration = 5;
+
+    // [SerializeField] private float minimumSpawnDistance = 2f;
     [SerializeField] private List<Transform> spawnPoints;
-    
-    private Dictionary<string, List<PlayerCharacter>> teamPlayers = new();
 
     private ISpawnPoint spawner;
-    private PlayerCharacter player;
-    private GUIManagerOnlineMatch GUI;
-    private FeedbacksManager Feedbacks;
+    private PlayerCharacter localPlayer;
+    private GUIManagerOnlineMatch guiManager;
+    private FeedbacksManager feedbackManager;
+    private TeamManager teamManager;
 
-    private Timer deathTimer;
+    private Timer respawnTimer;
     private Timer gameTimer;
     private Timer preStartTimer;
     private int previousSecond;
 
-    protected override void PreInitialization()
+    protected override void PreInitialize()
     {
         if (!PhotonNetwork.IsConnected)
         {
             Scene.Load(Scene.SceneName.MainMenu);
         }
-        
-        
-        gameTimeLength = GameManager.Instance.gameTime == 0 ? gameTimeLength : GameManager.Instance.gameTime;
-        deathTimeLength = GameManager.Instance.respawnTime == 0 ? deathTimeLength : GameManager.Instance.respawnTime;
+
+
+        gameDuration = GameManager.Instance.gameTime == 0 ? gameDuration : GameManager.Instance.gameTime;
+        respawnDuration = GameManager.Instance.respawnTime == 0 ? respawnDuration : GameManager.Instance.respawnTime;
     }
 
-    protected override void Initialization()
+    protected override void Initialize()
     {
-        GUI = GUIManagerOnlineMatch.Instance;
-        Feedbacks = FeedbacksManager.Instance;
-        spawner = new LinearSpawnPoint(spawnPoints);
+        guiManager = GUIManagerOnlineMatch.Instance;
+        feedbackManager = FeedbacksManager.Instance;
+        teamManager = TeamManager.Instance;
         RegisterCustomProperties();
         RegisterTimers();
         GameEvent.Trigger(GameEventType.GamePreStart);
@@ -65,12 +65,12 @@ public class LevelManagerOnlineMatch : LevelManager
 
     private void RegisterTimers()
     {
-        preStartTimer = Timer.Register(preStartTimeLength)
+        preStartTimer = Timer.Register(preStartDuration)
             .OnStart(() =>
             {
-                GUI.SetVisiblePreStartPanel(true);
-                GUI.SetPreStartTimerText(preStartTimeLength);
-                GUI.SwitchWaitingForOthersToTimer();
+                guiManager.SetVisiblePreStartPanel(true);
+                guiManager.SetPreStartTimerText(preStartDuration);
+                guiManager.SwitchWaitingForOthersToTimer();
             })
             .OnRemaining(remaining =>
             {
@@ -78,48 +78,51 @@ public class LevelManagerOnlineMatch : LevelManager
                 if (currentSecond != previousSecond)
                 {
                     if (currentSecond == 0)
-                        Feedbacks.PlayCountdownEndFeedbacks();
+                        feedbackManager.PlayCountdownEndFeedbacks();
                     else
-                        Feedbacks.PlayCountdownFeedbacks();
+                        feedbackManager.PlayCountdownFeedbacks();
                     previousSecond = currentSecond;
-                    GUI.SetPreStartTimerText(currentSecond);
+                    guiManager.SetPreStartTimerText(currentSecond);
                 }
             })
             .OnComplete(() =>
             {
-                GUI.SetVisiblePreStartPanel(false);
+                guiManager.SetVisiblePreStartPanel(false);
                 GameEvent.Trigger(GameEventType.GameRunning);
             });
 
-        gameTimer = Timer.Register(gameTimeLength)
-            .OnStart(() => GUI.SetVisibleGameTimerText(true))
-            .OnRemaining(remaining => GUI.SetGameTimerText(remaining))
+        gameTimer = Timer.Register(gameDuration)
+            .OnStart(() => guiManager.SetVisibleGameTimerText(true))
+            .OnRemaining(remaining => guiManager.SetGameTimerText(remaining))
             .OnComplete(() => { GameEvent.Trigger(GameEventType.GameOver); });
 
-        deathTimer = Timer.Register(deathTimeLength)
+        respawnTimer = Timer.Register(respawnDuration)
             .OnRemaining(remaining =>
             {
                 int currentSecond = Mathf.CeilToInt(remaining);
                 if (currentSecond != previousSecond)
                 {
                     if (currentSecond == 0)
-                        Feedbacks.PlayCountdownEndFeedbacks();
+                        feedbackManager.PlayCountdownEndFeedbacks();
                     else
-                        Feedbacks.PlayCountdownSpawnFeedbacks();
+                        feedbackManager.PlayCountdownSpawnFeedbacks();
                     previousSecond = currentSecond;
-                    GUI.SetSpawnerCountdownText(currentSecond);
+                    guiManager.SetSpawnerCountdownText(currentSecond);
                 }
             })
             .OnComplete(() =>
             {
-                GUI.SetVisibleDeadMask(false);
+                guiManager.SetVisibleDeadMask(false);
                 SpawnPlayer();
                 GameEvent.Trigger(GameEventType.GameStart);
                 GameEvent.Trigger(GameEventType.GameRunning);
             });
     }
 
-    public override PlayerCharacter GetPlayer(string playerID) { return player; }
+    public override PlayerCharacter GetPlayer(string playerID)
+    {
+        return localPlayer;
+    }
 
     protected override void CheckForGameOver()
     {
@@ -131,7 +134,7 @@ public class LevelManagerOnlineMatch : LevelManager
         }
     }
 
-    private void SetWinner()
+    private void DetermineWinner()
     {
         var players = PhotonNetwork.PlayerList;
         var winnerTmp = players[0];
@@ -153,17 +156,17 @@ public class LevelManagerOnlineMatch : LevelManager
 
         if (isDraw)
         {
-            GUI.SetVisibleDrawScreen(true);
+            guiManager.SetVisibleDrawScreen(true);
             return;
         }
 
         if (winnerTmp.IsLocal)
         {
-            GUI.SetVisibleWinScreen(true);
+            guiManager.SetVisibleWinScreen(true);
         }
         else
         {
-            GUI.SetVisibleLoseScreen(true);
+            guiManager.SetVisibleLoseScreen(true);
         }
     }
 
@@ -184,40 +187,74 @@ public class LevelManagerOnlineMatch : LevelManager
     protected override void GamePreStart()
     {
         PhotonNetwork.LocalPlayer.SetScore(0); //For determining if player is ready to play, 0 = ready, -1 = not ready
-        SpawnPlayer(); //Spawn player
+        SpawnPlayer();
+        // photonView.RPC(nameof(SpawnFlag), RpcTarget.AllBuffered);
         InvokeRepeating(nameof(CheckIfAllPlayersReady), 0, .1f);
     }
 
-    protected override void GameStart() { preStartTimer.Start(); }
+    private void SpawnPlayer()
+    {
+        var team = PhotonNetwork.LocalPlayer.GetTeam();
+        var spawnPoint = GetSpawnPointForTeam(team);
+        localPlayer = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity)
+            .GetComponent<PlayerCharacter>();
+        localPlayer.SetTeam(team.TeamType);
+    }
 
-    protected override void GameRunning() { gameTimer.Start(); }
+    [PunRPC]
+    private void SpawnFlag()
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+        // foreach (var teamResource in teamResources)
+        // {
+        //     Pool.Spawn(teamResource.Flag, teamResource.SpawnArea.position);
+        // }
+    }
+
+    protected override void GameStart()
+    {
+        preStartTimer.Start();
+    }
+
+    protected override void GameRunning()
+    {
+        gameTimer.Start();
+    }
 
     protected override void GameOver()
     {
         base.GameOver();
-        deathTimer.Cancel();
-        GUI.SetVisibleDeadMask(false);
-        GUI.SetVisibleGameTimerText(false);
-        SetWinner();
+        respawnTimer.Cancel();
+        guiManager.SetVisibleDeadMask(false);
+        guiManager.SetVisibleGameTimerText(false);
+        DetermineWinner();
     }
 
     #endregion
 
-    private void SpawnPlayer()
+    void AssignTeams()
     {
-        var spawnPoint = spawner.NextSpawnPointByIndex(PhotonNetwork.LocalPlayer.ActorNumber);
-        player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity)
-            .GetComponent<PlayerCharacter>();
-        // player = Pool.PhotonSpawn(playerPrefab.gameObject, spawnPoint, Quaternion.identity).GetComponent<PlayerCharacter>();
+        foreach (var player1 in PhotonNetwork.PlayerList)
+        {
+            RoomManager.Instance.PlayerCharacters[player1.ActorNumber] = player1.TagObject as PlayerCharacter;
+        }
+        // player.SetTeam(PhotonNetwork.LocalPlayer.GetTeam());
     }
 
-    private Vector3 GetValidPoint()
+    private Vector3 GetSpawnPointForTeam(Team team)
+    {
+        var col = teamManager.GetSpawnArea(team.TeamType).GetComponent<Collider>();
+        spawner = new AreaSpawnPoint(col);
+        return GetValidSpawnPoint();
+    }
+
+    private Vector3 GetValidSpawnPoint()
     {
         int i = 0;
         while (i < 10)
         {
             i++;
-            var spawnPoint = spawner.NextSpawnPointByIndex(player.PhotonView.Owner.ActorNumber);
+            var spawnPoint = spawner.NextSpawnPointByIndex(PhotonNetwork.LocalPlayer.ActorNumber);
             if (IsSpawnPointValid(spawnPoint))
                 return spawnPoint;
         }
@@ -227,24 +264,33 @@ public class LevelManagerOnlineMatch : LevelManager
 
     private bool IsSpawnPointValid(Vector3 spawnPoint)
     {
-        var players = PhotonNetwork.CurrentRoom.Players.Values.Select(GetPlayerCharacter).ToList();
-        foreach (var player in players)
+        var bounds = playerPrefab.GetComponent<Collider>().bounds;
+        Collider[] results = new Collider[10];
+        var size = Physics.OverlapBoxNonAlloc(spawnPoint, bounds.extents, results, Quaternion.identity,
+            LayerMask.GetMask("Player"));
+        for (int i = 0; i < size; i++)
         {
-            if (player == null) continue;
-            if (Vector3.Distance(player.transform.position, spawnPoint) < minimumDistanceToSpawn)
-                return false;
+            if (results[i].gameObject == localPlayer.gameObject)
+                continue;
+            return false;
         }
 
         return true;
     }
 
-    private GameObject GetPlayerCharacter(Player player) { return player.TagObject as GameObject; }
-    protected override void CharacterDeath(Character character) { }
+    private GameObject GetPlayerCharacter(Player player)
+    {
+        return player.TagObject as GameObject;
+    }
+
+    protected override void HandleCharacterDeath(Character character)
+    {
+    }
 
     private void UpdateScoreboard(Player targetPlayer)
     {
         var props = targetPlayer.CustomProperties;
-        GUI.UpdateScoreboard(targetPlayer.NickName, (int)props[GlobalString.PLAYER_KILLS],
+        guiManager.UpdateScoreboard(targetPlayer.NickName, (int)props[GlobalString.PLAYER_KILLS],
             (int)props[GlobalString.PLAYER_DEATHS], (int)props[GlobalString.PLAYER_SCORE]);
     }
 
@@ -258,17 +304,23 @@ public class LevelManagerOnlineMatch : LevelManager
 
     #region Photon calls
 
-    public override void OnPlayerLeftRoom(Player otherPlayer) { CheckPlayerLeftRoom(); }
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        CheckPlayerLeftRoom();
+    }
 
-    public override void OnLeftRoom() { PhotonNetwork.LoadLevel(Scene.SceneName.MainMenu.ToString()); }
+    public override void OnLeftRoom()
+    {
+        PhotonNetwork.LoadLevel(Scene.SceneName.MainMenu.ToString());
+    }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         if (changedProps.ContainsKey(GlobalString.PLAYER_DIED) && (bool)changedProps[GlobalString.PLAYER_DIED] &&
-            Equals(player.PhotonView.Owner, targetPlayer))
+            Equals(localPlayer.PhotonView.Owner, targetPlayer))
         {
-            deathTimer.Reset();
-            GUI.SetVisibleDeadMask(true);
+            respawnTimer.Reset();
+            guiManager.SetVisibleDeadMask(true);
             changedProps[GlobalString.PLAYER_DIED] = false;
         }
 

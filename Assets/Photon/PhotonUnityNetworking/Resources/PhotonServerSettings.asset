@@ -47,6 +47,11 @@ MonoBehaviour:
   - SetInvulnerable
   - DespawnRPC
   - WeaponUseRPC
+  - SetTeamRPC
+  - UseWeaponRPC
+  - SpawnFlag
+  - SpawnFlags
+  - CaptureFlag
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

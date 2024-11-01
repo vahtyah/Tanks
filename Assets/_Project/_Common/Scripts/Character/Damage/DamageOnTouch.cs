@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DamageOnTouch : MonoBehaviour
 {
@@ -10,61 +11,108 @@ public class DamageOnTouch : MonoBehaviour
     [SerializeField] private float damage = 1;
     [SerializeField] private float damageTaken;
 
-    [SerializeField] private List<GameObject> ignoreObjects = new();
+    [SerializeField] private List<GameObject> ignoredObjects = new();
     [SerializeField] private MMFeedbacks onHitFeedback;
-    [SerializeField] private ParticleSystem projectileHitParticles;
+    [SerializeField] private ParticleSystem hitParticles;
 
     [SerializeField] private Character owner;
 
-    private void Initialization() { }
-
-    private void Start() { Initialization(); }
-
-    public void AddIgnoreObject(GameObject gameObject) { ignoreObjects.Add(gameObject); }
-
-    public void RemoveIgnoreObject(GameObject gameObject) { ignoreObjects.Remove(gameObject); }
-
-    public void ClearIgnoreObjects() { ignoreObjects.Clear(); }
-
-    private void OnTriggerEnter(Collider other)
+    private void Initialize()
     {
-        if (!EvaluateAvailability(other.gameObject)) return;
+    }
 
-        var health = other.gameObject.GetComponent<CharacterHealth>();
-        if (health != null)
+    private void Start()
+    {
+        Initialize();
+    }
+
+    public void IgnoreTeamMembers()
+    {
+        // if (owner == null) return;
+        // var ownerTeam = PhotonNetwork.LocalPlayer.GetTeam();
+        // var teamMembers = Team.GetPlayersBy(ownerTeam.TeamType);
+        // foreach (var teamMember in teamMembers)
+        // {
+        //     Debug.Log(teamMember.ActorNumber);
+        //     //TODO: change player to Character in TeamManager
+        //     AddIgnoreObject(RoomManager.Instance.PlayerCharacters[teamMember.ActorNumber].gameObject);
+        // }
+    }
+
+    public void AddToIgnoreList(GameObject gameObject)
+    {
+        ignoredObjects.Add(gameObject);
+    }
+
+    public void RemoveFromIgnoreList(GameObject gameObject)
+    {
+        ignoredObjects.Remove(gameObject);
+    }
+
+    public void ClearIgnoreList()
+    {
+        ignoredObjects.Clear();
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        GameObject targetObject = collider.gameObject;
+
+        if (!IsTargetAvailable(targetObject) || IsSameTeam(targetObject)) return;
+
+        if (targetObject.TryGetComponent(out CharacterHealth targetHealth))
         {
-            if (health.Invulnerable)
+            if (targetHealth.IsInvulnerable)
             {
-                SelfDamage();
+                ApplySelfDamage();
                 return;
             }
 
-            health.TakeDamage(damage, owner);
+            targetHealth.TakeDamage(damage, owner);
         }
 
-        CreateHitParticles();
-        SelfDamage();
+        GenerateHitParticles();
+        ApplySelfDamage();
     }
 
-    private void CreateHitParticles()
+
+    private void GenerateHitParticles()
     {
-        var hitParticles = Pool.Spawn(projectileHitParticles.gameObject, transform.position)
+        var hitParticles = Pool.Spawn(this.hitParticles.gameObject, transform.position)
             .GetComponent<ParticleSystem>();
         hitParticles.Play();
         onHitFeedback?.PlayFeedbacks();
     }
 
-    public void SetOwner(Character character) { owner = character; }
-
-    private void SelfDamage() { Pool.Despawn(gameObject); }
-
-    private bool EvaluateAvailability(GameObject otherGameObject)
+    public void SetOwner(Character character)
     {
-        return (!ignoreObjects.Contains(otherGameObject) && IsLayerValid(otherGameObject));
+        owner = character;
     }
 
-    private bool IsLayerValid(GameObject otherGameObject)
+    private void ApplySelfDamage()
     {
-        return (targetLayerMask & 1 << otherGameObject.layer) != 0;
+        Pool.Despawn(gameObject);
+    }
+
+    private bool IsTargetAvailable(GameObject targetObject)
+    {
+        return !ignoredObjects.Contains(targetObject) && IsLayerInTargetMask(targetObject.layer);
+    }
+
+    private bool IsSameTeam(GameObject targetObject)
+    {
+        if (!targetObject.TryGetComponent(out Character targetPlayer)) return false;
+        if (owner.Teammates.Contains(targetPlayer)) return true;
+
+        bool isSameTeam = targetPlayer.GetTeam() == owner.GetTeam();
+        if (isSameTeam) owner.Teammates.Add(targetPlayer);
+
+        return isSameTeam;
+    }
+
+
+    private bool IsLayerInTargetMask(int layer)
+    {
+        return (targetLayerMask & (1 << layer)) != 0;
     }
 }

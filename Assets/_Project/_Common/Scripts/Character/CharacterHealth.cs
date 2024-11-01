@@ -1,12 +1,10 @@
-﻿using System;
-using ExitGames.Client.Photon;
-using MoreMountains.Feedbacks;
+﻿using ExitGames.Client.Photon;
 using Photon.Pun;
 using UnityEngine;
 
 public class CharacterHealth : Health, IEventListener<GameEvent>
 {
-    public GameObject tankExplosionEffect;
+    public GameObject TankExplosionEffect;
     [SerializeField] private ForceFieldController protectionShield;
     [SerializeField] private int timeInvulnerableAfterSpawn = 3;
     private Character character;
@@ -16,71 +14,93 @@ public class CharacterHealth : Health, IEventListener<GameEvent>
     {
         base.Awake();
         character = GetComponent<Character>();
+
         invulnerableTimer = Timer.Register(timeInvulnerableAfterSpawn)
-            .OnStart(() => { photonView.RPC(nameof(SetInvulnerable), RpcTarget.All, true); })
-            .OnComplete(() => { photonView.RPC(nameof(SetInvulnerable), RpcTarget.All, false); })
+            .OnStart(() => SetInvulnerableRPC(true))
+            .OnComplete(() => SetInvulnerableRPC(false))
             .AutoDestroyWhenOwnerDisappear(this);
-        //TODO: Debug
-        timeInvulnerableAfterSpawn = GameManager.Instance.invulnerableTime == 0 ? timeInvulnerableAfterSpawn : GameManager.Instance.invulnerableTime;
+
+        timeInvulnerableAfterSpawn = GameManager.Instance.invulnerableTime == 0
+            ? timeInvulnerableAfterSpawn
+            : GameManager.Instance.invulnerableTime;
+    }
+
+    private void SetInvulnerableRPC(bool isInvulnerable)
+    {
+        PhotonView.RPC(nameof(SetInvulnerable), RpcTarget.All, isInvulnerable);
     }
 
     [PunRPC]
-    private void SetInvulnerable(bool b)
+    private void SetInvulnerable(bool isInvulnerable)
     {
-        Invulnerable = b;
-        if (b)
+        IsInvulnerable = isInvulnerable;
+
+        if (!isInvulnerable)
         {
-            protectionShield.gameObject.SetActive(true);
+            protectionShield.SetInvulnerable(false);
         }
         else
         {
-            protectionShield.SetInvulnerable(b);
+            protectionShield.gameObject.SetActive(true);
         }
     }
 
     protected override void OnDeath(int lastHitBy)
     {
-        photonView.RPC(nameof(OnDeathRPC), RpcTarget.All);
-        if (!photonView.IsMine) return;
-        photonView.Owner.SetCustomProperties(new Hashtable()
+        PhotonView.RPC(nameof(OnDeathRPC), RpcTarget.All);
+
+        if (!PhotonView.IsMine) return;
+
+        UpdatePlayerStats(lastHitBy);
+        PhotonNetwork.Destroy(PhotonView);
+    }
+
+    private void UpdatePlayerStats(int lastHitBy)
+    {
+        var currentPlayerProperties = new Hashtable
         {
             { GlobalString.PLAYER_DIED, true },
-            { GlobalString.PLAYER_DEATHS, (int)photonView.Owner.CustomProperties[GlobalString.PLAYER_DEATHS] + 1 }
-        });
+            { GlobalString.PLAYER_DEATHS, (int)PhotonView.Owner.CustomProperties[GlobalString.PLAYER_DEATHS] + 1 }
+        };
+        PhotonView.Owner.SetCustomProperties(currentPlayerProperties);
 
-        PhotonNetwork.GetPhotonView(lastHitBy).Owner.SetCustomProperties(new Hashtable()
+        var killerProperties = new Hashtable
         {
             {
                 GlobalString.PLAYER_KILLS,
                 (int)PhotonNetwork.GetPhotonView(lastHitBy).Owner.CustomProperties[GlobalString.PLAYER_KILLS] + 1
             }
-        });
-
-        PhotonNetwork.Destroy(photonView);
-        // Pool.PhotonDespawn(photonView);
+        };
+        PhotonNetwork.GetPhotonView(lastHitBy).Owner.SetCustomProperties(killerProperties);
     }
 
     [PunRPC]
     private void OnDeathRPC()
     {
-        character.conditionState.ChangeState(CharacterStates.CharacterCondition.Dead);
-        CharacterEvent.Trigger(CharacterEventType.CharacterDeath, GetComponent<Character>());
-        var effect = Pool.Spawn(tankExplosionEffect, null).GetComponent<ParticleSystem>();
+        character.ConditionState.ChangeState(CharacterStates.CharacterCondition.Dead);
+        CharacterEvent.Trigger(CharacterEventType.CharacterDeath, character);
+
+        // Spawn death effect
+        var effect = Pool.Spawn(TankExplosionEffect, null).GetComponent<ParticleSystem>();
         effect.transform.position = transform.position;
         effect.Play();
     }
 
     public void OnEvent(GameEvent e)
     {
-        switch (e.EventType)
+        if (e.EventType == GameEventType.GameRunning)
         {
-            case GameEventType.GameRunning:
-                invulnerableTimer.Start();
-                break;
+            invulnerableTimer.Start();
         }
     }
 
-    private void OnEnable() { this.StartListening(); }
+    private void OnEnable()
+    {
+        this.StartListening();
+    }
 
-    private void OnDisable() { this.StopListening(); }
+    private void OnDisable()
+    {
+        this.StopListening();
+    }
 }

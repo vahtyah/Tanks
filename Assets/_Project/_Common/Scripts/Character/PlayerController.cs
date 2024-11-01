@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour, ICharacterController
 
     private Vector3 networkPosition;
     private Quaternion networkRotation;
+    public Collider Collider { get; private set; }
+    private Action<Collider> onTriggerEnter;
 
     private void Awake()
     {
@@ -20,6 +22,7 @@ public class PlayerController : MonoBehaviour, ICharacterController
         rb = GetComponent<Rigidbody>();
         character = GetComponent<PlayerCharacter>();
         input = new InputManager(character.PlayerID);
+        Collider = GetComponent<Collider>();
     }
 
     private void Update() { isButtonPauseDown1 = GetPauseButton(); }
@@ -48,4 +51,11 @@ public class PlayerController : MonoBehaviour, ICharacterController
     public void Reset() { }
 
     public Rigidbody GetRigidbody() { return rb; }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        onTriggerEnter?.Invoke(other);
+    }
+
+    public void AddOnTriggerEnter(Action<Collider> action) { onTriggerEnter += action; }
 }

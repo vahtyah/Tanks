@@ -113,8 +113,7 @@ public class Timer
     /// <returns></returns>
     public Timer Start()
     {
-        if (IsRegistered) return this;
-        if (IsDone) return null;
+        if (IsRegistered || IsDone) return this;
         startTime = GetWorldTime();
         manager.RegisterTimer(this);
         onStart?.Invoke();
@@ -181,7 +180,7 @@ public class Timer
         onProgress?.Invoke(Progress);
         onRemaining?.Invoke(TimeRemaining);
 
-        if (!(GetWorldTime() >= startTime + duration)) return;
+        if (GetWorldTime() < startTime + duration) return;
         onComplete?.Invoke();
         if (IsLooped)
             startTime = GetWorldTime();
@@ -200,7 +199,7 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
 
     private void Update()
     {
-        UpdateAllTimers();
+        UpdateTimers();
         sizeOfTimers = timers.Count;
     }
 
@@ -208,7 +207,7 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
 
     public void RemoveTimer(Timer timer) { timers.Remove(timer); }
 
-    private void UpdateAllTimers()
+    private void UpdateTimers()
     {
         for (int i = timers.Count - 1; i >= 0; i--)
         {
@@ -216,7 +215,7 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
         }
     }
 
-    private void PauseAllTimers()
+    private void PauseTimers()
     {
         for (int i = timers.Count - 1; i >= 0; i--)
         {
@@ -224,7 +223,7 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
         }
     }
 
-    private void ResumeAllTimers()
+    private void ResumeTimers()
     {
         for (int i = timers.Count - 1; i >= 0; i--)
         {
@@ -232,7 +231,7 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
         }
     }
 
-    private void CancelAllTimers()
+    private void CancelTimers()
     {
         for (int i = timers.Count - 1; i >= 0; i--)
         {

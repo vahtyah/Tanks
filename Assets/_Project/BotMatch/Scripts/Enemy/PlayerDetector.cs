@@ -5,9 +5,9 @@ public class PlayerDetector : MonoBehaviour
 {
     [SerializeField] float detectionAngle = 60f; // Cone in front of enemy
     [SerializeField] float detectionRadius = 10f; // Large circle around enemy
-    [SerializeField] float innerDetectionRadius = 5f; // Small circle around enemy
-    [SerializeField] float detectionCooldown = 1f; // Time between detections
-    [SerializeField] float attackRange = 2f; // Distance from enemy to player to attack
+    // [SerializeField] float innerDetectionRadius = 5f; // Small circle around enemy
+    // [SerializeField] float detectionCooldown = 1f; // Time between detections
+    // [SerializeField] float attackRange = 2f; // Distance from enemy to player to attack
     public Character player;
 
     public bool CanDetectPlayer()

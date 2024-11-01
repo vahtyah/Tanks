@@ -71,4 +71,9 @@ public class AIController : MonoBehaviour, ICharacterController
     {
         return rb;
     }
+
+    public void AddOnTriggerEnter(Action<Collider> action)
+    {
+        
+    }
 }

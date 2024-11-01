@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 public class AICharacter : Character
 {
-    Dictionary<CharacterStates.CharacterAbility, CharacterAbility> abilities = new();
+    Dictionary<CharacterStates.CharacterAbility, CharacterAbility> abilityList = new();
     protected CharacterStates.CharacterAbility currentAbility;
 
-    public CharacterAbility GetAbility(CharacterStates.CharacterAbility abilityType) { return abilities[abilityType]; }
+    public CharacterAbility GetAbility(CharacterStates.CharacterAbility abilityType) { return abilityList[abilityType]; }
 
-    protected override void Initialization()
+    protected override void Initialize()
     {
-        base.Initialization();
-        foreach (var ability in characterAbilities)
+        base.Initialize();
+        foreach (var ability in base.abilities)
         {
-            abilities.Add(ability.AbilityType, ability);
+            abilityList.Add(ability.AbilityType, ability);
         }
     }
 

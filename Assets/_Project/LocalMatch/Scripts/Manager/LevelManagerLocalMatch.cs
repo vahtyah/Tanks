@@ -29,7 +29,7 @@ public class LevelManagerLocalMatch : LevelManager
 
     private void Start() { GameEvent.Trigger(GameEventType.GamePreStart); }
 
-    protected override void PreInitialization()
+    protected override void PreInitialize()
     {
         cameraRig.InitializeCameras(numberOfPlayers);
         for (int i = 0; i < numberOfPlayers; i++)
@@ -39,7 +39,7 @@ public class LevelManagerLocalMatch : LevelManager
         }
     }
 
-    protected override void Initialization()
+    protected override void Initialize()
     {
         for (int i = 0; i < numberOfPlayers; i++)
         {
@@ -52,17 +52,17 @@ public class LevelManagerLocalMatch : LevelManager
         return characters.Find(character => character.PlayerID == playerID);
     }
 
-    protected override void CharacterDeath(Character character)
+    protected override void HandleCharacterDeath(Character character)
     {
         character = character as PlayerCharacter;
         if (character == null) return;
         var alivePlayers =
-            characters.Count(c => c.conditionState.CurrentState != CharacterStates.CharacterCondition.Dead);
+            characters.Count(c => c.ConditionState.CurrentState != CharacterStates.CharacterCondition.Dead);
         if (alivePlayers <= 1)
         {
             winner = characters.FirstOrDefault(c =>
-                c.conditionState.CurrentState != CharacterStates.CharacterCondition.Dead);
-            StartCoroutine(IETriggerGameOver());
+                c.ConditionState.CurrentState != CharacterStates.CharacterCondition.Dead);
+            StartCoroutine(TriggerGameOverAfterDelay());
         }
     }
 }

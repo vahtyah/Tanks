@@ -6,34 +6,45 @@ public class PlayerCharacter : Character
 {
     [SerializeField] private string playerID = "Player1";
     public GameObject CameraTarget;
-    
+
     public string PlayerID => playerID;
 
     private void Update()
     {
-        ProcessAbilities();
-    }
-    
-    private void FixedUpdate()
-    {
-        FixedProcessAbilities();
+        if (PhotonView.IsMine)
+        {
+            ProcessAbilities();
+        }
     }
 
-    protected override void ProcessAbilities()
+    private void FixedUpdate()
     {
-        if(!PhotonView.IsMine) return;
-        foreach (var ability in characterAbilities.Where(ability => ability.enabled))
+        if (PhotonView.IsMine)
+        {
+            FixedProcessAbilities();
+        }
+    }
+
+    private void ProcessAbilities()
+    {
+        var enabledAbilities = abilities.Where(ability => ability.enabled).ToList();
+        foreach (var ability in enabledAbilities)
         {
             ability.ProcessAbility();
         }
     }
 
-    protected override void FixedProcessAbilities()
+    private void FixedProcessAbilities()
     {
-        if(!PhotonView.IsMine) return;
-        foreach (var ability in characterAbilities.Where(ability => ability.enabled))
+        var enabledAbilities = abilities.Where(ability => ability.enabled).ToList();
+        foreach (var ability in enabledAbilities)
         {
             ability.FixedProcessAbility();
         }
+    }
+
+    public void SetTeam(TeamType team)
+    {
+        Team = team;
     }
 }

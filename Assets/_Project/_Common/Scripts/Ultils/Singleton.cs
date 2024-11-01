@@ -80,3 +80,24 @@ public abstract class PersistentSingleton<T> : MonoBehaviour where T : Persisten
         if (_instance == this) _instance = null;
     }
 }
+
+public abstract class PersistentSingletonPunCallbacks<T> : MonoBehaviourPunCallbacks where T : PersistentSingletonPunCallbacks<T>
+{
+    private static T _instance;
+    public static T Instance => _instance;
+
+    protected virtual void Awake()
+    {
+        if(transform.parent != null) transform.SetParent(null);
+        if (_instance == null) _instance = this as T;
+        else Destroy(gameObject);
+        DontDestroyOnLoad(gameObject);
+    }
+
+    protected virtual void OnApplicationQuit() { Destroy(_instance); }
+
+    protected virtual void OnDestroy()
+    {
+        if (_instance == this) _instance = null;
+    }
+}

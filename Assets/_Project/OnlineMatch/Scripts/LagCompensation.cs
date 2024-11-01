@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System;
+using Photon.Pun;
 using UnityEngine;
 
 public class LagCompensation : MonoBehaviour, IPunObservable
@@ -15,6 +16,7 @@ public class LagCompensation : MonoBehaviour, IPunObservable
         photonView = GetComponent<PhotonView>();
     }
 
+    [Obsolete("Obsolete")]
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

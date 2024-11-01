@@ -1,166 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using ExitGames.Client.Photon;
 using Photon.Pun;
-using Photon.Pun.UtilityScripts;
-using Photon.Realtime;
-using Unity.VisualScripting;
 using UnityEngine;
+// ReSharper disable All
 
-public enum TeamType
+[Serializable]
+public class TeamResource
 {
-    Red,
-    Blue,
-    Green,
-    Yellow
-}
-
-public class Team
-{
-    private static TeamManager manager;
-
     public TeamType TeamType;
-    public Color TeamColor;
-    public HashSet<Player> Players { get; private set; } = new();
-    
-    private Action<Player, Team> onPlayerJoin;
-    private Action<Player, Team> onPlayerLeft;
-
-    public static Team Register(TeamType teamType)
-    {
-        if (manager == null)
-        {
-            manager = TeamManager.Instance ?? new GameObject("TeamManager").AddComponent<TeamManager>();
-        }
-
-        var team = new Team
-        {
-            TeamType = teamType,
-            TeamColor = teamType switch
-            {
-                TeamType.Red => Color.red,
-                TeamType.Blue => Color.blue,
-                TeamType.Green => Color.green,
-                TeamType.Yellow => Color.yellow,
-                _ => Color.white
-            }
-        };
-        manager.Register(team);
-        return team;
-    }
-    
-    public static Team TryGetTeamBy(TeamType teamType)
-    {
-        return manager.TryGetTeam(teamType, out var team) ? team : null;
-    }
-    
-    public Team OnPlayerJoin(Action<Player, Team> onPlayerJoin)
-    {
-        this.onPlayerJoin += onPlayerJoin;
-        return this;
-    }
-    
-    public Team OnPlayerLeft(Action<Player, Team> onPlayerLeft)
-    {
-        this.onPlayerLeft += onPlayerLeft;
-        return this;
-    }
-
-    public void AddPlayerToTeam(Player player)
-    {
-        Players.Add(player);
-        onPlayerJoin?.Invoke(player, this);
-    }
-
-    public void RemovePlayerFromTeam(Player player)
-    {
-        Players.Remove(player);
-        onPlayerLeft?.Invoke(player, this);
-    }
+    public Transform SpawnArea;
+    public Material FlagMaterial;
 }
 
-public class TeamManager : SingletonPunCallbacks<TeamManager>
+public class TeamManager : Singleton<TeamManager>, IEventListener<GameEvent>
 {
-    public Dictionary<TeamType, Team> teams = new();
-    public const string TeamPlayerProp = "Team";
-
-    public void Register(Team team)
-    {
-        PhotonNetwork.PlayerList[0].GetPhotonTeam();
-        if (teams.TryAdd(team.TeamType, team)) return;
-        Debug.LogWarning($"Team {team.TeamType} already exists");
-    }
-
-    public override void OnJoinedRoom()
-    {
-        UpdateTeams();
-        PhotonNetwork.LocalPlayer.SetTeam(GetLowestTeam());
-    }
-
-    public override void OnLeftRoom()
-    {
-        teams.Clear();
-    }
-
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        var team = newPlayer.GetTeam();
-        team?.AddPlayerToTeam(newPlayer);
-    }
-
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        var team = otherPlayer.GetTeam();
-        team?.RemovePlayerFromTeam(otherPlayer);
-    }
+    [SerializeField] private GameObject flagPrefab;
+    [SerializeField] private List<TeamResource> teamResources;
     
-    private TeamType GetLowestTeam()
-    {
-        var lowestTeam = TeamType.Red;
-        var lowestCount = int.MaxValue;
-        foreach (var team in teams.Where(team => team.Value.Players.Count < lowestCount))
-        {
-            lowestCount = team.Value.Players.Count;
-            lowestTeam = team.Key;
-        }
-        return lowestTeam;
-    }
+    public List<Transform> SpawnAreas => teamResources.ConvertAll(x => x.SpawnArea);
+    public Transform GetSpawnArea(TeamType teamType) => teamResources.Find(x => x.TeamType == teamType).SpawnArea;
 
-    private void UpdateTeams()
+    public void OnEvent(GameEvent e)
     {
-        foreach (var player in PhotonNetwork.PlayerList)
+        switch (e.EventType)
         {
-            var team = player.GetTeam();
-            team?.AddPlayerToTeam(player);
+            case GameEventType.GamePreStart:
+                if (PhotonNetwork.IsMasterClient)
+                    GetComponent<PhotonView>().RPC(nameof(SpawnFlags), RpcTarget.AllBuffered);
+                break;
         }
     }
 
-    public bool TryGetTeam(TeamType teamType, out Team team)
+    [PunRPC]
+    private void SpawnFlags()
     {
-        return teams.TryGetValue(teamType, out team);
-    }
-}
-
-public static class TeamExtensions
-{
-    public static void SetTeam(this Player player, TeamType teamType)
-    {
-        var team = Team.TryGetTeamBy(teamType);
-        if (team == null)
+        var team = Team.GetTeams();
+        for (int i = 0; i < team.Count; i++)
         {
-            Debug.LogWarning($"Team {teamType} does not exist");
-            return;
+            var flagGO = Pool.Spawn(flagPrefab, teamResources[i].SpawnArea.position, flagPrefab.transform.rotation);
+            var flag = flagGO.GetComponent<Flag>();
+            flag.Initialize(team[i].TeamType, teamResources[i].FlagMaterial);
         }
-
-        player.SetCustomProperties(new Hashtable { { TeamManager.TeamPlayerProp, teamType } });
-        team.AddPlayerToTeam(player);
     }
 
-    public static Team GetTeam(this Player player)
+    private void OnEnable()
     {
-        return player.CustomProperties.TryGetValue(TeamManager.TeamPlayerProp, out var teamName)
-            ? Team.TryGetTeamBy((TeamType)teamName)
-            : null;
+        this.StartListening();
+    }
+
+    private void OnDisable()
+    {
+        this.StopListening();
     }
 }

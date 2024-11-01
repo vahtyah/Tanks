@@ -9,8 +9,10 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
+public class LobbyMainMenuPanel : SingletonPunCallbacks<LobbyMainMenuPanel>
 {
+    [SerializeField] private RoomController roomController;
+    
     //DEBUG
     [Header("DEBUG")]
     [SerializeField] private GameObject debugPanel;
@@ -45,11 +47,12 @@ public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
     //Error
     [SerializeField] private GameObject gameFullWindow;
 
-    private Dictionary<int, PlayerEntry> playerListEntries;
+    public Dictionary<int, PlayerEntry> playerListEntries = new Dictionary<int, PlayerEntry>();
     private Dictionary<string, RoomEntry> roomListEntries;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         PhotonNetwork.AutomaticallySyncScene = true;
         playerName += UnityEngine.Random.Range(0, 1000);
         playerNameInput.text = playerName;
@@ -62,12 +65,7 @@ public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
         leftRoomButton.onClick.AddListener(OnLeftRoomButtonClicked);
         playerNameInput.onValueChanged.AddListener((value) => { PhotonNetwork.NickName = value; });
     }
-
-    private void OnJoinRoomButtonClicked()
-    {
-        if (!PhotonNetwork.IsConnectedAndReady) return;
-        PhotonNetwork.JoinRoom("Room");
-    }
+    
 
     private void Start()
     {
@@ -123,16 +121,16 @@ public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
 
     public void OnCreateRoomButtonClicked()
     {
-        if (!PhotonNetwork.IsConnectedAndReady) return;
-        roomPanel.SetActive(true);
-        var roomOptions = new RoomOptions
-        {
-            MaxPlayers = 4,
-            IsOpen = true,
-            IsVisible = true
-        };
-
-        PhotonNetwork.CreateRoom(PhotonNetwork.NickName + "'s room", roomOptions);
+        // if (!PhotonNetwork.IsConnectedAndReady) return;
+        // roomPanel.SetActive(true);
+        // var roomOptions = new RoomOptions
+        // {
+        //     MaxPlayers = 4,
+        //     IsOpen = true,
+        //     IsVisible = true
+        // };
+        //
+        // PhotonNetwork.CreateRoom(PhotonNetwork.NickName + "'s room", roomOptions);
     }
 
     private void OnLeftRoomButtonClicked()
@@ -193,51 +191,51 @@ public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
                 playerEntry.SetReadyButton((bool)isReady);
             }
         }
-
+    
         LocalPlayerPropertiesUpdated();
     }
-
+    
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        var playerEntry =
-            PlayerEntry.Create(playerEntryPrefab, newPlayer.NickName, newPlayer.ActorNumber, playerListEntry);
-        playerListEntries.Add(newPlayer.ActorNumber, playerEntry);
+        // var playerEntry =
+        //     PlayerEntry.Create(playerEntryPrefab, newPlayer.NickName, newPlayer.ActorNumber, playerListEntry);
+        // playerListEntries.Add(newPlayer.ActorNumber, playerEntry);
         LocalPlayerPropertiesUpdated();
     }
-
+    //
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        if (playerListEntries.Remove(otherPlayer.ActorNumber, out var playerEntry))
-        {
-            Destroy(playerEntry.gameObject);
-        }
-
+        // if (playerListEntries.Remove(otherPlayer.ActorNumber, out var playerEntry))
+        // {
+        //     Destroy(playerEntry.gameObject);
+        // }
         LocalPlayerPropertiesUpdated();
     }
 
     public override void OnJoinedRoom()
     {
-        roomPanel.SetActive(true);
-
-        foreach (var player in PhotonNetwork.PlayerList)
-        {
-            var playerEntry =
-                PlayerEntry.Create(playerEntryPrefab, player.NickName, player.ActorNumber, playerListEntry);
-
-            if (player.CustomProperties.TryGetValue(GlobalString.PLAYER_READY, out var isReady))
-            {
-                playerEntry.SetReadyButton((bool)isReady);
-            }
-            else
-            {
-                var props = new Hashtable() { { GlobalString.PLAYER_READY, false } };
-                player.SetCustomProperties(props);
-            }
-
-            playerListEntries.Add(player.ActorNumber, playerEntry);
-        }
-
-        startGameButton.gameObject.SetActive(CheckAllPlayersReady());
+        roomController.gameObject.SetActive(true);
+        // roomPanel.SetActive(true);
+        //
+        // foreach (var player in PhotonNetwork.PlayerList)
+        // {
+        //     var playerEntry =
+        //         PlayerEntry.Create(playerEntryPrefab, player.NickName, player.ActorNumber, playerListEntry);
+        //
+        //     if (player.CustomProperties.TryGetValue(GlobalString.PLAYER_READY, out var isReady))
+        //     {
+        //         playerEntry.SetReadyButton((bool)isReady);
+        //     }
+        //     else
+        //     {
+        //         var props = new Hashtable() { { GlobalString.PLAYER_READY, false } };
+        //         player.SetCustomProperties(props);
+        //     }
+        //
+        //     playerListEntries.Add(player.ActorNumber, playerEntry);
+        // }
+        //
+        // startGameButton.gameObject.SetActive(CheckAllPlayersReady());
     }
 
     public override void OnLeftRoom()
@@ -255,7 +253,7 @@ public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
     private bool CheckAllPlayersReady()
     {
         if (!PhotonNetwork.IsMasterClient) return false;
-        if (PhotonNetwork.PlayerList.Length < 2) return false;
+        // if (PhotonNetwork.PlayerList.Length < 2) return false;
 
         foreach (var player in PhotonNetwork.PlayerList)
         {
@@ -287,7 +285,7 @@ public class LobbyMainMenuPanel : MonoBehaviourPunCallbacks
 
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
-            PhotonNetwork.LoadLevel(Scene.SceneName.OnlineMatch.ToString());
+            PhotonNetwork.LoadLevel(Scene.SceneName.OnlineMatch.ToString()+ " 1");
         }
     }
 }

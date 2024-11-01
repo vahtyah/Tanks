@@ -3,25 +3,26 @@ using ExitGames.Client.Photon;
 using MoreMountains.Feedbacks;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class Health : MonoBehaviour
 {
     [SerializeField] protected float maxHealth = 100;
     [SerializeField] protected bool disableColliderOnDeath = true;
-    [SerializeField] protected float currentHealth;
     [SerializeField] private MMF_Player onHitFeedbacks;
-    public bool Invulnerable;
+    public bool IsInvulnerable;
 
+    private float currentHealth;
     public Action onDeath;
     private Action<float> onHit { get; set; }
     private Collider col;
-    public PhotonView photonView;
+    protected PhotonView PhotonView { get; private set; }
     private int lastHitBy;
 
     protected virtual void Awake()
     {
         col = GetComponent<Collider>();
-        photonView = GetComponent<PhotonView>();
+        PhotonView = GetComponent<PhotonView>();
     }
 
     protected virtual void Start() { Reset(); }
@@ -41,14 +42,23 @@ public abstract class Health : MonoBehaviour
     protected float MaxHealth
     {
         get => maxHealth;
-        private set => Mathf.Max(value, 0);
+        set
+        {
+            maxHealth = Mathf.Max(value, 0);
+            Reset(); // Reset health if max health changes
+        }
     }
 
     public bool TakeDamage(float damage, Character lastHitBy)
     {
-        if (Invulnerable) return false;
-        onHitFeedbacks?.PlayFeedbacks();
-        if(photonView.IsMine) photonView.RPC(nameof(TakeDamageRPC), RpcTarget.All, damage, lastHitBy.PhotonView.ViewID);
+        if (IsInvulnerable) return false;
+
+        if (PhotonView.IsMine)
+        {
+            onHitFeedbacks?.PlayFeedbacks();
+            PhotonView.RPC(nameof(TakeDamageRPC), RpcTarget.All, damage, lastHitBy.PhotonView.ViewID);
+        }
+
         return true;
     }
 

@@ -8,4 +8,5 @@ public interface ICharacterController
     void Move(Vector3 direction);
     void Reset();
     Rigidbody GetRigidbody();
+    void AddOnTriggerEnter(System.Action<Collider> action);
 }

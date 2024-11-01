@@ -26,7 +26,7 @@ public class MainPanelManager : MonoBehaviour
 
     string buttonFadeIn = "Normal To Pressed";
     string buttonFadeOut = "Pressed To Dissolve";
-    string buttonFadeNormal = "Pressed To Normal";
+    // string buttonFadeNormal = "Pressed To Normal";
 
     void OnEnable()
     {

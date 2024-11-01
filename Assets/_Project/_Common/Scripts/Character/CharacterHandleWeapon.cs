@@ -8,18 +8,21 @@ public class CharacterHandleWeapon : CharacterAbility
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Weapon weapon;
-    [SerializeField] private PhotonView view;
 
-    protected override void PreInitialization()
+    protected override void PreInitialize()
     {
-        base.PreInitialization();
-        // weapon = Instantiate(weapon, weaponHolder);
-        character.SetWeapon(weapon);
-        weapon.Owner = character;
-        weapon.SetProjectileSpawnTransform(projectileSpawnPoint);
-        view = weapon.GetComponent<PhotonView>();
-        //NOTE: Clear
+        base.PreInitialize();
+        EquipWeapon();
     }
+
+    private void EquipWeapon()
+    {
+        // weapon = Instantiate(weapon, weaponHolder);
+        Character.EquipWeapon(weapon);
+        weapon.Owner = Character;
+        weapon.SetProjectileSpawnPoint(projectileSpawnPoint);
+    }
+
 
     public override void ProcessAbility()
     {
@@ -30,9 +33,9 @@ public class CharacterHandleWeapon : CharacterAbility
     protected override void HandleInput()
     {
         base.HandleInput();
-        if (controller.GetFire() && GameManager.Instance.currentGameType == GameEventType.GameRunning)
+        if (Controller.GetFire() && GameManager.Instance.currentGameType == GameEventType.GameRunning)
         {
-            weapon.WeaponUse();
+            weapon.UseWeapon();
             // if (weapon.WeaponUse())
             //     weaponUseFeedback?.PlayFeedbacks();
         }

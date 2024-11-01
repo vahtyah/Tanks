@@ -16,11 +16,10 @@ public class InputManager
     
     private void InitializeAxis()
     {
-        playerID ??= "Player1";
-        axisHorizontal = playerID + "_Horizontal";
-        axisVertical = playerID + "_Vertical";
-        fireButton = playerID + "_Fire";
-        pauseButton = playerID + "_Pause";
+        axisHorizontal = $"{playerID}_Horizontal";
+        axisVertical = $"{playerID}_Vertical";
+        fireButton = $"{playerID}_Fire";
+        pauseButton = $"{playerID}_Pause";
     }
     
     public bool GetPauseButton() { return Input.GetButtonDown(pauseButton); }

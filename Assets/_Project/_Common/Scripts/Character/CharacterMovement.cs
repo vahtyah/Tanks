@@ -25,25 +25,25 @@ public class CharacterMovement : CharacterAbility, IPunObservable
     protected override void HandleInput()
     {
         base.HandleInput();
-        direction = controller.GetDirection().With(y: 0).normalized * (moveSpeed * Time.fixedDeltaTime);
+        direction = Controller.GetDirection().With(y: 0).normalized * (moveSpeed * Time.fixedDeltaTime);
     }
 
-    private void MoveCharacter() { controller.Move(direction); }
+    private void MoveCharacter() { Controller.Move(direction); }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
-            stream.SendNext(controller.GetRigidbody().velocity);
+            stream.SendNext(Controller.GetRigidbody().velocity);
         }
         else
         {
             networkPosition = (Vector3) stream.ReceiveNext();
-            controller.GetRigidbody().velocity = (Vector3) stream.ReceiveNext();
+            Controller.GetRigidbody().velocity = (Vector3) stream.ReceiveNext();
             
             float lag = Mathf.Abs((float) (PhotonNetwork.Time - info.SentServerTime));
-            networkPosition += controller.GetRigidbody().velocity * lag;
+            networkPosition += Controller.GetRigidbody().velocity * lag;
         }
     }
 
@@ -54,7 +54,7 @@ public class CharacterMovement : CharacterAbility, IPunObservable
 
     private void FixedUpdate()
     {
-        if(photonView.IsMine) return;
+        if(PhotonView.IsMine) return;
         FixedLagCompensation();
     }
 }

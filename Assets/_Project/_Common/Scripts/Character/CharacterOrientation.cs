@@ -5,22 +5,18 @@ using UnityEngine;
 public class CharacterOrientation : CharacterAbility, IPunObservable
 {
     private Vector3 currentDirection;
-    private Vector3 _lastMovement;
-    private Quaternion _tmpRotation;
-    private Quaternion newModelRotation;
+    private Vector3 lastMovementDirection;
+    private Quaternion modelRotation;
+    private Quaternion weaponRotation;
 
     [SerializeField] private bool shouldRotateWeapon;
     [SerializeField] private GameObject weaponModel;
 
-    private Vector3 rotationDirection;
-    private Quaternion tmpWeaponRotation;
-    private Quaternion newWeaponRotation;
-
     private CharacterMovement movement;
 
-    protected override void PreInitialization()
+    protected override void PreInitialize()
     {
-        base.PreInitialization();
+        base.PreInitialize();
         movement = GetComponent<CharacterMovement>();
     }
 
@@ -28,7 +24,7 @@ public class CharacterOrientation : CharacterAbility, IPunObservable
     {
         RotateToFaceWeaponDirection();
         RotateToFaceMovementDirection();
-        RotateModel();
+        ApplyRotations();
     }
 
     void RotateToFaceMovementDirection()
@@ -36,58 +32,60 @@ public class CharacterOrientation : CharacterAbility, IPunObservable
         currentDirection = movement.direction.normalized;
         if (currentDirection.sqrMagnitude >= .5f)
         {
-            _lastMovement = currentDirection;
+            lastMovementDirection = currentDirection;
         }
 
-        if (_lastMovement != Vector3.zero)
+        if (lastMovementDirection != Vector3.zero)
         {
-            _tmpRotation = Quaternion.LookRotation(_lastMovement);
-            newModelRotation = Quaternion.Slerp(character.transform.rotation, _tmpRotation, Time.deltaTime * 5);
+            Quaternion targetRotation = Quaternion.LookRotation(lastMovementDirection);
+            modelRotation = Quaternion.Slerp(Character.transform.rotation, targetRotation, Time.deltaTime * 5);
         }
     }
 
     private void RotateToFaceWeaponDirection()
     {
         if (!shouldRotateWeapon) return;
-        rotationDirection = controller.GetAimDirection();
-        if (rotationDirection != Vector3.zero)
+        Vector3 aimDirection = Controller.GetAimDirection();
+        if (aimDirection != Vector3.zero)
         {
-            _tmpRotation = Quaternion.LookRotation(rotationDirection);
-            newWeaponRotation = Quaternion.Slerp(weaponModel.transform.rotation, _tmpRotation, Time.deltaTime * 5);
+            Quaternion targetWeaponRotation = Quaternion.LookRotation(aimDirection);
+            weaponRotation = Quaternion.Slerp(weaponModel.transform.rotation, targetWeaponRotation, Time.deltaTime * 5);
         }
     }
 
-    private void RotateModel()
+    private void ApplyRotations()
     {
-        character.transform.rotation = newModelRotation;
-        weaponModel.transform.rotation = newWeaponRotation;
+        Character.transform.rotation = modelRotation;
+        weaponModel.transform.rotation = weaponRotation;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(character.transform.rotation);
+            stream.SendNext(Character.transform.rotation);
             stream.SendNext(weaponModel.transform.rotation);
         }
         else
         {
-            newModelRotation = (Quaternion)stream.ReceiveNext();
-            newWeaponRotation = (Quaternion)stream.ReceiveNext();
+            modelRotation = (Quaternion)stream.ReceiveNext();
+            weaponRotation = (Quaternion)stream.ReceiveNext();
         }
     }
 
     public override void LagCompensation()
     {
-        character.transform.rotation =
-            Quaternion.RotateTowards(character.transform.rotation, newModelRotation, Time.deltaTime * 5);
+        Character.transform.rotation =
+            Quaternion.RotateTowards(Character.transform.rotation, modelRotation, Time.deltaTime * 5);
         weaponModel.transform.rotation =
-            Quaternion.RotateTowards(weaponModel.transform.rotation, newWeaponRotation, Time.deltaTime * 5);
+            Quaternion.RotateTowards(weaponModel.transform.rotation, weaponRotation, Time.deltaTime * 5);
     }
 
     private void Update()
     {
-        if(photonView.IsMine) return;
-        LagCompensation();
+        if (!PhotonView.IsMine)
+        {
+            LagCompensation();
+        }
     }
 }
