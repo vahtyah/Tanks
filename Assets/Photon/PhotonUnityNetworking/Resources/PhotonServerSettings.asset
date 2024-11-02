@@ -52,6 +52,13 @@ MonoBehaviour:
   - SpawnFlag
   - SpawnFlags
   - CaptureFlag
+  - CapturedFlagRPC
+  - DropFlagRPC
+  - AssignTeam
+  - CapturedByRPC
+  - ExecuteCaptureFlag
+  - RPC_ReleaseFlag
+  - RPC_CaptureFlag
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

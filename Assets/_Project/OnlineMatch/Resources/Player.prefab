@@ -6526,7 +6526,6 @@ GameObject:
   - component: {fileID: 7256377778982838455}
   - component: {fileID: 4306085405984162935}
   - component: {fileID: 413613153014697111}
-  - component: {fileID: 6881657172408711863}
   m_Layer: 0
   m_Name: Abilities
   m_TagString: Untagged
@@ -6620,33 +6619,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityType: 0
-  flagInTank: {fileID: 1596145073243349324}
-  rd: {fileID: 8090179351061724321}
-  flagCaptured: {fileID: 0}
-  photonView: {fileID: 0}
---- !u!114 &6881657172408711863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 257576369866153025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 0
-  OwnershipTransfer: 1
-  observableSearch: 0
-  ObservedComponents:
-  - {fileID: 0}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
+  flagDisplay: {fileID: 0}
+  flagRenderer: {fileID: 0}
+  captureTime: 3
 --- !u!1 &293710707198633259
 GameObject:
   m_ObjectHideFlags: 0
@@ -17008,6 +16983,7 @@ GameObject:
   - component: {fileID: 2649595721190862948}
   - component: {fileID: 3330573192274705494}
   - component: {fileID: 1817581257062871318}
+  - component: {fileID: 8408129302591067597}
   - component: {fileID: 2133174380894428361}
   - component: {fileID: -3242568721791363167}
   - component: {fileID: 331112439879503538}
@@ -17102,6 +17078,7 @@ MonoBehaviour:
   disableColliderOnDeath: 0
   onHitFeedbacks: {fileID: 7859523814737352465}
   IsInvulnerable: 0
+  characterCaptureFlag: {fileID: 413613153014697111}
   TankExplosionEffect: {fileID: 4058219447521929569, guid: 04f913ee24498ad40b8cc8cb0a67652e, type: 3}
   protectionShield: {fileID: 4973728889562494143}
   timeInvulnerableAfterSpawn: 4
@@ -17132,6 +17109,22 @@ MonoBehaviour:
   abilityNode: {fileID: 257576369866153025}
   playerID: Player1
   CameraTarget: {fileID: 3378438262326538011}
+--- !u!114 &8408129302591067597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446509568547554811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a2df7b4d3a04d4192b5733477cac544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityType: 0
+  flagDisplay: {fileID: 1596145073243349324}
+  flagRenderer: {fileID: 8090179351061724321}
+  captureTime: 3
 --- !u!114 &2133174380894428361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51952,6 +51945,10 @@ PrefabInstance:
     - target: {fileID: 8187927506590266601, guid: 1a75c4e3f57027b48965a386d96399cf, type: 3}
       propertyPath: m_Name
       value: FlagInTank
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187927506590266601, guid: 1a75c4e3f57027b48965a386d96399cf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

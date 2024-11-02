@@ -198,17 +198,13 @@ public class LevelManagerOnlineMatch : LevelManager
         var spawnPoint = GetSpawnPointForTeam(team);
         localPlayer = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity)
             .GetComponent<PlayerCharacter>();
-        localPlayer.SetTeam(team.TeamType);
+        // photonView.RPC(nameof(AssignTeam), RpcTarget.AllBuffered, team);
     }
 
     [PunRPC]
-    private void SpawnFlag()
+    private void AssignTeam(TeamType teamType)
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-        // foreach (var teamResource in teamResources)
-        // {
-        //     Pool.Spawn(teamResource.Flag, teamResource.SpawnArea.position);
-        // }
+        localPlayer.SetTeam(teamType);
     }
 
     protected override void GameStart()

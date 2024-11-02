@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -13,7 +14,11 @@ public class Character : MonoBehaviour
     public PhotonView PhotonView { get; private set; }
     public Collider Collider { get; private set; }
     public Weapon EquippedWeapon { get; private set; }
+    [ShowInInspector, TitleGroup("Debugs")]
+
     public TeamType Team { get; protected set; }
+
+    [ShowInInspector, TitleGroup("Debugs")]
     public List<Character> Teammates { get; protected set; } = new();
 
     //StateMachine

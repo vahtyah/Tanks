@@ -5,6 +5,7 @@ using ExitGames.Client.Photon;
 using InfoGame;
 using Photon.Pun;
 using Photon.Realtime;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public enum TeamType
@@ -129,6 +130,7 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
     public Info teamNameInfo;
     public List<Team> teamsDebug = new(); //TODO: Remove this
     public Dictionary<int, PlayerCharacter> PlayerCharacters { get; private set; } = new();
+    [ShowInInspector]
     public Dictionary<Character, TeamType> teamCache = new();
 
     public void CacheTeam(Character playerCharacter, TeamType teamType)
@@ -302,7 +304,8 @@ public static class TeamExtensions
         if (teamType != TeamType.None) return teamType;
         
         var team = player.PhotonView.Owner.GetTeam();
-        Team.CacheTeam(player, team.TeamType);
+        teamType = team?.TeamType ?? TeamType.None;
+        Team.CacheTeam(player, teamType);
 
         return teamType;
     }

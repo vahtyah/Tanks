@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CharacterHealth : Health, IEventListener<GameEvent>
 {
+    [SerializeField] private CharacterCaptureFlag characterCaptureFlag;
+    
     public GameObject TankExplosionEffect;
     [SerializeField] private ForceFieldController protectionShield;
     [SerializeField] private int timeInvulnerableAfterSpawn = 3;
@@ -48,6 +50,7 @@ public class CharacterHealth : Health, IEventListener<GameEvent>
     protected override void OnDeath(int lastHitBy)
     {
         PhotonView.RPC(nameof(OnDeathRPC), RpcTarget.All);
+        characterCaptureFlag.ReleaseCapturedFlag();
 
         if (!PhotonView.IsMine) return;
 

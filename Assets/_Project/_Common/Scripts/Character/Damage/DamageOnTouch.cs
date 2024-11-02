@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MoreMountains.Feedbacks;
-using Photon.Pun;
+using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class DamageOnTouch : MonoBehaviour
 {
@@ -11,11 +9,11 @@ public class DamageOnTouch : MonoBehaviour
     [SerializeField] private float damage = 1;
     [SerializeField] private float damageTaken;
 
-    [SerializeField] private List<GameObject> ignoredObjects = new();
+    [ShowInInspector, TitleGroup("Debugs")]
+    private List<GameObject> ignoredObjects = new();
     [SerializeField] private MMFeedbacks onHitFeedback;
     [SerializeField] private ParticleSystem hitParticles;
-
-    [SerializeField] private Character owner;
+    private Character owner;
 
     private void Initialize()
     {

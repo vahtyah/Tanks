@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 5719925733064039800}
   - component: {fileID: 4790417831940866385}
   - component: {fileID: 4479614554995867363}
+  - component: {fileID: 5080538771337137682}
   m_Layer: 0
   m_Name: Flag
   m_TagString: Flag
@@ -123,7 +124,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rd: {fileID: 3017197898322087701}
-  respawnDuration: 5
+  respawnDuration: 30
+--- !u!114 &5080538771337137682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462213165687542267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3357778071668347187
 GameObject:
   m_ObjectHideFlags: 0

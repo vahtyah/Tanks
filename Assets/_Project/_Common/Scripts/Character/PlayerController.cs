@@ -52,10 +52,5 @@ public class PlayerController : MonoBehaviour, ICharacterController
 
     public Rigidbody GetRigidbody() { return rb; }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        onTriggerEnter?.Invoke(other);
-    }
-
     public void AddOnTriggerEnter(Action<Collider> action) { onTriggerEnter += action; }
 }

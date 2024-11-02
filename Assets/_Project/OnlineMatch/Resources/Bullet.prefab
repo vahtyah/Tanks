@@ -203,7 +203,6 @@ MonoBehaviour:
     m_Bits: 5128
   damage: 10
   damageTaken: 1
-  ignoredObjects: []
   onHitFeedback: {fileID: 6969855248542257395}
   hitParticles: {fileID: 2693672709390255330, guid: 3c30d724e56bde6468ab105811555e4c, type: 3}
   owner: {fileID: 0}

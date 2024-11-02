@@ -1,4 +1,5 @@
 ﻿using System;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,8 +13,11 @@ public class Flag : MonoBehaviour
     public float respawnDuration = 5f;
     private Timer respawnTimer;
 
+    private PhotonView photonView;
+
     private void Start()
     {
+        photonView = GetComponent<PhotonView>();
         initialPosition = transform.position;
         respawnTimer = Timer.Register(respawnDuration)
             .OnComplete(Return)
@@ -25,12 +29,12 @@ public class Flag : MonoBehaviour
         Team = team;
         rd.material = material;
     }
-    
+
     public void Reset()
     {
         TeamCaptured = TeamType.None;
     }
-    
+
     public void Capture(TeamType team)
     {
         if (TeamCaptured == TeamType.None)
@@ -39,15 +43,15 @@ public class Flag : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-    
-    public void Drop(Vector3 position)
+
+    public void Release(Vector3 position)
     {
         TeamCaptured = TeamType.None;
-        transform.position = position;
+        transform.position = position.With(y:initialPosition.y);
         gameObject.SetActive(true);
         respawnTimer.Reset();
     }
-    
+
     public void Return()
     {
         TeamCaptured = TeamType.None;
