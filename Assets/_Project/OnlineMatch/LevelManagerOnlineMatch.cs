@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ExitGames.Client.Photon;
 using Photon.Pun;
-using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using UnityEngine;
 
+[Serializable]
+public class MultiKill
+{
+    public string message;
+    public int bonusScore;
+}
 
 public class LevelManagerOnlineMatch : LevelManager
 {
@@ -17,6 +21,8 @@ public class LevelManagerOnlineMatch : LevelManager
 
     // [SerializeField] private float minimumSpawnDistance = 2f;
     [SerializeField] private List<Transform> spawnPoints;
+
+    
 
     private ISpawnPoint spawner;
     private PlayerCharacter localPlayer;
@@ -72,7 +78,7 @@ public class LevelManagerOnlineMatch : LevelManager
                 guiManager.SetPreStartTimerText(preStartDuration);
                 guiManager.SwitchWaitingForOthersToTimer();
             })
-            .OnRemaining(remaining =>
+            .OnTimeRemaining(remaining =>
             {
                 int currentSecond = Mathf.CeilToInt(remaining);
                 if (currentSecond != previousSecond)
@@ -93,11 +99,11 @@ public class LevelManagerOnlineMatch : LevelManager
 
         gameTimer = Timer.Register(gameDuration)
             .OnStart(() => guiManager.SetVisibleGameTimerText(true))
-            .OnRemaining(remaining => guiManager.SetGameTimerText(remaining))
+            .OnTimeRemaining(remaining => guiManager.SetGameTimerText(remaining))
             .OnComplete(() => { GameEvent.Trigger(GameEventType.GameOver); });
 
         respawnTimer = Timer.Register(respawnDuration)
-            .OnRemaining(remaining =>
+            .OnTimeRemaining(remaining =>
             {
                 int currentSecond = Mathf.CeilToInt(remaining);
                 if (currentSecond != previousSecond)
@@ -136,19 +142,50 @@ public class LevelManagerOnlineMatch : LevelManager
 
     private void DetermineWinner()
     {
-        var players = PhotonNetwork.PlayerList;
-        var winnerTmp = players[0];
-        bool isDraw = players.Length > 1;
-        foreach (var player in players)
+        // var players = PhotonNetwork.PlayerList;
+        // var winnerTmp = players[0];
+        // bool isDraw = players.Length > 1;
+        // foreach (var player in players)
+        // {
+        //     if ((int)player.CustomProperties[GlobalString.PLAYER_KILLS] >
+        //         (int)winnerTmp.CustomProperties[GlobalString.PLAYER_KILLS])
+        //     {
+        //         winnerTmp = player;
+        //         isDraw = false;
+        //     }
+        //     else if ((int)player.CustomProperties[GlobalString.PLAYER_KILLS] <
+        //              (int)winnerTmp.CustomProperties[GlobalString.PLAYER_KILLS])
+        //     {
+        //         isDraw = false;
+        //     }
+        // }
+        //
+        // if (isDraw)
+        // {
+        //     guiManager.SetVisibleDrawScreen(true);
+        //     return;
+        // }
+        //
+        // if (winnerTmp.IsLocal)
+        // {
+        //     guiManager.SetVisibleWinScreen(true);
+        // }
+        // else
+        // {
+        //     guiManager.SetVisibleLoseScreen(true);
+        // }
+
+        var teams = Team.GetAllTeams();
+        var winner = teams[0];
+        bool isDraw = teams.Count > 1;
+        foreach (var team in teams)
         {
-            if ((int)player.CustomProperties[GlobalString.PLAYER_KILLS] >
-                (int)winnerTmp.CustomProperties[GlobalString.PLAYER_KILLS])
+            if (team.GetTeamScore() > winner.GetTeamScore())
             {
-                winnerTmp = player;
+                winner = team;
                 isDraw = false;
             }
-            else if ((int)player.CustomProperties[GlobalString.PLAYER_KILLS] <
-                     (int)winnerTmp.CustomProperties[GlobalString.PLAYER_KILLS])
+            else if (team.GetTeamScore() < winner.GetTeamScore())
             {
                 isDraw = false;
             }
@@ -160,7 +197,8 @@ public class LevelManagerOnlineMatch : LevelManager
             return;
         }
 
-        if (winnerTmp.IsLocal)
+
+        if (winner.TeamType == PhotonNetwork.LocalPlayer.GetTeam().TeamType)
         {
             guiManager.SetVisibleWinScreen(true);
         }
@@ -172,10 +210,10 @@ public class LevelManagerOnlineMatch : LevelManager
 
     private void CheckIfAllPlayersReady()
     {
-        var players = PhotonNetwork.PlayerList;
+        var players = PhotonNetwork.CurrentRoom.Players.Values;
         foreach (var player in players)
         {
-            if (player.GetScore() == -1) return;
+            if (!player.IsReadyInGame()) return;
         }
 
         CancelInvoke(nameof(CheckIfAllPlayersReady));
@@ -186,7 +224,7 @@ public class LevelManagerOnlineMatch : LevelManager
 
     protected override void GamePreStart()
     {
-        PhotonNetwork.LocalPlayer.SetScore(0); //For determining if player is ready to play, 0 = ready, -1 = not ready
+        PhotonNetwork.LocalPlayer.SetReadyInGame(true);
         SpawnPlayer();
         // photonView.RPC(nameof(SpawnFlag), RpcTarget.AllBuffered);
         InvokeRepeating(nameof(CheckIfAllPlayersReady), 0, .1f);
@@ -227,15 +265,6 @@ public class LevelManagerOnlineMatch : LevelManager
     }
 
     #endregion
-
-    void AssignTeams()
-    {
-        foreach (var player1 in PhotonNetwork.PlayerList)
-        {
-            RoomManager.Instance.PlayerCharacters[player1.ActorNumber] = player1.TagObject as PlayerCharacter;
-        }
-        // player.SetTeam(PhotonNetwork.LocalPlayer.GetTeam());
-    }
 
     private Vector3 GetSpawnPointForTeam(Team team)
     {

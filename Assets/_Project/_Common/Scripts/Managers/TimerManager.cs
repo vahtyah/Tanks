@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Photon.Pun;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class Timer
@@ -16,6 +17,7 @@ public class Timer
     private Action<float> onUpdate;
     private Action<float> onProgress;
     private Action<float> onRemaining;
+    private Action<float> onTimeRemaining;
     private Action onComplete;
     private Action onDone;
 
@@ -26,13 +28,13 @@ public class Timer
     public bool IsLooped { get; private set; }
     public bool IsCancelled { get; private set; }
     public bool UsesRealTime { get; private set; }
-    public bool IsDone => IsCompleted || IsCancelled || isOwnerDisappear;
-    public bool IsRunning => !IsDone;
-    public float Progress => GetTimeElapsed() / duration;
-    public float TimeRemaining => duration - GetTimeElapsed();
-    public float Remaining => duration / GetTimeElapsed();
+    public bool IsDone => IsCompleted || IsCancelled || isOwnerDisappeared;
+    public bool IsRunning => !IsDone && !IsPaused && IsRegistered;
+    public float Progress => GetElapsedTime() / duration;
+    public float TimeRemaining => duration - GetElapsedTime();
+    public float Remaining => duration / GetElapsedTime();
 
-    private bool isOwnerDisappear => hasOwner && (owner == null || !owner.gameObject.activeSelf);
+    private bool isOwnerDisappeared => hasOwner && (owner == null || !owner.gameObject.activeSelf);
 
     private Timer(float duration) { this.duration = duration; }
 
@@ -56,19 +58,44 @@ public class Timer
         this.onStart += onStart;
         return this;
     }
-
+    
+    /// <summary>
+    /// The time elapsed value will be between 0 and duration.
+    /// </summary>
+    /// <param name="onUpdate"></param>
+    /// <returns></returns>
     public Timer OnUpdate(Action<float> onUpdate)
     {
         this.onUpdate += onUpdate;
         return this;
     }
-
+    /// <summary>
+    /// The progress value will be between 0 and 1.
+    /// </summary>
+    /// <param name="onProgress"></param>
+    /// <returns></returns>
     public Timer OnProgress(Action<float> onProgress)
     {
         this.onProgress += onProgress;
         return this;
     }
 
+    /// <summary>
+    /// The time remaining value will be between 0 and duration.
+    /// </summary>
+    /// <param name="onRemaining"></param>
+    /// <returns></returns>
+    public Timer OnTimeRemaining(Action<float> onRemaining)
+    {
+        this.onTimeRemaining += onRemaining;
+        return this;
+    }
+    
+    /// <summary>
+    /// The remaining value will be between 0 and 1.
+    /// </summary>
+    /// <param name="onRemaining"></param>
+    /// <returns></returns>
     public Timer OnRemaining(Action<float> onRemaining)
     {
         this.onRemaining += onRemaining;
@@ -149,7 +176,7 @@ public class Timer
     public void Pause()
     {
         if (IsPaused || IsDone) return;
-        timeElapsedBeforePause = GetTimeElapsed();
+        timeElapsedBeforePause = GetElapsedTime();
     }
 
     public void Resume()
@@ -159,7 +186,7 @@ public class Timer
         timeElapsedBeforePause = null;
     }
 
-    private float GetTimeElapsed()
+    private float GetElapsedTime()
     {
         return IsCompleted ? duration : timeElapsedBeforePause ?? GetWorldTime() - startTime;
     }
@@ -176,9 +203,10 @@ public class Timer
 
         if (IsPaused) return;
 
-        onUpdate?.Invoke(GetTimeElapsed());
+        onUpdate?.Invoke(GetElapsedTime());
         onProgress?.Invoke(Progress);
-        onRemaining?.Invoke(TimeRemaining);
+        onTimeRemaining?.Invoke(TimeRemaining);
+        onRemaining?.Invoke(Remaining);
 
         if (GetWorldTime() < startTime + duration) return;
         onComplete?.Invoke();
@@ -194,20 +222,19 @@ public class Timer
 
 public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<GameEvent>
 {
+    [ShowInInspector]
     private readonly List<Timer> timers = new List<Timer>();
-    public int sizeOfTimers; //TODO: Delete
 
     private void Update()
     {
-        UpdateTimers();
-        sizeOfTimers = timers.Count;
+        RefreshTimers();
     }
 
     public void RegisterTimer(Timer timer) { timers.Add(timer); }
 
     public void RemoveTimer(Timer timer) { timers.Remove(timer); }
 
-    private void UpdateTimers()
+    private void RefreshTimers()
     {
         for (int i = timers.Count - 1; i >= 0; i--)
         {

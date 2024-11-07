@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class ForceFieldController : MonoBehaviour
@@ -46,10 +46,51 @@ public class ForceFieldController : MonoBehaviour
     private float openCloseValue;
     private float openCloseCurve;
     
+    private bool isClosing = false;
 
-    public void SetInvulnerable(bool b)
+    private void StartOpen()
     {
-        openAutoAnimation = b;
+        gameObject.SetActive(true);
+        isClosing = false;
+    }
+
+    private void StartClose()
+    {
+        isClosing = true;
+    }
+    
+    public void HandleOpenClose(bool open)
+    {
+        if (open)
+        {
+            StartOpen();
+        }
+        else
+        {
+            StartClose();
+        }
+    }
+    
+    public void SetColor(Color color)
+    {
+        procedrualRampColorTint = color;
+        if (procedrualGradientEnabled == true)
+        {
+            UpdateRampTexture();
+        }
+    }
+
+    [Button]
+    public void OpenClose()
+    {
+        if (openCloseValue == 0)
+        {
+            StartOpen();
+        }
+        else
+        {
+            StartClose();
+        }
     }
     
     // Use this for initialization
@@ -133,11 +174,11 @@ public class ForceFieldController : MonoBehaviour
 
         UpdateHitWaves();
 
-        if (openAutoAnimation == true)
+        if (openAutoAnimation && !isClosing)
         {
             OpenCloseProgress();
         }
-        else
+        else if (isClosing)
         {
             CloseCloseProgress();
         }
@@ -152,7 +193,8 @@ public class ForceFieldController : MonoBehaviour
         }
         else
         {
-            numberOfSpheres = getRenderersInChildren.transform.childCount;
+            // numberOfSpheres = getRenderersInChildren.transform.childCount;
+            numberOfSpheres = getRenderersInChildren.GetComponentsInChildren<Renderer>().Length;
         }
     }
 
@@ -179,6 +221,13 @@ public class ForceFieldController : MonoBehaviour
             openCloseValue = 1f;
         }
 
+        openCloseCurve = openCurve.Evaluate(openCloseValue);
+        openCloseProgress = openCloseCurve;
+    }
+    
+    public void OpenCloseProgress(float progress)
+    {
+        openCloseValue = progress;
         openCloseCurve = openCurve.Evaluate(openCloseValue);
         openCloseProgress = openCloseCurve;
     }

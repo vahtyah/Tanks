@@ -24,26 +24,19 @@ public class Team
 
     public TeamType TeamType;
     public Color TeamColor;
-    public List<Player> Players { get; private set; } = new();
+    [ShowInInspector] public List<Player> Players { get; private set; } = new();
 
     private Action<Player, Team> onPlayerJoin;
     private Action<Player, Team> onPlayerLeft;
 
-    public static Team Register(TeamType teamType)
+    public static Team Create(TeamType teamType)
     {
         EnsureManagerExists();
 
         var team = new Team
         {
             TeamType = teamType,
-            TeamColor = teamType switch
-            {
-                TeamType.Red => Color.red,
-                TeamType.Blue => Color.blue,
-                TeamType.Green => Color.green,
-                TeamType.Yellow => Color.yellow,
-                _ => Color.white
-            }
+            TeamColor = GetColorByTeamType(teamType)
         };
         manager.RegisterTeam(team);
         return team;
@@ -58,34 +51,34 @@ public class Team
     public static TeamType TryGetCacheTeam(Character playerCharacter)
     {
         EnsureManagerExists();
-        return manager.teamCache.GetValueOrDefault(playerCharacter, TeamType.None);
+        return manager.TeamCharacters.GetValueOrDefault(playerCharacter, TeamType.None);
     }
 
-    public static Team TryGetTeamBy(PlayerCharacter playerCharacter)
+    public static Team GetTeamByCharacter(PlayerCharacter playerCharacter)
     {
         EnsureManagerExists();
-        return manager.teamCache.TryGetValue(playerCharacter, out var teamType) ? TryGetTeamBy(teamType) : null;
+        return manager.TeamCharacters.TryGetValue(playerCharacter, out var teamType) ? GetTeamByType(teamType) : null;
     }
 
-    public static Team TryGetTeamBy(TeamType teamType)
+    public static Team GetTeamByType(TeamType teamType)
     {
         EnsureManagerExists();
         return manager.TryGetTeam(teamType, out var team) ? team : null;
     }
 
-    public static Team TryGetTeamBy(Player player)
+    public static Team GetTeamByPlayer(Player player)
     {
         EnsureManagerExists();
-        return TryGetTeamBy((TeamType)player.CustomProperties[GlobalString.TEAM]);
+        return GetTeamByType(player.GetTeam().TeamType);
     }
 
-    public static List<Player> GetPlayersBy(TeamType teamType)
+    public static List<Player> GetPlayersByTeam(TeamType teamType)
     {
         EnsureManagerExists();
-        return TryGetTeamBy(teamType)?.Players.ToList();
+        return GetTeamByType(teamType)?.Players.ToList();
     }
 
-    public static List<Team> GetTeams()
+    public static List<Team> GetAllTeams()
     {
         EnsureManagerExists();
         return manager.Teams.Values.ToList();
@@ -111,7 +104,7 @@ public class Team
         return this;
     }
 
-    public void AddPlayerToTeam(Player player)
+    public void AddPlayer(Player player)
     {
         Players.Add(player);
         onPlayerJoin?.Invoke(player, this);
@@ -122,23 +115,26 @@ public class Team
         Players.Remove(player);
         onPlayerLeft?.Invoke(player, this);
     }
+    
+    private static Color GetColorByTeamType(TeamType teamType)
+    {
+        return teamType switch
+        {
+            TeamType.Red => Color.red,
+            TeamType.Blue => Color.blue,
+            TeamType.Green => Color.green,
+            TeamType.Yellow => Color.yellow,
+            _ => Color.white
+        };
+    }
 }
 
 public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
 {
     public Info roomNameInfo;
     public Info teamNameInfo;
-    public List<Team> teamsDebug = new(); //TODO: Remove this
-    public Dictionary<int, PlayerCharacter> PlayerCharacters { get; private set; } = new();
-    [ShowInInspector]
-    public Dictionary<Character, TeamType> teamCache = new();
-
-    public void CacheTeam(Character playerCharacter, TeamType teamType)
-    {
-        teamCache[playerCharacter] = teamType;
-    }
-
-    public Dictionary<TeamType, Team> Teams { get; private set; } = new();
+    [ShowInInspector] public Dictionary<Character, TeamType> TeamCharacters = new();
+    [ShowInInspector] public Dictionary<TeamType, Team> Teams { get; private set; } = new();
 
     private void Start()
     {
@@ -148,31 +144,22 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            Debug.Log("Team.TryGetTeamBy(Red) = " + Team.TryGetTeamBy(TeamType.Red));
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GlobalString.TEAM_SIZE, out var teamSize);
-            Debug.Log("teamSize = " + (int)teamSize);
-        }
-
         roomNameInfo.SetValue(PhotonNetwork.CurrentRoom?.Name);
-        var team = PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(GlobalString.TEAM, out var teamType)
-            ? teamType
-            : "None";
+        var team = PhotonNetwork.LocalPlayer.CustomProperties.GetValueOrDefault(GlobalString.TEAM, "None");
         teamNameInfo.SetValue(team.ToString());
+    }
+
+    public void CacheTeam(Character playerCharacter, TeamType teamType)
+    {
+        TeamCharacters[playerCharacter] = teamType;
     }
 
     public void RegisterTeam(Team team)
     {
-        if (Teams.TryAdd(team.TeamType, team))
+        if (!Teams.TryAdd(team.TeamType, team))
         {
-            teamsDebug.Add(team);
-            return;
+            Debug.LogWarning($"Team {team.TeamType} already exists");
         }
-
-        Debug.LogWarning($"Team {team.TeamType} already exists");
     }
 
     public override void OnCreatedRoom()
@@ -182,8 +169,8 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
 
     public override void OnJoinedRoom()
     {
-        UpdateTeams();
-        PhotonNetwork.LocalPlayer.SetTeam(GetLowestTeam());
+        InitializeTeams();
+        PhotonNetwork.LocalPlayer.AssignTeam(GetTeamWithFewestPlayers());
         RoomEvent.Trigger(RoomEventType.RoomJoin, PhotonNetwork.CurrentRoom);
     }
 
@@ -204,109 +191,37 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
     {
         if (changedProps.TryGetValue(GlobalString.TEAM, out var teamType))
         {
-            var team = Team.TryGetTeamBy((TeamType)teamType);
-            team?.AddPlayerToTeam(targetPlayer);
+            var team = Team.GetTeamByType((TeamType)teamType);
+            team?.AddPlayer(targetPlayer);
         }
     }
 
-    private TeamType GetLowestTeam()
+    private TeamType GetTeamWithFewestPlayers()
     {
-        var lowestTeam = TeamType.Red;
-        var lowestCount = int.MaxValue;
-        foreach (var team in Teams.Where(team => team.Value.Players.Count < lowestCount))
-        {
-            lowestCount = team.Value.Players.Count;
-            lowestTeam = team.Key;
-        }
-
-        return lowestTeam;
+        return Teams.OrderBy(t => t.Value.Players.Count).First().Key;
     }
 
-    private void UpdateTeams()
+    private void InitializeTeams()
     {
         if (Teams.Count > 0) return;
-        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GlobalString.TEAM_SIZE, out var teamSiz);
-        if (teamSiz != null) Debug.Log("teamSize = " + (int)teamSiz);
-        else
+        var teamSiz = PhotonNetwork.CurrentRoom.GetTeamSize();
+        if (teamSiz != -1)
         {
-            Debug.LogWarning("Team size is not set");
-        }
-
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(GlobalString.TEAM_SIZE, out var teamSize) &&
-            teamSize is int size)
-        {
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < teamSiz; i++)
             {
-                Team.Register((TeamType)i);
+                Team.Create((TeamType)i);
             }
         }
 
-
-        var players = PhotonNetwork.CurrentRoom.Players.Values;
-        foreach (var player in players)
+        foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
         {
             var team = player.GetTeam();
-            if (team != null)
-            {
-                team.AddPlayerToTeam(player);
-            }
+            team?.AddPlayer(player);
         }
     }
 
     public bool TryGetTeam(TeamType teamType, out Team team)
     {
         return Teams.TryGetValue(teamType, out team);
-    }
-}
-
-public static class TeamExtensions
-{
-    public static List<Team> CreateTeams(this Room room, int teamSize)
-    {
-        var teams = new List<Team>();
-        for (int i = 0; i < teamSize; i++)
-        {
-            teams.Add(Team.Register((TeamType)i));
-        }
-
-        return teams;
-    }
-
-    public static Team SetTeam(this Player player, TeamType teamType)
-    {
-        var team = Team.TryGetTeamBy(teamType);
-        if (team == null)
-        {
-            Debug.LogWarning($"Team {teamType} does not exist");
-            return null;
-        }
-
-        player.SetCustomProperties(new Hashtable { { GlobalString.TEAM, teamType } });
-        // team.AddPlayerToTeam(player);
-        return team;
-    }
-
-    public static Team GetTeam(this Player player)
-    {
-        if (!player.CustomProperties.TryGetValue(GlobalString.TEAM, out var teamName))
-        {
-            Debug.LogWarning("Player does not have a team");
-            return null;
-        }
-
-        var teamType = (TeamType)teamName;
-        return Team.TryGetTeamBy(teamType);
-    }
-
-    public static TeamType GetTeam(this Character player)
-    {
-        var teamType = Team.TryGetCacheTeam(player);
-        if (teamType != TeamType.None) return teamType;
-        
-        var team = player.PhotonView.Owner.GetTeam();
-        teamType = team?.TeamType ?? TeamType.None;
-        Team.CacheTeam(player, teamType);
-
-        return teamType;
     }
 }

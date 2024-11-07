@@ -2,7 +2,8 @@
 
 public class GlobalString 
 {
-    public const string PLAYER_READY = "IsPlayerReady";
+    public const string PLAYER_READY_INGAME = "IsPlayerReadyInGame";
+    public const string PLAYER_READY_ENTRY = "IsPlayerReady";
     public const string PLAYER_DIED = "IsPlayerDied";
     
     public const string PLAYER_KILLS = "PlayerKills";

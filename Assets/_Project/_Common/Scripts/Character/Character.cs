@@ -14,12 +14,15 @@ public class Character : MonoBehaviour
     public PhotonView PhotonView { get; private set; }
     public Collider Collider { get; private set; }
     public Weapon EquippedWeapon { get; private set; }
+
     [ShowInInspector, TitleGroup("Debugs")]
 
     public TeamType Team { get; protected set; }
 
     [ShowInInspector, TitleGroup("Debugs")]
     public List<Character> Teammates { get; protected set; } = new();
+
+    [ShowInInspector] public int MultiKillCount { get; private set; }
 
     //StateMachine
     public StateMachine<CharacterStates.CharacterCondition>
@@ -44,5 +47,22 @@ public class Character : MonoBehaviour
     public void EquipWeapon(Weapon weapon)
     {
         EquippedWeapon = weapon;
+    }
+
+    public void IncreaseMultiKillCount()
+    {
+        MultiKillCount++;
+    }
+
+    public int GetMultiKillScore()
+    {
+        var multiKills = LevelManager.Instance.MultiKills;
+
+        if (multiKills.Count == 0)
+            return 1;
+
+        int index = Mathf.Clamp(MultiKillCount, 0, multiKills.Count - 1);
+
+        return index < 0 ? 1 : multiKills[index].bonusScore;
     }
 }

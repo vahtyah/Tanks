@@ -3,7 +3,14 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class ScoreboardPanel : MonoBehaviour
+public interface IScoreboardPanel
+{
+    void Initialize();
+    void SetVisible(bool visible);
+    void UpdateScoreboardItem(string name, int skills, int deaths, int score);
+}
+
+public class ScoreboardPanel : MonoBehaviour, IScoreboardPanel
 {
     [SerializeField] private Transform scoreboardContent;
     [SerializeField] private GameObject scoreboardItemPrefab;
@@ -18,6 +25,11 @@ public class ScoreboardPanel : MonoBehaviour
             var scoreboardItem = AddScoreboardItem(player.NickName, 0, 0, 0);
             scoreboardItems.Add(player.NickName, scoreboardItem);
         }
+    }
+
+    public void SetVisible(bool visible)
+    {
+        gameObject.SetActive(visible);
     }
 
     private ScoreboardItem AddScoreboardItem(string name, int skills, int deaths, int score)

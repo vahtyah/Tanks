@@ -114,7 +114,7 @@ public class LobbyMainMenuPanel : SingletonPunCallbacks<LobbyMainMenuPanel>
         // }
         // else
         // {
-        //     var props = new Hashtable() { { GlobalString.PLAYER_READY, true } };
+        //     var props = new Hashtable() { { GlobalString.PLAYER_READY_ENTRY, true } };
         //     PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         // }
     }
@@ -186,7 +186,7 @@ public class LobbyMainMenuPanel : SingletonPunCallbacks<LobbyMainMenuPanel>
     {
         if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out var playerEntry))
         {
-            if (changedProps.TryGetValue(GlobalString.PLAYER_READY, out var isReady))
+            if (changedProps.TryGetValue(GlobalString.PLAYER_READY_ENTRY, out var isReady))
             {
                 playerEntry.SetReadyButton((bool)isReady);
             }
@@ -222,13 +222,13 @@ public class LobbyMainMenuPanel : SingletonPunCallbacks<LobbyMainMenuPanel>
         //     var playerEntry =
         //         PlayerEntry.Create(playerEntryPrefab, player.NickName, player.ActorNumber, playerListEntry);
         //
-        //     if (player.CustomProperties.TryGetValue(GlobalString.PLAYER_READY, out var isReady))
+        //     if (player.CustomProperties.TryGetValue(GlobalString.PLAYER_READY_ENTRY, out var isReady))
         //     {
         //         playerEntry.SetReadyButton((bool)isReady);
         //     }
         //     else
         //     {
-        //         var props = new Hashtable() { { GlobalString.PLAYER_READY, false } };
+        //         var props = new Hashtable() { { GlobalString.PLAYER_READY_ENTRY, false } };
         //         player.SetCustomProperties(props);
         //     }
         //
@@ -240,7 +240,7 @@ public class LobbyMainMenuPanel : SingletonPunCallbacks<LobbyMainMenuPanel>
 
     public override void OnLeftRoom()
     {
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() { { GlobalString.PLAYER_READY, false } });
+        PhotonNetwork.LocalPlayer.SetReadyInLobby(false);
         foreach (var playerEntry in playerListEntries)
         {
             Destroy(playerEntry.Value.gameObject);
@@ -257,14 +257,7 @@ public class LobbyMainMenuPanel : SingletonPunCallbacks<LobbyMainMenuPanel>
 
         foreach (var player in PhotonNetwork.PlayerList)
         {
-            if (player.CustomProperties.TryGetValue(GlobalString.PLAYER_READY, out var isReady))
-            {
-                if (!(bool)isReady) return false;
-            }
-            else
-            {
-                return false;
-            }
+            return player.IsReadyInLobby();
         }
 
         return true;
@@ -278,8 +271,7 @@ public class LobbyMainMenuPanel : SingletonPunCallbacks<LobbyMainMenuPanel>
             {
                 foreach (var player in PhotonNetwork.PlayerList)
                 {
-                    var props = new Hashtable() { { GlobalString.PLAYER_READY, false } };
-                    player.SetCustomProperties(props);
+                    player.SetReadyInLobby(false);
                 }
             }
 

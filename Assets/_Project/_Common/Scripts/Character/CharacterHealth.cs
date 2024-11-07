@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class CharacterHealth : Health, IEventListener<GameEvent>
 {
-    [SerializeField] private CharacterCaptureFlag characterCaptureFlag;
-    
+    private CharacterFlagCapture characterFlagCapture;
+
     public GameObject TankExplosionEffect;
     [SerializeField] private ForceFieldController protectionShield;
     [SerializeField] private int timeInvulnerableAfterSpawn = 3;
-    private Character character;
+    protected Character Character;
     private Timer invulnerableTimer;
 
     protected override void Awake()
     {
         base.Awake();
-        character = GetComponent<Character>();
+        Character = GetComponent<Character>();
+        characterFlagCapture = GetComponent<CharacterFlagCapture>();
 
         invulnerableTimer = Timer.Register(timeInvulnerableAfterSpawn)
             .OnStart(() => SetInvulnerableRPC(true))
@@ -29,28 +30,21 @@ public class CharacterHealth : Health, IEventListener<GameEvent>
 
     private void SetInvulnerableRPC(bool isInvulnerable)
     {
-        PhotonView.RPC(nameof(SetInvulnerable), RpcTarget.All, isInvulnerable);
+        if (PhotonView.IsMine)
+            PhotonView.RPC(nameof(SetInvulnerable), RpcTarget.All, isInvulnerable);
     }
 
     [PunRPC]
     private void SetInvulnerable(bool isInvulnerable)
     {
         IsInvulnerable = isInvulnerable;
-
-        if (!isInvulnerable)
-        {
-            protectionShield.SetInvulnerable(false);
-        }
-        else
-        {
-            protectionShield.gameObject.SetActive(true);
-        }
+        protectionShield.HandleOpenClose(isInvulnerable);
     }
 
     protected override void OnDeath(int lastHitBy)
     {
         PhotonView.RPC(nameof(OnDeathRPC), RpcTarget.All);
-        characterCaptureFlag.ReleaseCapturedFlag();
+        characterFlagCapture.ReleaseCapturedFlag(transform.position);
 
         if (!PhotonView.IsMine) return;
 
@@ -60,28 +54,21 @@ public class CharacterHealth : Health, IEventListener<GameEvent>
 
     private void UpdatePlayerStats(int lastHitBy)
     {
-        var currentPlayerProperties = new Hashtable
-        {
-            { GlobalString.PLAYER_DIED, true },
-            { GlobalString.PLAYER_DEATHS, (int)PhotonView.Owner.CustomProperties[GlobalString.PLAYER_DEATHS] + 1 }
-        };
-        PhotonView.Owner.SetCustomProperties(currentPlayerProperties);
-
-        var killerProperties = new Hashtable
-        {
-            {
-                GlobalString.PLAYER_KILLS,
-                (int)PhotonNetwork.GetPhotonView(lastHitBy).Owner.CustomProperties[GlobalString.PLAYER_KILLS] + 1
-            }
-        };
-        PhotonNetwork.GetPhotonView(lastHitBy).Owner.SetCustomProperties(killerProperties);
+        Character.SetPlayerDied(true);
+        Character.AddDeath(1);
+        Character.AddScore(-1);
+        
+        var killer = PhotonNetwork.GetPhotonView(lastHitBy).gameObject.GetComponent<Character>();
+        killer.IncreaseMultiKillCount();
+        killer.AddKill(1);
+        killer.AddScore(killer.GetMultiKillScore());
     }
 
     [PunRPC]
     private void OnDeathRPC()
     {
-        character.ConditionState.ChangeState(CharacterStates.CharacterCondition.Dead);
-        CharacterEvent.Trigger(CharacterEventType.CharacterDeath, character);
+        Character.ConditionState.ChangeState(CharacterStates.CharacterCondition.Dead);
+        CharacterEvent.Trigger(CharacterEventType.CharacterDeath, Character);
 
         // Spawn death effect
         var effect = Pool.Spawn(TankExplosionEffect, null).GetComponent<ParticleSystem>();

@@ -15,7 +15,7 @@ public class Pool
     private readonly Queue<GameObject> availableObjects = new Queue<GameObject>();
     private Transform parentTransform;
 
-    private static Pool Register(GameObject prefab, Transform parentTransform = null, int initialSize = 0)
+    public static Pool Register(GameObject prefab, Transform parentTransform = null, int initialSize = 0)
     {
         EnsureManagerExists();
         parentTransform ??= _manager.transform;
@@ -34,58 +34,33 @@ public class Pool
         return _manager.RegisterPool(prefab, pool);
     }
 
-    // public void Return(GameObject obj)
-    // {
-    //     EnsureManagerExists();
-    //
-    //     if (availableObjects.Contains(obj))
-    //         return;
-    //
-    //     _manager.UntrackObject(obj);
-    //     obj.SetActive(false);
-    //     availableObjects.Enqueue(obj);
-    // }
 
-    public static GameObject Spawn(GameObject prefab, Transform parent = null)
+    public static GameObject Spawn(GameObject prefab)
+    {
+        return Spawn(prefab, Vector3.zero, Quaternion.identity);
+    }
+    
+    public static GameObject Spawn(GameObject prefab, Transform parent)
+    {
+        return Spawn(prefab, Vector3.zero, Quaternion.identity, parent);
+    }
+
+    public static GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation = default, Transform parent = null)
     {
         EnsureManagerExists();
-
         var pool = _manager.GetPool(prefab) ?? Register(prefab, parent);
-
-        if (pool.availableObjects.Count > 0)
+        if(pool.availableObjects.Count > 0)
         {
             var obj = pool.availableObjects.Dequeue();
             _manager.TrackObject(obj, pool);
+            obj.transform.SetPositionAndRotation(position, rotation);
             obj.SetActive(true);
             return obj;
         }
-
-        var newObj = Object.Instantiate(prefab, pool.parentTransform);
-        _manager.TrackObject(newObj, pool);
-        newObj.SetActive(true);
-        return newObj;
-    }
-
-    public static GameObject Spawn(GameObject prefab, Vector3 position = default, Quaternion rotation = default,
-        bool enable = true)
-    {
-        EnsureManagerExists();
-
-        var pool = _manager.GetPool(prefab) ?? Register(prefab);
-
-        if (pool.availableObjects.Count > 0)
-        {
-            var obj = pool.availableObjects.Dequeue();
-            _manager.TrackObject(obj, pool);
-            obj.transform.position = position;
-            obj.transform.rotation = rotation;
-            obj.SetActive(enable);
-            return obj;
-        }
-
+        
         var newObj = Object.Instantiate(prefab, position, rotation, pool.parentTransform);
         _manager.TrackObject(newObj, pool);
-        newObj.SetActive(enable);
+        newObj.SetActive(true);
         return newObj;
     }
 
@@ -109,6 +84,18 @@ public class Pool
         _manager.TrackObject(newObj, pool);
         newObj.SetActive(true);
         return newObj;
+    }
+    
+    public void Return(GameObject obj)
+    {
+        EnsureManagerExists();
+    
+        if (availableObjects.Contains(obj))
+            return;
+    
+        _manager.UntrackObject(obj);
+        obj.SetActive(false);
+        availableObjects.Enqueue(obj);
     }
 
     public static void Despawn(GameObject obj)

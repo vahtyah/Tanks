@@ -32,7 +32,7 @@ public class LevelManagerBotMatch : LevelManager
     private Action<int> onScoreChange;
     private Action<string> onUsernameChange;
 
-    //TODO: Instance the player character if needed
+    //TODO: Instance the player Character if needed
     [SerializeField] private PlayerCharacter character;
 
     protected override void Initialize()

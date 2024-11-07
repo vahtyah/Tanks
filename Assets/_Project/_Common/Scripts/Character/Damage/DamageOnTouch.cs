@@ -28,7 +28,7 @@ public class DamageOnTouch : MonoBehaviour
     {
         // if (owner == null) return;
         // var ownerTeam = PhotonNetwork.LocalPlayer.GetTeam();
-        // var teamMembers = Team.GetPlayersBy(ownerTeam.TeamType);
+        // var teamMembers = Team.GetPlayersByTeam(ownerTeam.TeamType);
         // foreach (var teamMember in teamMembers)
         // {
         //     Debug.Log(teamMember.ActorNumber);

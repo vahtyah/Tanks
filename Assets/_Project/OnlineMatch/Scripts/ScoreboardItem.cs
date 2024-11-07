@@ -25,6 +25,12 @@ public class ScoreboardItem : MonoBehaviour
         this.deaths.text = deaths.ToString();
         this.score.text = score.ToString();
     }
+
+    public void SetData(string name, int score)
+    {
+        playerName.text = name;
+        this.score.text = score.ToString();
+    }
     
     public void SetColor(Color color)
     {
