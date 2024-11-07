@@ -10,7 +10,6 @@ using UnityEngine;
 public class TeamResource
 {
     public TeamType TeamType;
-    public Transform SpawnArea;
     public Material FlagMaterial;
     public Sprite indicatorSprite;
 }
@@ -20,7 +19,8 @@ public class TeamManager : Singleton<TeamManager>, IEventListener<GameEvent>
     [SerializeField] private GameObject flagPrefab;
     [SerializeField] private List<TeamResource> teamResources;
     [ShowInInspector] Dictionary<TeamType, Flag> flags = new Dictionary<TeamType, Flag>();
-    public Transform GetSpawnArea(TeamType teamType) => teamResources.Find(x => x.TeamType == teamType).SpawnArea;
+    
+    private EnvironmentManager environment => EnvironmentManager.Instance;
 
     public void OnEvent(GameEvent e)
     {
@@ -36,14 +36,14 @@ public class TeamManager : Singleton<TeamManager>, IEventListener<GameEvent>
     [PunRPC]
     private void SpawnFlags()
     {
-        var team = Team.GetAllTeams();
-        for (int i = 0; i < team.Count; i++)
+        var teams = Team.GetAllTeams();
+        for (int i = 0; i < teams.Count; i++)
         {
-            var flagGO = Pool.Spawn(flagPrefab, teamResources[i].SpawnArea.position, flagPrefab.transform.rotation);
+            var flagGO = Pool.Spawn(flagPrefab, environment.CurrentMap.GetAreaPosition(teams[i].TeamType), flagPrefab.transform.rotation);
             var flag = flagGO.GetComponent<Flag>();
             Indicator.Create(flag.transform, teamResources[i].indicatorSprite);
-            flag.Initialize(team[i].TeamType, teamResources[i].FlagMaterial);
-            flags.Add(team[i].TeamType, flag);
+            flag.Initialize(teams[i].TeamType, teamResources[i].FlagMaterial);
+            flags.Add(teams[i].TeamType, flag);
         }
     }
 

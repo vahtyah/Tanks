@@ -63,6 +63,6 @@ public class Character : MonoBehaviour
 
         int index = Mathf.Clamp(MultiKillCount, 0, multiKills.Count - 1);
 
-        return index < 0 ? 1 : multiKills[index].bonusScore;
+        return index < 0 ? 1 : multiKills[index].BonusScore;
     }
 }

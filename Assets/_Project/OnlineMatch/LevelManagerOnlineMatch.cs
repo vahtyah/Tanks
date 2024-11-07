@@ -8,8 +8,14 @@ using UnityEngine;
 [Serializable]
 public class MultiKill
 {
-    public string message;
-    public int bonusScore;
+    public string Message;
+    public int BonusScore;
+}
+public enum TeamCount
+{
+    TwoTeams = 2,
+    ThreeTeams = 3,
+    FourTeams = 4
 }
 
 public class LevelManagerOnlineMatch : LevelManager
@@ -20,15 +26,12 @@ public class LevelManagerOnlineMatch : LevelManager
     [SerializeField] private int respawnDuration = 5;
 
     // [SerializeField] private float minimumSpawnDistance = 2f;
-    [SerializeField] private List<Transform> spawnPoints;
-
-    
 
     private ISpawnPoint spawner;
     private PlayerCharacter localPlayer;
     private GUIManagerOnlineMatch guiManager;
     private FeedbacksManager feedbackManager;
-    private TeamManager teamManager;
+    private EnvironmentManager environmentManager;
 
     private Timer respawnTimer;
     private Timer gameTimer;
@@ -42,7 +45,6 @@ public class LevelManagerOnlineMatch : LevelManager
             Scene.Load(Scene.SceneName.MainMenu);
         }
 
-
         gameDuration = GameManager.Instance.gameTime == 0 ? gameDuration : GameManager.Instance.gameTime;
         respawnDuration = GameManager.Instance.respawnTime == 0 ? respawnDuration : GameManager.Instance.respawnTime;
     }
@@ -51,7 +53,7 @@ public class LevelManagerOnlineMatch : LevelManager
     {
         guiManager = GUIManagerOnlineMatch.Instance;
         feedbackManager = FeedbacksManager.Instance;
-        teamManager = TeamManager.Instance;
+        environmentManager = EnvironmentManager.Instance;
         RegisterCustomProperties();
         RegisterTimers();
         GameEvent.Trigger(GameEventType.GamePreStart);
@@ -268,22 +270,16 @@ public class LevelManagerOnlineMatch : LevelManager
 
     private Vector3 GetSpawnPointForTeam(Team team)
     {
-        var col = teamManager.GetSpawnArea(team.TeamType).GetComponent<Collider>();
-        spawner = new AreaSpawnPoint(col);
-        return GetValidSpawnPoint();
+        // var col = teamManager.GetSpawnArea(team.TeamType).GetComponent<Collider>();
+        // spawner = new AreaSpawnPoint(col);
+        return GetValidSpawnPoint(team);
     }
 
-    private Vector3 GetValidSpawnPoint()
+    private Vector3 GetValidSpawnPoint(Team team)
     {
-        int i = 0;
-        while (i < 10)
-        {
-            i++;
-            var spawnPoint = spawner.NextSpawnPointByIndex(PhotonNetwork.LocalPlayer.ActorNumber);
-            if (IsSpawnPointValid(spawnPoint))
-                return spawnPoint;
-        }
-
+        var spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(team.TeamType, PhotonNetwork.LocalPlayer.ActorNumber);
+        if (IsSpawnPointValid(spawnPoint))
+            return spawnPoint;
         return spawner.NextRandomSpawnPoint();
     }
 
