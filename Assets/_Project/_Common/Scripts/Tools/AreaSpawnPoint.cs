@@ -18,6 +18,12 @@ public class AreaSpawnPoint : ISpawnPoint
         }
     }
     
+    public AreaSpawnPoint(List<Vector3> spawnPoints)
+    {
+        this.spawnPoints = spawnPoints;
+        unusedPoint = new List<Vector3>(spawnPoints);
+    }
+    
     private Vector3 RandomPointInBounds(Bounds bounds)
     {
         return new Vector3(

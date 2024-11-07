@@ -32,7 +32,7 @@ public class CharacterFlagCapture : CharacterAbility
     {
         PhotonView.RPC(nameof(RPC_Initialize), RpcTarget.All);
         GUI = GUIManagerOnlineMatch.Instance;
-        teamArea = TeamManager.Instance.GetSpawnArea(Character.GetTeam());
+        teamArea = EnvironmentManager.Instance.CurrentMap.GetAreaTransform(Character.GetTeam());
         RegisterTimers();
     }
 
