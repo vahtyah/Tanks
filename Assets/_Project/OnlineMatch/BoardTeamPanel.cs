@@ -35,7 +35,7 @@ public class BoardTeamPanel : MonoBehaviour
 
     /*public void JoinRoom()
     {
-        var teams = Team.GetTeams();
+        var teams = Team.GetAllTeams();
         Initialize(teams.Count);
         teams.ForEach(team => team.Players.ForEach(player => AddPlayer(player, team)));
     }*/

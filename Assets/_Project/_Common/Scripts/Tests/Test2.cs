@@ -3,12 +3,18 @@ using UnityEngine;
 
 public class Test2 : MonoBehaviour
 {
-    private void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.I))
-            Pool.Spawn(gameObject, null);
-        
-        if(Input.GetKeyDown(KeyCode.O))
-            Pool.Despawn(gameObject);
+        Debug.Log("OnTriggerEnter");
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("OnTriggerExit");
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        Debug.Log("OnTriggerStay");
     }
 }

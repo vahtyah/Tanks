@@ -11,7 +11,8 @@ public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEvent
     IEventListener<GameEvent>
 {
     protected PlayerCharacter winner;
-
+    [SerializeField] private List<MultiKill> multiKills;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -57,6 +58,8 @@ public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEvent
         yield return new WaitForSecondsRealtime(1);
         GameEvent.Trigger(GameEventType.GameOver);
     }
+    
+    public List<MultiKill> MultiKills => multiKills;
 
     public void OnEvent(GameEvent e)
     {

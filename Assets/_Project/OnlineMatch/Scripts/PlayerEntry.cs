@@ -43,8 +43,7 @@ public class PlayerEntry : MonoBehaviour
             {
                 isReady = !isReady;
                 SetReadyButton(isReady);
-                var props = new Hashtable() { { GlobalString.PLAYER_READY, isReady } };
-                PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+                PhotonNetwork.LocalPlayer.SetReadyInLobby(isReady);
             });
         }
     }

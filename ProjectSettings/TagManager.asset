@@ -8,6 +8,7 @@ TagManager:
   - Protective
   - Projectile
   - Flag
+  - SpawnArea
   layers:
   - Default
   - TransparentFX

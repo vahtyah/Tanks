@@ -59,6 +59,13 @@ MonoBehaviour:
   - ExecuteCaptureFlag
   - RPC_ReleaseFlag
   - RPC_CaptureFlag
+  - RPC_ReturnFlag
+  - RPC_Initialize
+  - RPC_StartTimerCapture
+  - RPC_StopTimerCapture
+  - RPC_UpdateTimerCapture
+  - RPC_SetTargetFlag
+  - RPC_UpdateScoreTeam
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

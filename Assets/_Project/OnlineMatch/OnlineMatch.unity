@@ -3980,6 +3980,7 @@ MonoBehaviour:
   waitingForOthersText: {fileID: 1732906718}
   scoreboardPanel: {fileID: 1487922324}
   playerHUD: {fileID: 1778696612}
+  targetIndicator: {fileID: 0}
 --- !u!1 &1487922322
 GameObject:
   m_ObjectHideFlags: 0
@@ -6133,10 +6134,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1817581257062871318, guid: d1a99c458c9e30f4da9ef4ce53a83d3d, type: 3}
-  gameTimeLength: 180
-  preStartTimeLength: 5
-  deathTimeLength: 5
-  minimumDistanceToSpawn: 2
+  gameDuration: 180
+  preStartDuration: 5
+  respawnDuration: 5
   spawnPoints:
   - {fileID: 1255944627}
   - {fileID: 196213937}

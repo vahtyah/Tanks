@@ -6,21 +6,32 @@ using UnityEngine.Serialization;
 public class Flag : MonoBehaviour
 {
     [SerializeField] private Renderer rd;
+    [SerializeField] private ForceFieldController capturingEffect;
+    
     public Renderer Rd => rd;
     public TeamType Team { get; private set; }
     public TeamType TeamCaptured { get; private set; } = TeamType.None;
     private Vector3 initialPosition;
-    public float respawnDuration = 5f;
-    private Timer respawnTimer;
+    public float returningTime = 5f;
+    private Timer returningTimer;
+    private Indicator indicator;
 
-    private PhotonView photonView;
 
     private void Start()
     {
-        photonView = GetComponent<PhotonView>();
         initialPosition = transform.position;
-        respawnTimer = Timer.Register(respawnDuration)
-            .OnComplete(Return)
+        returningTimer = Timer.Register(returningTime)
+            .OnStart(() =>
+            {
+                indicator = Indicator.GetIndicator(transform);
+                indicator.StartReturningEffect(returningTime);
+            })
+            .OnTimeRemaining(remaining => indicator.SetCountdownText(remaining))
+            .OnComplete(() =>
+            {
+                indicator.StopReturningEffect();
+                Return();
+            })
             .AutoDestroyWhenOwnerDisappear(this);
     }
 
@@ -47,9 +58,9 @@ public class Flag : MonoBehaviour
     public void Release(Vector3 position)
     {
         TeamCaptured = TeamType.None;
-        transform.position = position.With(y:initialPosition.y);
+        transform.position = position.With(y: initialPosition.y);
         gameObject.SetActive(true);
-        respawnTimer.Reset();
+        returningTimer.Reset();
     }
 
     public void Return()
@@ -58,4 +69,26 @@ public class Flag : MonoBehaviour
         transform.position = initialPosition;
         gameObject.SetActive(true);
     }
+    
+    public void StartCapturingEffect()
+    {
+        capturingEffect?.HandleOpenClose(true);
+    }
+    
+    public void UpdateCapturingEffect(float fillAmount)
+    {
+        capturingEffect?.OpenCloseProgress(fillAmount);
+    }
+    public void StopCapturingEffect()
+    {
+        capturingEffect?.HandleOpenClose(false);
+    }
+    
+    public void ChangeColorCapturingEffect(Color color)
+    {
+        capturingEffect.SetColor(color);
+    }
+
+    public bool IsCaptured => TeamCaptured != TeamType.None && !gameObject.activeSelf;
+
 }

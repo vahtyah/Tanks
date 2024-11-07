@@ -53,7 +53,7 @@ public class RoomController : MonoBehaviour, IEventListener<RoomEvent>
     public void OnJoinRoom()
     {
         boardTeamPanel.gameObject.SetActive(true);
-        var teams = Team.GetTeams();
+        var teams = Team.GetAllTeams();
         boardTeamPanel.Initialize(teams);
     }
 
