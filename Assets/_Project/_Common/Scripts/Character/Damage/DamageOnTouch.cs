@@ -102,7 +102,7 @@ public class DamageOnTouch : MonoBehaviour
         if (!targetObject.TryGetComponent(out Character targetPlayer)) return false;
         if (owner.Teammates.Contains(targetPlayer)) return true;
 
-        bool isSameTeam = targetPlayer.GetTeam() == owner.GetTeam();
+        bool isSameTeam = targetPlayer.GetTeamType() == owner.GetTeamType();
         if (isSameTeam) owner.Teammates.Add(targetPlayer);
 
         return isSameTeam;

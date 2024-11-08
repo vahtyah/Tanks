@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
@@ -9,13 +9,6 @@ public class SpawnAreaManager : MonoBehaviour
     
     TeamType teamType = TeamType.None;
     
-    private TeamType GetTeamType()
-    {
-        if (teamType == TeamType.None)
-            teamType = PhotonNetwork.LocalPlayer.GetTeam().TeamType;
-        return teamType;
-    }
-
     private void Awake()
     {
         foreach (Transform child in transform)
@@ -26,9 +19,9 @@ public class SpawnAreaManager : MonoBehaviour
         }
     }
     
-    public SpawnArea GetSpawnAreaByTeam()
+    public SpawnArea GetSpawnAreaByTeam(Team team)
     {
-        return spawnAreas[GetTeamType()];
+        return spawnAreas[team.TeamType];
     }
     
     public SpawnArea GetRandomSpawnArea()

@@ -24,21 +24,22 @@ public class TeamMap : Map
         };
     }
     
-    public override Vector3 GetRandomSpawnPosition()
+    public override Vector3 GetRandomSpawnPosition(Team team)
     {
-        var spawnArea = SpawnAreaManager.GetSpawnAreaByTeam();
+        var spawnArea = SpawnAreaManager.GetSpawnAreaByTeam(team);
         return spawnArea.GetSpawnPoint();
     }
-    
-    public override Vector3 GetSpawnPositionByIndex(int index)
+
+
+    public override Vector3 GetSpawnPositionByIndex(Team team, int index)
     {
-        var spawnArea = SpawnAreaManager.GetSpawnAreaByTeam();
+        var spawnArea = SpawnAreaManager.GetSpawnAreaByTeam(team);
         return spawnArea.GetSpawnPointByIndex(index);
     }
     
-    public override Transform GetAreaTransform()
+    public override Transform GetAreaTransform(Team team)
     {
-        var spawnArea = SpawnAreaManager.GetSpawnAreaByTeam();
+        var spawnArea = SpawnAreaManager.GetSpawnAreaByTeam(team);
         return spawnArea.transform;
     }
 }

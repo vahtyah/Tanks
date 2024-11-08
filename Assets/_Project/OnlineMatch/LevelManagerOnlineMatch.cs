@@ -187,7 +187,7 @@ public class LevelManagerOnlineMatch : LevelManager
         {
             if (player.GetScore() > winnerTmp.GetScore())
             {
-                winner = team;
+                winnerTmp = player;
                 isDraw = false;
             }
             else if (player.GetScore() < winnerTmp.GetScore())
@@ -203,7 +203,7 @@ public class LevelManagerOnlineMatch : LevelManager
         }
 
 
-        if (winner.TeamType == PhotonNetwork.LocalPlayer.GetTeam().TeamType)
+        if (winner.GetTeamType() == PhotonNetwork.LocalPlayer.GetTeam().TeamType)
         {
             guiManager.SetVisibleWinScreen(true);
         }
@@ -310,17 +310,18 @@ public class LevelManagerOnlineMatch : LevelManager
         return GetValidSpawnPoint();
     }
 
-    private Vector3 GetValidSpawnPoint(Team team)
+    private Vector3 GetValidSpawnPoint()
     {
-        var index = PhotonNetwork.LocalPlayer.ActorNumber;
-        var spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(PhotonNetwork.LocalPlayer.ActorNumber);
+        var player = PhotonNetwork.LocalPlayer;
+        var index = player.ActorNumber;
+        var spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(player.GetTeam(), index);
 
         var currentLoop = 0;
         
         while (!IsSpawnPointValid(spawnPoint) && currentLoop < 5)
         {
             index++;
-            spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(index);
+            spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(player.GetTeam() ,index);
             currentLoop++;
         }
         

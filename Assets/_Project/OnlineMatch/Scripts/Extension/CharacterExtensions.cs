@@ -16,7 +16,7 @@ public static class CharacterExtensions
 
         return (bool)isDead;
     }
-    public static TeamType GetTeam(this Character player)
+    public static TeamType GetTeamType(this Character player)
     {
         var teamType = Team.TryGetCacheTeam(player);
         if (teamType != TeamType.None) return teamType;
@@ -26,6 +26,11 @@ public static class CharacterExtensions
         Team.CacheTeam(player, teamType);
 
         return teamType;
+    }
+    
+    public static Team GetTeam(this Character player)
+    {
+        return Team.GetTeamByPlayer(player.PhotonView.Owner);
     }
 
     public static void AddScore(this Character player, int score)

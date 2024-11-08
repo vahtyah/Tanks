@@ -39,7 +39,7 @@ public class CharacterFlagCapture : CharacterAbility
     {
         PhotonView.RPC(nameof(RPC_Initialize), RpcTarget.All);
         GUI = GUIManagerOnlineMatch.Instance;
-        teamArea = EnvironmentManager.Instance.CurrentMap.GetAreaTransform();
+        teamArea = EnvironmentManager.Instance.CurrentMap.GetAreaTransform(PhotonView.Owner.GetTeam());
         RegisterTimers();
     }
 
@@ -73,7 +73,7 @@ public class CharacterFlagCapture : CharacterAbility
     [PunRPC]
     private void RPC_StartTimerCapture()
     {
-        targetFlag?.ChangeColorCapturingEffect(Team.GetTeamByType(Character.GetTeam()).TeamColor);
+        targetFlag?.ChangeColorCapturingEffect(Team.GetTeamByType(Character.GetTeamType()).TeamColor);
         targetFlag?.StartCapturingEffect();
     }
 
@@ -92,7 +92,7 @@ public class CharacterFlagCapture : CharacterAbility
     [PunRPC]
     private void RPC_Initialize()
     {
-        flagDisplay.SetColor(Team.GetTeamByType(Character.GetTeam()).TeamColor);
+        flagDisplay.SetColor(Team.GetTeamByType(Character.GetTeamType()).TeamColor);
     }
 
     private void CompleteHandIn()
@@ -135,7 +135,7 @@ public class CharacterFlagCapture : CharacterAbility
             Flag flag = other.GetComponent<Flag>();
             if (flag != null)
             {
-                if (flag.Team != Character.GetTeam())
+                if (flag.Team != Character.GetTeamType())
                 {
                     UpdateNearbyFlags(isEntering, flag);
                 }

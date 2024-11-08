@@ -46,7 +46,7 @@ public class TeamManager : Singleton<TeamManager>, IEventListener<GameEvent>
         var teams = Team.GetAllTeams();
         for (int i = 0; i < teams.Count; i++)
         {
-            var flagGO = Pool.Spawn(flagPrefab, environment.CurrentMap.GetAreaTransform().position, flagPrefab.transform.rotation);
+            var flagGO = Pool.Spawn(flagPrefab, environment.CurrentMap.GetAreaTransform(teams[i]).position, flagPrefab.transform.rotation);
             var flag = flagGO.GetComponent<Flag>();
             Indicator.Create(flag.transform, teamResources[i].indicatorSprite);
             flag.Initialize(teams[i].TeamType, teamResources[i].FlagMaterial);
