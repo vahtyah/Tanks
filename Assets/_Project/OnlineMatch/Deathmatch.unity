@@ -3229,6 +3229,7 @@ MonoBehaviour:
   waitingForOthersText: {fileID: 215632787}
   playerHUD: {fileID: 1778696612}
   targetIndicator: {fileID: 0}
+  notification: {fileID: 0}
 --- !u!1 &1560744589
 GameObject:
   m_ObjectHideFlags: 0

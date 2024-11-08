@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class CharacterHealth : Health, IEventListener<GameEvent>
 {
-    [ShowInInspector]
-    private CharacterFlagCapture characterFlagCapture;
+    [ShowInInspector] private CharacterFlagCapture characterFlagCapture;
 
     public GameObject TankExplosionEffect;
     [SerializeField] private ForceFieldController protectionShield;
@@ -47,8 +46,10 @@ public class CharacterHealth : Health, IEventListener<GameEvent>
     protected override void OnDeath(int lastHitBy)
     {
         PhotonView.RPC(nameof(OnDeathRPC), RpcTarget.All);
-        if(characterFlagCapture) characterFlagCapture.ReleaseCapturedFlag(transform.position);
-
+        if (characterFlagCapture) characterFlagCapture.ReleaseCapturedFlag(transform.position);
+        GUIManagerOnlineMatch.Instance?.ShowNotification(PhotonNetwork.GetPhotonView(lastHitBy).Owner.NickName,
+            PhotonView.Owner.NickName);
+        //TODO: Fix
         if (!PhotonView.IsMine) return;
 
         UpdatePlayerStats(lastHitBy);
@@ -60,7 +61,7 @@ public class CharacterHealth : Health, IEventListener<GameEvent>
         Character.SetPlayerDied(true);
         Character.AddDeath(1);
         Character.AddScore(-1);
-        
+
         var killer = PhotonNetwork.GetPhotonView(lastHitBy).gameObject.GetComponent<Character>();
         killer.IncreaseMultiKillCount();
         killer.AddKill(1);
@@ -72,7 +73,6 @@ public class CharacterHealth : Health, IEventListener<GameEvent>
     {
         Character.ConditionState.ChangeState(CharacterStates.CharacterCondition.Dead);
         CharacterEvent.Trigger(CharacterEventType.CharacterDeath, Character);
-
         // Spawn death effect
         var effect = Pool.Spawn(TankExplosionEffect, null).GetComponent<ParticleSystem>();
         effect.transform.position = transform.position;
