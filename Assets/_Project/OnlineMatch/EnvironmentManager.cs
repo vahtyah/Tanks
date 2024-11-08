@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Photon.Pun;
 using Sirenix.Serialization;
 using UnityEngine;

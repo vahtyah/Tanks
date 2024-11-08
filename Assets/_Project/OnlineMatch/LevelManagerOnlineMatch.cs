@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using ExitGames.Client.Photon;
 using Photon.Pun;
@@ -187,7 +187,7 @@ public class LevelManagerOnlineMatch : LevelManager
         {
             if (player.GetScore() > winnerTmp.GetScore())
             {
-                winnerTmp = player;
+                winner = team;
                 isDraw = false;
             }
             else if (player.GetScore() < winnerTmp.GetScore())
@@ -202,7 +202,8 @@ public class LevelManagerOnlineMatch : LevelManager
             return;
         }
 
-        if (winnerTmp.IsLocal)
+
+        if (winner.TeamType == PhotonNetwork.LocalPlayer.GetTeam().TeamType)
         {
             guiManager.SetVisibleWinScreen(true);
         }
@@ -309,7 +310,7 @@ public class LevelManagerOnlineMatch : LevelManager
         return GetValidSpawnPoint();
     }
 
-    private Vector3 GetValidSpawnPoint()
+    private Vector3 GetValidSpawnPoint(Team team)
     {
         var index = PhotonNetwork.LocalPlayer.ActorNumber;
         var spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(PhotonNetwork.LocalPlayer.ActorNumber);
