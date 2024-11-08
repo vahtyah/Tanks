@@ -8,7 +8,9 @@ public class Scene
         MainMenu,
         LocalMatch,
         BotMatch,
-        OnlineMatch,
+        CaptureTheFlag,
+        Deathmatch,
+        TeamDeathmatch,
     }
     public static void Load(SceneName sceneToLoad)
     {

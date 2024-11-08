@@ -25,10 +25,17 @@ public class HelpfulButtons : OdinEditorWindow
     }
     
     [ButtonGroup("Scenes")]
-    private void OnlineMatch()
+    private void TheCaptureTheFlag()
     {
-        LoadScene("Assets/_Project/OnlineMatch/OnlineMatch 1.unity");
+        LoadScene("Assets/_Project/OnlineMatch/CaptureTheFlag.unity");
     }
+    
+    [ButtonGroup("Scenes")]
+    private void TheDeathmatch()
+    {
+        LoadScene("Assets/_Project/OnlineMatch/Deathmatch.unity");
+    }
+    
 
     private void LoadScene(string scenePath)
     {

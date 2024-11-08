@@ -13,11 +13,18 @@ public struct RoomEvent
 {
     public RoomEventType EventType;
     public Room Room;
+    public Player Player;
 
-    public RoomEvent(RoomEventType eventType, Room room)
+    public RoomEvent(RoomEventType eventType, Room room = null, Player player = null)
     {
         EventType = eventType;
         Room = room;
+        Player = player;
+    }
+    
+    public static void Trigger(RoomEventType eventType,  Player player)
+    {
+        EventManger.TriggerEvent(new RoomEvent(eventType, null, player));
     }
 
     public static void Trigger(RoomEventType eventType, Room room)

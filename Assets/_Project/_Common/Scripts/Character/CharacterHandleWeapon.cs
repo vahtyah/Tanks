@@ -33,7 +33,7 @@ public class CharacterHandleWeapon : CharacterAbility
     protected override void HandleInput()
     {
         base.HandleInput();
-        if (Controller.GetFire() && GameManager.Instance.currentGameType == GameEventType.GameRunning)
+        if (Controller.GetFire() && GameManager.Instance.CurrentGameType == GameEventType.GameRunning)
         {
             weapon.UseWeapon();
             // if (weapon.WeaponUse())

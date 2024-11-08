@@ -14,10 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/BotMatch/Scenes/BotMatch.unity
     guid: 6f7cbc1b9165a264fadf7889793c9a87
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/OnlineMatch/OnlineMatch.unity
     guid: b768cb92b50649a459a6f866c397e1d0
   - enabled: 1
-    path: Assets/_Project/OnlineMatch/OnlineMatch 1.unity
+    path: Assets/_Project/OnlineMatch/CaptureTheFlag.unity
     guid: 087147c8001da4e48968f3196528ad9f
+  - enabled: 1
+    path: Assets/_Project/OnlineMatch/Deathmatch.unity
+    guid: 37689eec9c7a635419b5c0a70265dfc1
   m_configObjects: {}

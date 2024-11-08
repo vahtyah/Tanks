@@ -28,11 +28,18 @@ public class CharacterFlagCapture : CharacterAbility
     private GUIManagerOnlineMatch GUI;
     private Transform teamArea;
 
+    protected override void PreInitialize()
+    {
+        base.PreInitialize();
+        if (PhotonNetwork.CurrentRoom.GetGameMode() != GameMode.CaptureTheFlag)
+            Destroy(this);
+    }
+
     protected override void Initialize()
     {
         PhotonView.RPC(nameof(RPC_Initialize), RpcTarget.All);
         GUI = GUIManagerOnlineMatch.Instance;
-        teamArea = EnvironmentManager.Instance.CurrentMap.GetAreaTransform(Character.GetTeam());
+        teamArea = EnvironmentManager.Instance.CurrentMap.GetAreaTransform();
         RegisterTimers();
     }
 

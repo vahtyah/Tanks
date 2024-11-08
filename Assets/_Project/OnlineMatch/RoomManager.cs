@@ -184,7 +184,12 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
     {
         var team = otherPlayer.GetTeam();
         team?.RemovePlayerFromTeam(otherPlayer);
-        RoomEvent.Trigger(RoomEventType.PlayerLeft, PhotonNetwork.CurrentRoom);
+        RoomEvent.Trigger(RoomEventType.PlayerLeft, otherPlayer);
+    }
+    
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        RoomEvent.Trigger(RoomEventType.PlayerJoin, newPlayer);
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)

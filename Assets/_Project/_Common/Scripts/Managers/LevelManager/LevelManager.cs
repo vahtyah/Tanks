@@ -12,6 +12,7 @@ public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEvent
 {
     protected PlayerCharacter winner;
     [SerializeField] private List<MultiKill> multiKills;
+    public GameMode GameMode { get; private set; }
     
     protected override void Awake()
     {
@@ -29,7 +30,7 @@ public abstract class LevelManager : SingletonPunCallbacks<LevelManager>, IEvent
 
     protected virtual void CheckForGameOver()
     {
-        if (GameManager.Instance.currentGameType != GameEventType.GameOver) return;
+        if (GameManager.Instance.CurrentGameType != GameEventType.GameOver) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GameEvent.Trigger(GameEventType.GamePreStart);

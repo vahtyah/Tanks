@@ -32,4 +32,22 @@ public static class RoomExtensions
 
         return -1;
     }
+    
+    public static void SetGameMode(this Room room, GameMode gameMode)
+    {
+        room.SetCustomProperties(new Hashtable
+        {
+            {GlobalString.GAME_MODE, gameMode}
+        });
+    }
+    
+    public static GameMode GetGameMode(this Room room)
+    {
+        if (room.CustomProperties.TryGetValue(GlobalString.GAME_MODE, out var gameMode))
+        {
+            return (GameMode)gameMode;
+        }
+
+        return GameMode.Deathmatch;
+    }
 }

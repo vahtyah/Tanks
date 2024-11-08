@@ -1,42 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
 public class TeamBoard : MonoBehaviour
 {
-    public static TeamBoard Create(GameObject prefab, Transform parent, Team team)
+    public static TeamBoard Create(GameObject prefab, Transform parent, Team team = null)
     {
         var instance = Instantiate(prefab, parent).GetComponent<TeamBoard>();
-        instance.Initialize(team);
+        if (team != null)
+            instance.Initialize(team);
         return instance;
     }
-    
+
     [SerializeField] private Transform memberContainer;
     [SerializeField] private GameObject memberPrefab;
     [SerializeField] private TextMeshProUGUI teamName;
-    Dictionary<Player, PlayerEntry> playerEntries = new();
+    Dictionary<Player, PlayerElement> playerEntries = new();
 
-    private Team team;
     private void Initialize(Team team)
     {
-        this.team = team;
         teamName.text = team.TeamType.ToString();
     }
-    
+
     public void AddMember(Player player)
     {
-        var playerEntry = PlayerEntry.Create(memberPrefab, player.NickName, player.ActorNumber, memberContainer);
-        LobbyMainMenuPanel.Instance.playerListEntries.Add(player.ActorNumber, playerEntry);
-        playerEntries.Add(player, playerEntry);
+        PunManager.Instance.AddPlayerDisPlayInRoom(player, memberPrefab, memberContainer);
+        var playerElement = PunManager.Instance.GetPlayerElement(player.ActorNumber);
+        playerEntries.Add(player, playerElement);
     }
 
     public void RemoveMember(Player player)
     {
-        if (!playerEntries.TryGetValue(player, out var playerEntry)) return;
-        PlayerEntry.Remove(playerEntry);
-        playerEntries.Remove(player);
-        LobbyMainMenuPanel.Instance.playerListEntries.Remove(player.ActorNumber);
+        if (!playerEntries.Remove(player, out var playerEntry)) return;
+        PunManager.Instance.RemovePlayerDisplayInRoom(player.ActorNumber);
     }
 }

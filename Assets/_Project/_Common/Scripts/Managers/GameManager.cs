@@ -1,24 +1,35 @@
 ﻿using System;
 using System.Collections;
 using Photon.Pun;
+using Sirenix.OdinInspector;
 using UnityEngine;
+
+public enum GameMode
+{
+    Deathmatch,
+    TeamDeathmatch,
+    CaptureTheFlag
+}
 
 public sealed class GameManager : PersistentSingleton<GameManager>, IEventListener<GameEvent>
 {
-    public int gameTime;
-    public int invulnerableTime;
-    public int respawnTime;
-    
-    
-    public GameEventType currentGameType;
+    [ShowInInspector, TitleGroup("Debugs")]
+    public GameMode GameMode { get; private set; }
+
+    [ShowInInspector, TitleGroup("Debugs")]
+    public GameEventType CurrentGameType { get; private set; }
+
     private GameEventType previousGameType { get; set; }
 
-    private void Start() { GameEvent.Trigger(GameEventType.GameMainMenu); }
+    private void Start()
+    {
+        GameEvent.Trigger(GameEventType.GameMainMenu);
+    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) &&
-            currentGameType is GameEventType.GameRunning or GameEventType.GamePause)
+            CurrentGameType is GameEventType.GameRunning or GameEventType.GamePause)
             GameEvent.Trigger(GameEventType.TogglePause);
     }
 
@@ -44,8 +55,8 @@ public sealed class GameManager : PersistentSingleton<GameManager>, IEventListen
         }
 
         if (e.EventType == GameEventType.TogglePause) return;
-        previousGameType = currentGameType;
-        currentGameType = e.EventType;
+        previousGameType = CurrentGameType;
+        CurrentGameType = e.EventType;
     }
 
     private void GameMainMenu()
@@ -64,14 +75,23 @@ public sealed class GameManager : PersistentSingleton<GameManager>, IEventListen
         // Cursor.lockState = CursorLockMode.Confined;
     }
 
-    private void GamePause() { Cursor.visible = true; }
+    private void GamePause()
+    {
+        Cursor.visible = true;
+    }
 
     private void TogglePause()
     {
-        GameEvent.Trigger(currentGameType == GameEventType.GamePause ? previousGameType : GameEventType.GamePause);
+        GameEvent.Trigger(CurrentGameType == GameEventType.GamePause ? previousGameType : GameEventType.GamePause);
     }
 
-    private void OnEnable() { this.StartListening<GameEvent>(); }
+    private void OnEnable()
+    {
+        this.StartListening();
+    }
 
-    private void OnDisable() { this.StopListening<GameEvent>(); }
+    private void OnDisable()
+    {
+        this.StopListening();
+    }
 }

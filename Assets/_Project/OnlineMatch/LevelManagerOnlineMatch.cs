@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
@@ -25,9 +25,6 @@ public class LevelManagerOnlineMatch : LevelManager
     [SerializeField] private int preStartDuration = 5;
     [SerializeField] private int respawnDuration = 5;
 
-    // [SerializeField] private float minimumSpawnDistance = 2f;
-
-    private ISpawnPoint spawner;
     private PlayerCharacter localPlayer;
     private GUIManagerOnlineMatch guiManager;
     private FeedbacksManager feedbackManager;
@@ -44,9 +41,6 @@ public class LevelManagerOnlineMatch : LevelManager
         {
             Scene.Load(Scene.SceneName.MainMenu);
         }
-
-        gameDuration = GameManager.Instance.gameTime == 0 ? gameDuration : GameManager.Instance.gameTime;
-        respawnDuration = GameManager.Instance.respawnTime == 0 ? respawnDuration : GameManager.Instance.respawnTime;
     }
 
     protected override void Initialize()
@@ -134,7 +128,7 @@ public class LevelManagerOnlineMatch : LevelManager
 
     protected override void CheckForGameOver()
     {
-        if (GameManager.Instance.currentGameType != GameEventType.GameOver) return;
+        if (GameManager.Instance.CurrentGameType != GameEventType.GameOver) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             PhotonNetwork.LeaveRoom();
@@ -176,7 +170,50 @@ public class LevelManagerOnlineMatch : LevelManager
         // {
         //     guiManager.SetVisibleLoseScreen(true);
         // }
+        var gameMode = PhotonNetwork.CurrentRoom.GetGameMode();
+        
+        if(gameMode == GameMode.CaptureTheFlag || gameMode == GameMode.TeamDeathmatch)
+            DetermineWinnerCaptureTheFlag();
+        else if(gameMode == GameMode.Deathmatch)
+            DetermineWinnerDeathmatch();
+    }
 
+    private void DetermineWinnerDeathmatch()
+    {
+        var players = PhotonNetwork.PlayerList;
+        var winnerTmp = players[0];
+        bool isDraw = players.Length > 1;
+        foreach (var player in players)
+        {
+            if (player.GetScore() > winnerTmp.GetScore())
+            {
+                winnerTmp = player;
+                isDraw = false;
+            }
+            else if (player.GetScore() < winnerTmp.GetScore())
+            {
+                isDraw = false;
+            }
+        }
+
+        if (isDraw)
+        {
+            guiManager.SetVisibleDrawScreen(true);
+            return;
+        }
+
+        if (winnerTmp.IsLocal)
+        {
+            guiManager.SetVisibleWinScreen(true);
+        }
+        else
+        {
+            guiManager.SetVisibleLoseScreen(true);
+        }
+    }
+
+    private void DetermineWinnerCaptureTheFlag()
+    {
         var teams = Team.GetAllTeams();
         var winner = teams[0];
         bool isDraw = teams.Count > 1;
@@ -234,8 +271,7 @@ public class LevelManagerOnlineMatch : LevelManager
 
     private void SpawnPlayer()
     {
-        var team = PhotonNetwork.LocalPlayer.GetTeam();
-        var spawnPoint = GetSpawnPointForTeam(team);
+        var spawnPoint = GetSpawnPointForTeam();
         localPlayer = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity)
             .GetComponent<PlayerCharacter>();
         // photonView.RPC(nameof(AssignTeam), RpcTarget.AllBuffered, team);
@@ -268,19 +304,26 @@ public class LevelManagerOnlineMatch : LevelManager
 
     #endregion
 
-    private Vector3 GetSpawnPointForTeam(Team team)
+    private Vector3 GetSpawnPointForTeam()
     {
-        // var col = teamManager.GetSpawnArea(team.TeamType).GetComponent<Collider>();
-        // spawner = new AreaSpawnPoint(col);
-        return GetValidSpawnPoint(team);
+        return GetValidSpawnPoint();
     }
 
-    private Vector3 GetValidSpawnPoint(Team team)
+    private Vector3 GetValidSpawnPoint()
     {
-        var spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(team.TeamType, PhotonNetwork.LocalPlayer.ActorNumber);
-        if (IsSpawnPointValid(spawnPoint))
-            return spawnPoint;
-        return spawner.NextRandomSpawnPoint();
+        var index = PhotonNetwork.LocalPlayer.ActorNumber;
+        var spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(PhotonNetwork.LocalPlayer.ActorNumber);
+
+        var currentLoop = 0;
+        
+        while (!IsSpawnPointValid(spawnPoint) && currentLoop < 5)
+        {
+            index++;
+            spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(index);
+            currentLoop++;
+        }
+        
+        return spawnPoint;
     }
 
     private bool IsSpawnPointValid(Vector3 spawnPoint)
@@ -317,7 +360,7 @@ public class LevelManagerOnlineMatch : LevelManager
 
     private void CheckPlayerLeftRoom()
     {
-        if (PhotonNetwork.PlayerList.Length == 1 && GameManager.Instance.currentGameType != GameEventType.GameOver)
+        if (PhotonNetwork.PlayerList.Length == 1 && GameManager.Instance.CurrentGameType != GameEventType.GameOver)
         {
             GameEvent.Trigger(GameEventType.GameOver);
         }

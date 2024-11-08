@@ -18,32 +18,22 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
     protected override void Awake()
     {
         base.Awake();
-        CurrentMap = LoadMap(MapType.Default, GetTeamCount());
+        CurrentMap = LoadTeamMap(mapType);
     }
     
-    private TeamCount GetTeamCount()
+
+    private Map GetMap(MapType mapType)
     {
-        var teamSize = PhotonNetwork.CurrentRoom.GetTeamSize();
-        return teamSize switch
-        {
-            2 => TeamCount.TwoTeams,
-            3 => TeamCount.ThreeTeams,
-            4 => TeamCount.FourTeams,
-            _ => TeamCount.TwoTeams
-        };
+        return maps.Find(map => map.IsQualifiedMap(mapType));
     }
 
-    private Map GetMap(MapType mapType , TeamCount teamCount)
-    {
-        return maps.Find(map => map.MapType == mapType && map.TeamCount == teamCount);
-    }
 
-    private Map LoadMap(MapType mapType, TeamCount teamCount)
+    private Map LoadTeamMap(MapType mapType)
     {
-        var map = GetMap(mapType, teamCount);
+        var map = GetMap(mapType);
         if (map == null)
         {
-            Debug.LogError($"Map not found for team count: {teamCount} and map type: {mapType}");
+            Debug.LogError($"Map not found for map type: {mapType}");
             return null;
         }
         return Instantiate(map,transform);

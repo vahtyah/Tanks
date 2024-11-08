@@ -4,8 +4,20 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomEntry : MonoBehaviour
+public class RoomElement : MonoBehaviour
 {
+    public static RoomElement Create(GameObject prefab, Transform parent, RoomInfo info)
+    {
+        var instance = Instantiate(prefab, parent).GetComponent<RoomElement>();
+        instance.Initialize(info);
+        return instance;
+    }
+    
+    public static void Destroy(RoomElement element)
+    {
+        Destroy(element.gameObject);
+    }
+    
     [SerializeField] private TextMeshProUGUI roomName;
     [SerializeField] private TextMeshProUGUI playerCount;
     [SerializeField] private TextMeshProUGUI hostName;
