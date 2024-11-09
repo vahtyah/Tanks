@@ -47,25 +47,12 @@ public class CharacterHealth : Health, IEventListener<GameEvent>
     {
         PhotonView.RPC(nameof(OnDeathRPC), RpcTarget.All);
         if (characterFlagCapture) characterFlagCapture.ReleaseCapturedFlag(transform.position);
-        GUIManagerOnlineMatch.Instance?.ShowNotification(PhotonNetwork.GetPhotonView(lastHitBy).Owner.NickName,
-            PhotonView.Owner.NickName);
+
+        var killer = PhotonNetwork.GetPhotonView(lastHitBy).GetComponent<Character>();
+        InGameEvent.Trigger(InGameEventType.SomeoneDied, killer, Character);
         //TODO: Fix
         if (!PhotonView.IsMine) return;
-
-        UpdatePlayerStats(lastHitBy);
         PhotonNetwork.Destroy(PhotonView);
-    }
-
-    private void UpdatePlayerStats(int lastHitBy)
-    {
-        Character.SetPlayerDied(true);
-        Character.AddDeath(1);
-        Character.AddScore(-1);
-
-        var killer = PhotonNetwork.GetPhotonView(lastHitBy).gameObject.GetComponent<Character>();
-        killer.IncreaseMultiKillCount();
-        killer.AddKill(1);
-        killer.AddScore(killer.GetMultiKillScore());
     }
 
     [PunRPC]

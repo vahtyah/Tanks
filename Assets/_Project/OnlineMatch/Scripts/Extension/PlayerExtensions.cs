@@ -1,4 +1,6 @@
-﻿using ExitGames.Client.Photon;
+﻿using System.Collections.Generic;
+using ExitGames.Client.Photon;
+using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
@@ -58,6 +60,12 @@ public static class PlayerExtensions
 
         var teamType = (TeamType)teamName;
         return Team.GetTeamByType(teamType);
+    }
+    
+    public static List<Player> GetOtherPlayersInTeam(this Player player)
+    {
+        var team = player.GetTeam();
+        return team?.GetPlayersExcept(player);
     }
 
     public static void AddScore(this Player player, int score)

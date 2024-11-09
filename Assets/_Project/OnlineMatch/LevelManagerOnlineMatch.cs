@@ -11,6 +11,7 @@ public class MultiKill
     public string Message;
     public int BonusScore;
 }
+
 public enum TeamCount
 {
     TwoTeams = 2,
@@ -18,7 +19,7 @@ public enum TeamCount
     FourTeams = 4
 }
 
-public class LevelManagerOnlineMatch : LevelManager
+public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
 {
     [SerializeField] private PlayerCharacter playerPrefab;
     [SerializeField] private int gameDuration = 180;
@@ -99,6 +100,7 @@ public class LevelManagerOnlineMatch : LevelManager
             .OnComplete(() => { GameEvent.Trigger(GameEventType.GameOver); });
 
         respawnTimer = Timer.Register(respawnDuration)
+            .OnStart(() => guiManager.SetVisibleDeadMask(true))
             .OnTimeRemaining(remaining =>
             {
                 int currentSecond = Mathf.CeilToInt(remaining);
@@ -114,11 +116,11 @@ public class LevelManagerOnlineMatch : LevelManager
             })
             .OnComplete(() =>
             {
-                guiManager.SetVisibleDeadMask(false);
                 SpawnPlayer();
                 GameEvent.Trigger(GameEventType.GameStart);
                 GameEvent.Trigger(GameEventType.GameRunning);
-            });
+            })
+            .OnDone(() => guiManager.SetVisibleDeadMask(false));
     }
 
     public override PlayerCharacter GetPlayer(string playerID)
@@ -138,43 +140,11 @@ public class LevelManagerOnlineMatch : LevelManager
 
     private void DetermineWinner()
     {
-        // var players = PhotonNetwork.PlayerList;
-        // var winnerTmp = players[0];
-        // bool isDraw = players.Length > 1;
-        // foreach (var player in players)
-        // {
-        //     if ((int)player.CustomProperties[GlobalString.PLAYER_KILLS] >
-        //         (int)winnerTmp.CustomProperties[GlobalString.PLAYER_KILLS])
-        //     {
-        //         winnerTmp = player;
-        //         isDraw = false;
-        //     }
-        //     else if ((int)player.CustomProperties[GlobalString.PLAYER_KILLS] <
-        //              (int)winnerTmp.CustomProperties[GlobalString.PLAYER_KILLS])
-        //     {
-        //         isDraw = false;
-        //     }
-        // }
-        //
-        // if (isDraw)
-        // {
-        //     guiManager.SetVisibleDrawScreen(true);
-        //     return;
-        // }
-        //
-        // if (winnerTmp.IsLocal)
-        // {
-        //     guiManager.SetVisibleWinScreen(true);
-        // }
-        // else
-        // {
-        //     guiManager.SetVisibleLoseScreen(true);
-        // }
         var gameMode = PhotonNetwork.CurrentRoom.GetGameMode();
-        
-        if(gameMode == GameMode.CaptureTheFlag || gameMode == GameMode.TeamDeathmatch)
+
+        if (gameMode is GameMode.CaptureTheFlag or GameMode.TeamDeathmatch)
             DetermineWinnerCaptureTheFlag();
-        else if(gameMode == GameMode.Deathmatch)
+        else if (gameMode == GameMode.Deathmatch)
             DetermineWinnerDeathmatch();
     }
 
@@ -275,6 +245,7 @@ public class LevelManagerOnlineMatch : LevelManager
         var spawnPoint = GetSpawnPointForTeam();
         localPlayer = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity)
             .GetComponent<PlayerCharacter>();
+        CharacterEvent.Trigger(CharacterEventType.CharacterSpawned, localPlayer);
         // photonView.RPC(nameof(AssignTeam), RpcTarget.AllBuffered, team);
     }
 
@@ -298,7 +269,6 @@ public class LevelManagerOnlineMatch : LevelManager
     {
         base.GameOver();
         respawnTimer.Cancel();
-        guiManager.SetVisibleDeadMask(false);
         guiManager.SetVisibleGameTimerText(false);
         DetermineWinner();
     }
@@ -317,14 +287,14 @@ public class LevelManagerOnlineMatch : LevelManager
         var spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(player.GetTeam(), index);
 
         var currentLoop = 0;
-        
+
         while (!IsSpawnPointValid(spawnPoint) && currentLoop < 5)
         {
             index++;
-            spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(player.GetTeam() ,index);
+            spawnPoint = environmentManager.CurrentMap.GetSpawnPositionByIndex(player.GetTeam(), index);
             currentLoop++;
         }
-        
+
         return spawnPoint;
     }
 
@@ -386,7 +356,6 @@ public class LevelManagerOnlineMatch : LevelManager
             Equals(localPlayer.PhotonView.Owner, targetPlayer))
         {
             respawnTimer.Reset();
-            guiManager.SetVisibleDeadMask(true);
             changedProps[GlobalString.PLAYER_DIED] = false;
         }
 
@@ -398,4 +367,38 @@ public class LevelManagerOnlineMatch : LevelManager
     }
 
     #endregion
+
+    public void OnEvent(InGameEvent e)
+    {
+        switch (e.EventType)
+        {
+            case InGameEventType.SomeoneDied:
+                UpdatePlayerStats(e.killer, e.victim);
+                break;
+        }
+    }
+
+    private void UpdatePlayerStats(Character killer, Character victim)
+    {
+        if(localPlayer.PhotonView.Owner != killer.PhotonView.Owner) return;
+        Debug.Log($"Killer: {killer.PhotonView.Owner.NickName} - Victim: {victim.PhotonView.Owner.NickName}");
+        victim.SetPlayerDied(true);
+        victim.AddDeath(1);
+        victim.AddScore(-1);
+
+        killer.AddKill(1);
+        killer.AddScore(killer.GetMultiKillScore());
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        this.StartListening<InGameEvent>();
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        this.StopListening<InGameEvent>();
+    }
 }

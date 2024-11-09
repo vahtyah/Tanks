@@ -16970,6 +16970,8 @@ GameObject:
   - component: {fileID: 2133174380894428361}
   - component: {fileID: -3242568721791363167}
   - component: {fileID: 331112439879503538}
+  - component: {fileID: 450069586800918167}
+  - component: {fileID: 1482765878805452758}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -17167,6 +17169,37 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &450069586800918167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446509568547554811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7e6cb974ae451b8b729fecc0bebc0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turret: {fileID: 2938439221705790201}
+  wheels: {fileID: 4653406065674031892}
+  body: {fileID: 7133740065962045127}
+--- !u!114 &1482765878805452758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446509568547554811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a06d70e2c38144b2bf7f17ac35bf7bc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconPrefab: {fileID: 2701314516899328916, guid: a3c0d9b3331b1d5489cd3894809f4d62, type: 3}
+  iconPlayerPrefab: {fileID: 2701314516899328916, guid: bdc93968c92a22e4eb38ac236497efd4, type: 3}
+  clampOnRadar: 1
+  YourTeamDetected: 0
 --- !u!1 &1581382633788936089
 GameObject:
   m_ObjectHideFlags: 0

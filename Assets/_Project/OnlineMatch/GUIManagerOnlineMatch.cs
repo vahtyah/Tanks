@@ -16,14 +16,7 @@ public class GUIManagerOnlineMatch : SerializedSingleton<GUIManagerOnlineMatch>,
 
     [SerializeField] private PlayerHUD playerHUD;
     [SerializeField] private FillAmountImage targetIndicator;
-    [SerializeField] private NotificationUI notification;
     
-    public void ShowNotification(string killerName, string victimName)
-    {
-        notification.ShowNotification(killerName, victimName);
-    }
-    
-
     private void Start()
     {
         SetVisibleGameTimerText(false);

@@ -15,4 +15,19 @@ public static class TeamExtensions
 
         return result;
     }
+     
+    public static List<Player> GetPlayersExcept(this Team team, Player player)
+    {
+        var result = new List<Player>();
+        foreach (var teamPlayer in team.Players)
+        {
+            if (Equals(teamPlayer, player))
+            {
+                continue;
+            }
+            result.Add(teamPlayer);
+        }
+
+        return result;
+    }
 }

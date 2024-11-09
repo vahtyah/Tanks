@@ -66,6 +66,7 @@ MonoBehaviour:
   - RPC_UpdateTimerCapture
   - RPC_SetTargetFlag
   - RPC_UpdateScoreTeam
+  - RPC_SetDetected
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
