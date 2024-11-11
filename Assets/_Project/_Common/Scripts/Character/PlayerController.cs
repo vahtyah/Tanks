@@ -32,6 +32,10 @@ public class PlayerController : MonoBehaviour, ICharacterController
     public Vector3 GetDirection() { return input.GetDirection(); }
 
     public bool GetFire() { return input.GetFire(); }
+    public bool GetInputSkill()
+    {
+        return input.GetInputSkill();
+    }
 
     public Vector3 GetAimDirection()
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class HealthBar : MonoBehaviour, IEventListener<GameEvent>
+public class HealthBar : MonoBehaviour, IEventListener<CharacterEvent>
 {
     [SerializeField] private Transform foregroundBar;
     [SerializeField] private Transform delayedBarDecreasing;
@@ -14,13 +14,13 @@ public class HealthBar : MonoBehaviour, IEventListener<GameEvent>
         delayedBarDecreasing.localScale = new Vector3(value, 1f);
     }
 
-    public void OnEvent(GameEvent e)
+    public void OnEvent(CharacterEvent e)
     {
         switch (e.EventType)
         {
-            case GameEventType.GameStart:
+            case CharacterEventType.CharacterSpawned:
                 if (health == null)
-                    health = LevelManager.Instance.GetPlayer(playerID).Health;
+                    health = e.Character.Health;
                 health.AddOnHitListener(UpdateBar);
                 break;
         }
@@ -28,11 +28,11 @@ public class HealthBar : MonoBehaviour, IEventListener<GameEvent>
     
     private void OnEnable()
     {
-        this.StartListening<GameEvent>();
+        this.StartListening();
     }
     
     private void OnDisable()
     {
-        this.StopListening<GameEvent>();
+        this.StopListening();
     }
 }

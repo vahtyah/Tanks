@@ -3553,6 +3553,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1039210157078385966, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 2856158765760906608, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3164775023385905658, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
       propertyPath: m_LocalPosition.y
       value: 73.1
@@ -3563,11 +3571,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3613330309164942452, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 21.700003
+      value: 73.1
       objectReference: {fileID: 0}
     - target: {fileID: 3613330309164942452, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
       propertyPath: m_LocalPosition.z
       value: -31.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4010721520484907136, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: field of view
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 4801747604979182412, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
       propertyPath: m_Name

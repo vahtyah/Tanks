@@ -4,6 +4,31 @@ using Photon.Pun;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
+public class GlobalTimer : Timer
+{
+    public GlobalTimer(float duration) : base(duration)
+    {
+    }
+
+    protected override float GetWorldTime()
+    {
+        return (float)PhotonNetwork.Time;
+    }
+}
+
+public class LocalTimer : Timer
+{
+    public LocalTimer(float duration) : base(duration)
+    {
+    }
+
+    protected override float GetWorldTime()
+    {
+        return Time.time;
+    }
+}
+
+
 public class Timer
 {
     private static TimerManager manager;
@@ -36,14 +61,15 @@ public class Timer
 
     private bool isOwnerDisappeared => hasOwner && (owner == null || !owner.gameObject.activeSelf);
 
-    private Timer(float duration) { this.duration = duration; }
-
-    public static Timer Register(float duration)
+    protected Timer(float duration)
     {
-        if (manager == null)
-            manager = TimerManager.Instance ?? new GameObject("TimerManager").AddComponent<TimerManager>();
+        this.duration = duration;
+    }
 
-        var timer = new Timer(duration);
+    public static Timer Register(Timer timer)
+    {
+        EnsureManagerExits();
+
         timer.OnStart(() => timer.IsRegistered = true);
         timer.OnDone(() =>
         {
@@ -53,12 +79,24 @@ public class Timer
         return timer;
     }
 
+    public static Timer Register(float duration)
+    {
+        var timer = new Timer(duration);
+        return Register(timer);
+    }
+
+    private static void EnsureManagerExits()
+    {
+        if (manager == null)
+            manager = TimerManager.Instance ?? new GameObject("TimerManager").AddComponent<TimerManager>();
+    }
+
     public Timer OnStart(Action onStart)
     {
         this.onStart += onStart;
         return this;
     }
-    
+
     /// <summary>
     /// The time elapsed value will be between 0 and duration.
     /// </summary>
@@ -69,6 +107,7 @@ public class Timer
         this.onUpdate += onUpdate;
         return this;
     }
+
     /// <summary>
     /// The progress value will be between 0 and 1.
     /// </summary>
@@ -90,7 +129,7 @@ public class Timer
         this.onTimeRemaining += onRemaining;
         return this;
     }
-    
+
     /// <summary>
     /// The remaining value will be between 0 and 1.
     /// </summary>
@@ -163,7 +202,7 @@ public class Timer
     /// <returns></returns>
     public Timer Reset()
     {
-        if(IsRegistered) manager.RemoveTimer(this);
+        if (IsRegistered) manager.RemoveTimer(this);
         startTime = GetWorldTime();
         IsCompleted = false;
         IsCancelled = false;
@@ -171,7 +210,10 @@ public class Timer
         return Start();
     }
 
-    public void Cancel() { IsCancelled = true; }
+    public void Cancel()
+    {
+        IsCancelled = true;
+    }
 
     public void Pause()
     {
@@ -191,7 +233,7 @@ public class Timer
         return IsCompleted ? duration : timeElapsedBeforePause ?? GetWorldTime() - startTime;
     }
 
-    private float GetWorldTime() => (float)(UsesRealTime ? Time.realtimeSinceStartup : PhotonNetwork.Time);
+    protected virtual float GetWorldTime() => (float)(UsesRealTime ? Time.realtimeSinceStartup : PhotonNetwork.Time);
 
     public void Update()
     {
@@ -222,17 +264,22 @@ public class Timer
 
 public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<GameEvent>
 {
-    [ShowInInspector]
-    private readonly List<Timer> timers = new List<Timer>();
+    [ShowInInspector] private readonly List<Timer> timers = new List<Timer>();
 
     private void Update()
     {
         RefreshTimers();
     }
 
-    public void RegisterTimer(Timer timer) { timers.Add(timer); }
+    public void RegisterTimer(Timer timer)
+    {
+        timers.Add(timer);
+    }
 
-    public void RemoveTimer(Timer timer) { timers.Remove(timer); }
+    public void RemoveTimer(Timer timer)
+    {
+        timers.Remove(timer);
+    }
 
     private void RefreshTimers()
     {
@@ -293,7 +340,13 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
         }
     }
 
-    private void OnEnable() { this.StartListening(); }
+    private void OnEnable()
+    {
+        this.StartListening();
+    }
 
-    private void OnDisable() { this.StopListening(); }
+    private void OnDisable()
+    {
+        this.StopListening();
+    }
 }

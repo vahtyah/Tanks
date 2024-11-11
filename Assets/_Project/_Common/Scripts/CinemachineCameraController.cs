@@ -2,7 +2,7 @@
 using Cinemachine;
 using UnityEngine;
 
-public class CinemachineCameraController : MonoBehaviour, IEventListener<GameEvent>
+public class CinemachineCameraController : MonoBehaviour, IEventListener<CharacterEvent>
 {
     [SerializeField] Camera cam;
     [SerializeField] private string playerID = "Player1";
@@ -41,12 +41,13 @@ public class CinemachineCameraController : MonoBehaviour, IEventListener<GameEve
 
     public void Hide() { cam.enabled = false; }
 
-    public void OnEvent(GameEvent e)
+    public void OnEvent(CharacterEvent e)
     {
         switch (e.EventType)
         {
-            case GameEventType.GameStart:
-                SetFollowTarget(LevelManager.Instance.GetPlayer(playerID).CameraTarget.transform);
+            case CharacterEventType.CharacterSpawned:
+                var player = e.Character as PlayerCharacter;
+                if (player != null) SetFollowTarget(player.CameraTarget.transform);
                 break;
         }
     }

@@ -25,4 +25,8 @@ public class InputManager
     public bool GetPauseButton() { return Input.GetButtonDown(pauseButton); }
     public Vector3 GetDirection() { return new Vector3(Input.GetAxis(axisHorizontal), 0, Input.GetAxis(axisVertical)); }
     public bool GetFire() { return Input.GetButtonDown(fireButton); }
+    public bool GetInputSkill()
+    {
+      return Input.GetMouseButton(1);   
+    }
 }

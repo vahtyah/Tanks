@@ -1,19 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class DamageOnTouch : MonoBehaviour
+public interface ITrigger
+{
+    void OnTriggerEnter(Collider collider);
+}
+
+public class DamageOnTouch : MonoBehaviour, ITrigger
 {
     [SerializeField] private LayerMask targetLayerMask;
     [SerializeField] private float damage = 1;
     [SerializeField] private float damageTaken;
 
+    [SerializeField] private GameObject model;
+
+
     [ShowInInspector, TitleGroup("Debugs")]
     private List<GameObject> ignoredObjects = new();
+
     [SerializeField] private MMFeedbacks onHitFeedback;
     [SerializeField] private ParticleSystem hitParticles;
     private Character owner;
+
 
     private void Initialize()
     {
@@ -52,12 +64,13 @@ public class DamageOnTouch : MonoBehaviour
         ignoredObjects.Clear();
     }
 
-    private void OnTriggerEnter(Collider collider)
+    public void OnTriggerEnter(Collider collider)
     {
         GameObject targetObject = collider.gameObject;
-
         if (!IsTargetAvailable(targetObject) || IsSameTeam(targetObject)) return;
 
+        GenerateHitParticles(transform.position);
+        ApplySelfDamage();
         if (targetObject.TryGetComponent(out CharacterHealth targetHealth))
         {
             if (targetHealth.IsInvulnerable)
@@ -68,18 +81,19 @@ public class DamageOnTouch : MonoBehaviour
 
             targetHealth.TakeDamage(damage, owner);
         }
-
-        GenerateHitParticles();
-        ApplySelfDamage();
     }
 
 
-    private void GenerateHitParticles()
+    private void GenerateHitParticles(Vector3 position)
     {
-        var hitParticles = Pool.Spawn(this.hitParticles.gameObject, transform.position)
-            .GetComponent<ParticleSystem>();
-        hitParticles.Play();
-        onHitFeedback?.PlayFeedbacks();
+        if (hitParticles != null)
+        {
+            var newHitParticles = Pool.Spawn(this.hitParticles.gameObject, position)
+                .GetComponent<ParticleSystem>();
+            newHitParticles.Play();
+        }
+
+        onHitFeedback?.PlayFeedbacks(position);
     }
 
     public void SetOwner(Character character)

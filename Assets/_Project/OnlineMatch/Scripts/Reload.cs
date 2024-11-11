@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
-public class Reload : MonoBehaviour, IEventListener<GameEvent>
+public class Reload : MonoBehaviour, IEventListener<CharacterEvent>
 {
     [SerializeField] private Transform foregroundBar;
     private Weapon weapon;
 
     private void UpdateBar(float value) { foregroundBar.localScale = new Vector3(value, 1f); }
 
-    public void OnEvent(GameEvent e)
+    public void OnEvent(CharacterEvent e)
     {
         switch (e.EventType)
         {
-            case GameEventType.GameRunning:
-                weapon = LevelManager.Instance.GetPlayer("1").EquippedWeapon;
+            case CharacterEventType.CharacterSpawned:
+                weapon = e.Character.EquippedWeapon;
                 if (weapon != null)
                     weapon.RegisterOnReloadListener(UpdateBar);
                 else
@@ -21,7 +21,7 @@ public class Reload : MonoBehaviour, IEventListener<GameEvent>
         }
     }
 
-    private void OnEnable() { this.StartListening<GameEvent>(); }
+    private void OnEnable() { this.StartListening(); }
 
-    private void OnDisable() { this.StopListening<GameEvent>(); }
+    private void OnDisable() { this.StopListening(); }
 }

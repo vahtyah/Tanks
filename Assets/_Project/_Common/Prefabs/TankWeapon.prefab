@@ -45,4 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 2226167052209142831, guid: 1d3cd51c90107624e88ee6069ecfc0bf, type: 3}
-  reloadTime: 3
+  globalWeaponUseFeedback: {fileID: 0}
+  localWeaponUseFeedback: {fileID: 0}
+  reloadDuration: 1
+  useMagazine: 1
+  magazineSize: 30
+  autoReload: 1
+  infiniteAmmo: 0
+  reloadMagazineDuration: 1

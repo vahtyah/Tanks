@@ -1,27 +1,57 @@
 ﻿using System;
 using MoreMountains.Feedbacks;
 using Photon.Pun;
+using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private MMF_Player globalWeaponUseFeedback;
     [SerializeField] private MMF_Player localWeaponUseFeedback;
-    [SerializeField] private float reloadDuration = 1;
-    public Character Owner { get; set; }
+    [SerializeField] private float weaponCountdownDuration = 1;
+
+
+    [FoldoutGroup("Magazine")] [SerializeField]
+    private bool useMagazine = false;
+
+    [FoldoutGroup("Magazine"), ShowIf(nameof(useMagazine))] [SerializeField]
+    private int magazineCapacity = 30;
+
+    [FoldoutGroup("Magazine"), ShowIf(nameof(useMagazine))] [SerializeField]
+    private bool autoReload = true;
+
+    [FoldoutGroup("Magazine"), ShowIf(nameof(useMagazine))] [SerializeField]
+    private float magazineReloadDuration = 1;
+    private int remainingProjectiles;
+
+    public Character WeaponOwner { get; set; }
 
     private PhotonView photonView;
     private Transform projectileSpawnPoint;
-    private Timer reloadTimer;
+    private Timer weaponCooldownTimer;
+    private Timer magazineReloadTimer;
+
+    private float currentReloadTime;
 
     private void Awake()
     {
         photonView = GetComponent<PhotonView>();
-        reloadTimer = Timer.Register(reloadDuration)
+        remainingProjectiles = magazineCapacity;
+        weaponCooldownTimer = Timer.Register(new LocalTimer(weaponCountdownDuration))
             .AlreadyDone()
             .AutoDestroyWhenOwnerDisappear(this);
+
+        magazineReloadTimer = Timer.Register(new LocalTimer(magazineReloadDuration))
+            .OnComplete(() =>
+            {
+                remainingProjectiles = magazineCapacity;
+            })
+            .AutoDestroyWhenOwnerDisappear(this);
+
+        // reloadTimer = Timer.Register(reloadDuration)
+        //     .AlreadyDone()
+        //     .AutoDestroyWhenOwnerDisappear(this);
     }
 
     private void Start()
@@ -35,9 +65,9 @@ public class Weapon : MonoBehaviour
 
     public void UseWeapon()
     {
-        if (!reloadTimer.IsCompleted)
+        if (!weaponCooldownTimer.IsCompleted || magazineReloadTimer.IsRunning)
             return;
-        reloadTimer.Reset();
+        weaponCooldownTimer.Reset();
         photonView.RPC(nameof(UseWeaponRPC), RpcTarget.All);
         localWeaponUseFeedback?.PlayFeedbacks();
     }
@@ -45,17 +75,26 @@ public class Weapon : MonoBehaviour
     [PunRPC]
     private void UseWeaponRPC(PhotonMessageInfo info)
     {
-        var spawnedProjectile = Pool.Spawn(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
+        var spawnedProjectile =
+            Pool.Spawn(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
         if (spawnedProjectile.TryGetComponent(out Projectile projectile))
         {
             float networkLag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            projectile.SetOwner(Owner.gameObject)
+            projectile.SetOwner(WeaponOwner.gameObject)
                 .SetWeapon(this)
-                .SetLag(networkLag)
                 .OnSpawn();
         }
 
         globalWeaponUseFeedback?.PlayFeedbacks();
+
+        if (useMagazine)
+        {
+            remainingProjectiles--;
+            if (remainingProjectiles <= 0)
+            {
+                magazineReloadTimer.Reset();
+            }
+        }
     }
 
     public void SetProjectileSpawnPoint(Transform spawnPoint)
@@ -65,6 +104,6 @@ public class Weapon : MonoBehaviour
 
     public void RegisterOnReloadListener(Action<float> updateReloadUI)
     {
-        reloadTimer.OnProgress(updateReloadUI);
+        weaponCooldownTimer.OnProgress(updateReloadUI);
     }
 }

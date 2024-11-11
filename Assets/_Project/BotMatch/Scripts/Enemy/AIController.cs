@@ -50,6 +50,10 @@ public class AIController : MonoBehaviour, ICharacterController
     public Vector3 GetDirection() { return currentDirection; }
 
     public bool GetFire() { return true; }
+    public bool GetInputSkill()
+    {
+        return false;
+    }
 
     public Vector3 GetAimDirection()
     {
