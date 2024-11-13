@@ -355,7 +355,7 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
         if (changedProps.ContainsKey(GlobalString.PLAYER_DIED) && (bool)changedProps[GlobalString.PLAYER_DIED] &&
             Equals(localPlayer.PhotonView.Owner, targetPlayer))
         {
-            respawnTimer.Reset();
+            respawnTimer.ReStart();
             changedProps[GlobalString.PLAYER_DIED] = false;
         }
 

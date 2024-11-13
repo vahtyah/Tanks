@@ -60,7 +60,7 @@ public class Flag : MonoBehaviour
         TeamCaptured = TeamType.None;
         transform.position = position.With(y: initialPosition.y);
         gameObject.SetActive(true);
-        returningTimer.Reset();
+        returningTimer.ReStart();
     }
 
     public void Return()

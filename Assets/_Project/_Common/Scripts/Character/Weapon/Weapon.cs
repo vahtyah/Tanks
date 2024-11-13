@@ -39,7 +39,7 @@ public class Weapon : MonoBehaviour
         photonView = GetComponent<PhotonView>();
         remainingProjectiles = magazineCapacity;
         weaponCooldownTimer = Timer.Register(new LocalTimer(weaponCountdownDuration))
-            .AlreadyDone()
+            .Ready()
             .AutoDestroyWhenOwnerDisappear(this);
 
         magazineReloadTimer = Timer.Register(new LocalTimer(magazineReloadDuration))
@@ -61,13 +61,14 @@ public class Weapon : MonoBehaviour
 
     private void Initialize()
     {
+        
     }
 
     public void UseWeapon()
     {
         if (!weaponCooldownTimer.IsCompleted || magazineReloadTimer.IsRunning)
             return;
-        weaponCooldownTimer.Reset();
+        weaponCooldownTimer.ReStart();
         photonView.RPC(nameof(UseWeaponRPC), RpcTarget.All);
         localWeaponUseFeedback?.PlayFeedbacks();
     }
@@ -82,6 +83,7 @@ public class Weapon : MonoBehaviour
             float networkLag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             projectile.SetOwner(WeaponOwner.gameObject)
                 .SetWeapon(this)
+                .SetLag(networkLag)
                 .OnSpawn();
         }
 
@@ -92,7 +94,7 @@ public class Weapon : MonoBehaviour
             remainingProjectiles--;
             if (remainingProjectiles <= 0)
             {
-                magazineReloadTimer.Reset();
+                magazineReloadTimer.ReStart();
             }
         }
     }

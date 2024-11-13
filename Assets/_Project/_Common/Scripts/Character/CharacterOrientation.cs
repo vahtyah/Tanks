@@ -10,7 +10,7 @@ public class CharacterOrientation : CharacterAbility, IPunObservable
     private Quaternion weaponRotation;
 
     [SerializeField] private bool shouldRotateWeapon;
-    [SerializeField] private GameObject weaponModel;
+    private GameObject weaponModel;
 
     private CharacterMovement movement;
 
@@ -18,8 +18,9 @@ public class CharacterOrientation : CharacterAbility, IPunObservable
     {
         base.PreInitialize();
         movement = GetComponent<CharacterMovement>();
+        weaponModel = Character.Model.Turret;
     }
-
+    
     public override void ProcessAbility()
     {
         RotateToFaceWeaponDirection();

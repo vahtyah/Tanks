@@ -2,13 +2,15 @@
 
 public class CharacterMachineGun : CharacterAbility
 {
-    [SerializeField] private Transform weaponHolder;
-    [SerializeField] private Transform projectileSpawnPoint;
+    private Transform weaponHolder;
+    private Transform projectileSpawnPoint;
     [SerializeField] private Weapon weapon;
     
     protected override void PreInitialize()
     {
         base.PreInitialize();
+        weaponHolder = Character.Model.SkillWeaponHolder;
+        projectileSpawnPoint = Character.Model.SkillSpawnPoint;
         EquipWeapon();
     }
     

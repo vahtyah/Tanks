@@ -8,24 +8,23 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] protected GameObject abilityNode;
-    [ShowInInspector]
+    [SerializeField] private CharacterModel model;
+
     public ICharacterController Controller { get; private set; }
     public Health Health { get; private set; }
 
     protected readonly List<CharacterAbility> abilities = new();
-    [ShowInInspector]
     public PhotonView PhotonView { get; private set; }
     public Collider Collider { get; private set; }
     public Weapon EquippedWeapon { get; private set; }
 
     [ShowInInspector, TitleGroup("Debugs")]
-
     public TeamType Team { get; protected set; }
 
     [ShowInInspector, TitleGroup("Debugs")]
     public List<Character> Teammates { get; protected set; } = new();
 
-    [ShowInInspector] public int MultiKillCount { get; private set; }
+    public int MultiKillCount { get; private set; }
 
     //StateMachine
     public StateMachine<CharacterStates.CharacterCondition>
@@ -68,4 +67,6 @@ public class Character : MonoBehaviour
 
         return index < 0 ? 1 : multiKills[index].BonusScore;
     }
+    
+    public CharacterModel Model => model;
 }

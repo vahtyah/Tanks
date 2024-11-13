@@ -8,8 +8,6 @@ using UnityEngine;
 
 public class CharacterFlagCapture : CharacterAbility
 {
-    [SerializeField] private ForceFieldController flagDisplay;
-    [SerializeField] private Renderer flagRenderer;
     [SerializeField] private float captureTime = 2f;
     [SerializeField] private float handInTime = 1f;
 
@@ -23,6 +21,8 @@ public class CharacterFlagCapture : CharacterAbility
     [ShowInInspector, TitleGroup("Debugs")]
     private List<Flag> nearbyFlags = new();
 
+    private ForceFieldController flagDisplay;
+    private Renderer flagRenderer;
     private Timer captureTimer;
     private Timer handInTimer;
     private GUIManagerOnlineMatch GUI;
@@ -40,6 +40,8 @@ public class CharacterFlagCapture : CharacterAbility
         PhotonView.RPC(nameof(RPC_Initialize), RpcTarget.All);
         GUI = GUIManagerOnlineMatch.Instance;
         teamArea = EnvironmentManager.Instance.CurrentMap.GetAreaTransform(PhotonView.Owner.GetTeam());
+        flagDisplay = Character.Model.FlagDisplay;
+        flagRenderer = Character.Model.FlagRenderer;
         RegisterTimers();
     }
 
@@ -169,7 +171,7 @@ public class CharacterFlagCapture : CharacterAbility
     {
         if (isEntering)
         {
-            handInTimer.Reset();
+            handInTimer.ReStart();
         }
         else
         {
@@ -225,7 +227,7 @@ public class CharacterFlagCapture : CharacterAbility
 
     private void StartCapture()
     {
-        captureTimer.Reset();
+        captureTimer.ReStart();
     }
 
     private void CompleteCapture()

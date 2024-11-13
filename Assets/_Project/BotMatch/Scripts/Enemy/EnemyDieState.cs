@@ -11,6 +11,6 @@ public class EnemyDieState : EnemyState
     public override void OnEnter()
     {
         base.OnEnter();
-        timer.Reset();
+        timer.ReStart();
     }
 }

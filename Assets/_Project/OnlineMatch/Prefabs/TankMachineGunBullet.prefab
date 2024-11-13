@@ -4925,6 +4925,7 @@ GameObject:
   - component: {fileID: 6909513333049971089}
   - component: {fileID: 445465729030438709}
   - component: {fileID: 2284518110075264182}
+  - component: {fileID: -4451364129896346190}
   m_Layer: 18
   m_Name: TankMachineGunBullet
   m_TagString: Untagged
@@ -5050,6 +5051,22 @@ MonoBehaviour:
   ObstaclesLayerMask:
     serializedVersion: 2
     m_Bits: 1032
+--- !u!114 &-4451364129896346190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854097648223014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b89d0327644736a2e2d9cc56928303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  disableColliderOnDeath: 1
+  onHitFeedbacks: {fileID: 0}
+  IsInvulnerable: 0
 --- !u!1 &1018883284677772756
 GameObject:
   m_ObjectHideFlags: 0

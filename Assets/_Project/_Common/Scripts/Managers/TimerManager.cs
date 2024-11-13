@@ -28,17 +28,67 @@ public class LocalTimer : Timer
     }
 }
 
+public class RealTimeTimer : Timer
+{
+    public RealTimeTimer(float duration) : base(duration)
+    {
+    }
+
+    protected override float GetWorldTime()
+    {
+        return Time.realtimeSinceStartup;
+    }
+}
+
+public class ReusableTimer : Timer
+{
+    public ReusableTimer(float duration) : base(duration)
+    {
+    }
+
+    public override Timer Start()
+    {
+        startTime = GetWorldTime();
+        IsCompleted = false;
+        IsCancelled = false;
+        timeElapsedBeforePause = null;
+        onStart?.Invoke();
+        return this;
+    }
+}
+
+public class OneShotTimer : Timer
+{
+    protected OneShotTimer(float duration) : base(duration)
+    {
+    }
+
+    public override Timer Start()
+    {
+        if (IsRegistered || IsDone)
+        {
+            Debug.LogWarning("Timer is already registered or done. Please use ReusableTimer instead.");
+            return this;
+        }
+
+        startTime = GetWorldTime();
+        manager.RegisterTimer(this);
+        onStart?.Invoke();
+        return this;
+    }
+}
+
 
 public class Timer
 {
-    private static TimerManager manager;
+    protected static TimerManager manager;
     private readonly float duration;
-    private float startTime;
-    private float? timeElapsedBeforePause;
+    protected float startTime;
+    protected float? timeElapsedBeforePause;
     private MonoBehaviour owner;
     private bool hasOwner;
 
-    private Action onStart;
+    protected Action onStart;
     private Action<float> onUpdate;
     private Action<float> onProgress;
     private Action<float> onRemaining;
@@ -46,13 +96,17 @@ public class Timer
     private Action onComplete;
     private Action onDone;
 
+    private readonly List<Action> activeActions = new();
+
     public bool IsRegistered { get; private set; }
     public float Duration => duration;
-    public bool IsCompleted { get; private set; }
+    public bool IsCompleted { get; protected set; }
     public bool IsPaused => timeElapsedBeforePause.HasValue;
     public bool IsLooped { get; private set; }
-    public bool IsCancelled { get; private set; }
-    public bool UsesRealTime { get; private set; }
+
+    public bool IsCancelled { get; protected set; }
+
+    // public bool UsesRealTime { get; private set; }
     public bool IsDone => IsCompleted || IsCancelled || isOwnerDisappeared;
     public bool IsRunning => !IsDone && !IsPaused && IsRegistered;
     public float Progress => GetElapsedTime() / duration;
@@ -88,7 +142,14 @@ public class Timer
     private static void EnsureManagerExits()
     {
         if (manager == null)
-            manager = TimerManager.Instance ?? new GameObject("TimerManager").AddComponent<TimerManager>();
+        {
+            manager = TimerManager.Instance;
+            if (manager is null)
+            {
+                Debug.LogWarning("TimerManager is not found. Creating a new one.");
+                manager = new GameObject("TimerManager").AddComponent<TimerManager>();
+            }
+        }
     }
 
     public Timer OnStart(Action onStart)
@@ -159,15 +220,20 @@ public class Timer
         return this;
     }
 
-    public Timer UseRealTime(bool useRealTime = true)
-    {
-        UsesRealTime = useRealTime;
-        return this;
-    }
+    // public Timer UseRealTime(bool useRealTime = true)
+    // {
+    //     UsesRealTime = useRealTime;
+    //     return this;
+    // }
 
     public Timer AutoDestroyWhenOwnerDisappear(MonoBehaviour owner)
     {
-        if (owner == null) return this;
+        if (owner == null)
+        {
+            Debug.LogWarning("Owner is null. Please provide a valid owner.");
+            return this;
+        }
+
         this.owner = owner;
         hasOwner = true;
         return this;
@@ -177,20 +243,34 @@ public class Timer
     /// Your timer will start counting down from the moment you call this method. This method just runs only once no matter how many times you call it.
     /// </summary>
     /// <returns></returns>
-    public Timer Start()
+    public virtual Timer Start()
     {
-        if (IsRegistered || IsDone) return this;
+        if (IsRegistered || IsDone)
+        {
+            Debug.LogWarning("Timer is already registered or done. Please use ReStart() instead.");
+            return this;
+        }
+
         startTime = GetWorldTime();
         manager.RegisterTimer(this);
         onStart?.Invoke();
+        // RegisterActions();
         return this;
     }
 
+    // private void RegisterActions()
+    // {
+    //     if(onUpdate != null) activeActions.Add(() => onUpdate(GetElapsedTime()));
+    //     if(onProgress != null) activeActions.Add(() => onProgress(Progress));
+    //     if(onTimeRemaining != null) activeActions.Add(() => onTimeRemaining(TimeRemaining));
+    //     if(onRemaining != null) activeActions.Add(() => onRemaining(Remaining));
+    // }
+
     /// <summary>
-    /// Your timer will ready to be completed. Usefully when you want to skip the timer.
+    /// Your timer will ready to be completed. Usefully when you want to skip the timer in the first time.
     /// </summary>
     /// <returns></returns>
-    public Timer AlreadyDone()
+    public Timer Ready()
     {
         IsCompleted = true;
         return this;
@@ -200,14 +280,16 @@ public class Timer
     /// Your timer will start counting down from the moment you call this method. This method can be called multiple times and it will reset the timer.
     /// </summary>
     /// <returns></returns>
-    public Timer Reset()
+    public void ReStart() => Reset().Start();
+
+    private Timer Reset()
     {
         if (IsRegistered) manager.RemoveTimer(this);
-        startTime = GetWorldTime();
+        IsRegistered = false;
         IsCompleted = false;
         IsCancelled = false;
         timeElapsedBeforePause = null;
-        return Start();
+        return this;
     }
 
     public void Cancel()
@@ -217,13 +299,23 @@ public class Timer
 
     public void Pause()
     {
-        if (IsPaused || IsDone) return;
+        if (IsPaused || IsDone)
+        {
+            Debug.LogWarning("Timer is already paused or done.");
+            return;
+        }
+
         timeElapsedBeforePause = GetElapsedTime();
     }
 
     public void Resume()
     {
-        if (!IsPaused) return;
+        if (!IsPaused)
+        {
+            Debug.LogWarning("Timer is not paused.");
+            return;
+        }
+
         startTime = GetWorldTime() - timeElapsedBeforePause.Value;
         timeElapsedBeforePause = null;
     }
@@ -233,7 +325,8 @@ public class Timer
         return IsCompleted ? duration : timeElapsedBeforePause ?? GetWorldTime() - startTime;
     }
 
-    protected virtual float GetWorldTime() => (float)(UsesRealTime ? Time.realtimeSinceStartup : PhotonNetwork.Time);
+    // protected virtual float GetWorldTime() => (float)(UsesRealTime ? Time.realtimeSinceStartup : PhotonNetwork.Time);
+    protected virtual float GetWorldTime() => (float)PhotonNetwork.Time;
 
     public void Update()
     {
@@ -250,6 +343,11 @@ public class Timer
         onTimeRemaining?.Invoke(TimeRemaining);
         onRemaining?.Invoke(Remaining);
 
+        // foreach (var action in activeActions)
+        // {
+        //     action.Invoke();
+        // }
+
         if (GetWorldTime() < startTime + duration) return;
         onComplete?.Invoke();
         if (IsLooped)
@@ -264,7 +362,7 @@ public class Timer
 
 public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<GameEvent>
 {
-    [ShowInInspector] private readonly List<Timer> timers = new List<Timer>();
+    [ShowInInspector] private readonly List<Timer> timers = new();
 
     private void Update()
     {

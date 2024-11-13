@@ -6,7 +6,7 @@ public abstract class CharacterAbility : MonoBehaviour
 {
     [SerializeField] private CharacterStates.CharacterAbility abilityType;
     protected Character Character;
-    [ShowInInspector] protected ICharacterController Controller;
+    protected ICharacterController Controller;
     protected PhotonView PhotonView;
 
     protected virtual void Awake()

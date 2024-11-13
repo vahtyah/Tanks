@@ -6576,7 +6576,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityType: 0
   shouldRotateWeapon: 1
-  weaponModel: {fileID: 2938439221705790201}
 --- !u!114 &7256377778982838455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6590,8 +6589,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityType: 0
-  weaponHolder: {fileID: 2707850851870953339}
-  projectileSpawnPoint: {fileID: 3198763929061803089}
   weapon: {fileID: 2828614911532837994}
 --- !u!114 &4306085405984162935
 MonoBehaviour:
@@ -6619,8 +6616,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityType: 0
-  weaponHolder: {fileID: 2707850851870953339}
-  projectileSpawnPoint: {fileID: 8744544204162982018}
   weapon: {fileID: 3652138537137246908}
 --- !u!1 &293710707198633259
 GameObject:
@@ -16944,6 +16939,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1153045246755281117}
+  - component: {fileID: 4239644343293102570}
   m_Layer: 0
   m_Name: TankModel
   m_TagString: Untagged
@@ -16969,6 +16965,28 @@ Transform:
   - {fileID: 4738815391216466295}
   m_Father: {fileID: 1119928656908961567}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4239644343293102570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433465730819351834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9a3949873e744f98800d63602f1c73f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Wheels: {fileID: 4653406065674031892}
+  Body: {fileID: 7133740065962045127}
+  Turret: {fileID: 2938439221705790201}
+  CameraTarget: {fileID: 1377152984754233675}
+  FlagDisplay: {fileID: 3270668356850989557}
+  FlagRenderer: {fileID: 8090179351061724321}
+  PrimaryWeaponHolder: {fileID: 2707850851870953339}
+  PrimaryProjectileSpawnPoint: {fileID: 3198763929061803089}
+  SkillWeaponHolder: {fileID: 2707850851870953339}
+  SkillSpawnPoint: {fileID: 8744544204162982018}
 --- !u!1 &1446509568547554811
 GameObject:
   m_ObjectHideFlags: 0
@@ -17108,8 +17126,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityNode: {fileID: 257576369866153025}
+  model: {fileID: 4239644343293102570}
   playerID: Player1
-  CameraTarget: {fileID: 3378438262326538011}
 --- !u!114 &8408129302591067597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17123,8 +17141,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityType: 0
-  flagDisplay: {fileID: 3270668356850989557}
-  flagRenderer: {fileID: 8090179351061724321}
   captureTime: 3
   handInTime: 1
 --- !u!114 &2133174380894428361

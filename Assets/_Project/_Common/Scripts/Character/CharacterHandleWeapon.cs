@@ -5,13 +5,15 @@ using UnityEngine;
 public class CharacterHandleWeapon : CharacterAbility
 {
     //Binding
-    [SerializeField] private Transform weaponHolder;
-    [SerializeField] private Transform projectileSpawnPoint;
+    private Transform weaponHolder;
+    private Transform projectileSpawnPoint;
     [SerializeField] private Weapon weapon;
 
     protected override void PreInitialize()
     {
         base.PreInitialize();
+        weaponHolder = Character.Model.PrimaryWeaponHolder;
+        projectileSpawnPoint = Character.Model.PrimaryProjectileSpawnPoint;
         EquipWeapon();
     }
 

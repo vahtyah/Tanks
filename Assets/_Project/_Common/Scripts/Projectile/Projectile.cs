@@ -52,7 +52,7 @@ public class Projectile : MonoBehaviour, IPoolable
 
     public void OnSpawn()
     {
-        timer?.Reset();
+        timer?.ReStart();
         damageOnTouch.AddToIgnoreList(owner);
         damageOnTouch.IgnoreTeamMembers();
         currentSpeed = speed;

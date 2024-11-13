@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Photon.Pun;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerCharacter : Character
 {
     [SerializeField] private string playerID = "Player1";
-    public GameObject CameraTarget;
+    public Transform CameraTarget { get; private set; }
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+        CameraTarget = Model.CameraTarget;
+    }
 
     public string PlayerID => playerID;
     
