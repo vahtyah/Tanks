@@ -1,12 +1,9 @@
-using ExitGames.Client.Photon;
 using Photon.Pun;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class CharacterHealth : Health, IEventListener<GameEvent>
 {
-    [ShowInInspector] private CharacterFlagCapture characterFlagCapture;
-
     public GameObject TankExplosionEffect;
     [SerializeField] private ForceFieldController protectionShield;
     [SerializeField] private int timeInvulnerableAfterSpawn = 3;
@@ -24,11 +21,6 @@ public class CharacterHealth : Health, IEventListener<GameEvent>
             .AutoDestroyWhenOwnerDisappear(this);
     }
 
-    protected override void Start()
-    {
-        base.Start();
-        characterFlagCapture = GetComponent<CharacterFlagCapture>();
-    }
 
     private void SetInvulnerableRPC(bool isInvulnerable)
     {
@@ -46,8 +38,6 @@ public class CharacterHealth : Health, IEventListener<GameEvent>
     protected override void OnDeath(int lastHitBy)
     {
         PhotonView.RPC(nameof(OnDeathRPC), RpcTarget.All);
-        if (characterFlagCapture) characterFlagCapture.ReleaseCapturedFlag(transform.position);
-
         var killer = PhotonNetwork.GetPhotonView(lastHitBy).GetComponent<Character>();
         InGameEvent.Trigger(InGameEventType.SomeoneDied, killer, Character);
         //TODO: Fix

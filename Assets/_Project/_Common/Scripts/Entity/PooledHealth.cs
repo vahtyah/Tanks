@@ -1,9 +1,18 @@
 ﻿using UnityEngine;
 
-public class PooledHealth : Health
+public class PooledHealth : HealthTest
 {
-    protected override void OnDeath(int lastHitBy)
+    public override void TakeDamage(float damage, Character lastHitBy)
+    {
+        CurrentHealth -= damage;
+    }
+
+    protected override void DestroyEntity()
     {
         Pool.Despawn(gameObject);
+    }
+
+    public override void OnDeath()
+    {
     }
 }

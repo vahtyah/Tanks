@@ -8,6 +8,6 @@ public class PhotonCallbacks : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
-        Debug.Log(targetPlayer);
+        UnityEngine.Debug.Log(targetPlayer);
     }
 }

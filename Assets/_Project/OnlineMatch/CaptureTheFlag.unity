@@ -1396,17 +1396,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indicatorPrefab: {fileID: 4329716497707394445, guid: 332d5c3a579183f46b87c647dfcd0b11, type: 3}
   indicatorContainer: {fileID: 1955859860}
---- !u!114 &684920989 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5072588549226026234, guid: 717530e3b657d1447a81f9c3cf24481f, type: 3}
-  m_PrefabInstance: {fileID: 31043428}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6169f97cd51a4417b76264bf1ea335ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &777990821
 GameObject:
   m_ObjectHideFlags: 0
@@ -3142,7 +3131,6 @@ MonoBehaviour:
   waitingForOthersText: {fileID: 1732906718}
   playerHUD: {fileID: 1778696612}
   targetIndicator: {fileID: 1346431124661692033}
-  notification: {fileID: 684920989}
 --- !u!1 &1530334824
 GameObject:
   m_ObjectHideFlags: 0
@@ -3534,6 +3522,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1039210157078385966, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 3164775023385905658, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
       propertyPath: m_LocalPosition.y
       value: 73.1
@@ -3549,6 +3541,10 @@ PrefabInstance:
     - target: {fileID: 3613330309164942452, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
       propertyPath: m_LocalPosition.z
       value: -31.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4010721520484907136, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
+      propertyPath: field of view
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 4801747604979182412, guid: 06a8e0bfc5b941447a92fd3f925b9015, type: 3}
       propertyPath: m_Name

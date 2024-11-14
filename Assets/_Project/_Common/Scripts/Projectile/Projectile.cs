@@ -1,17 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Projectile : MonoBehaviour, IPoolable
+public class Projectile : Entity, IPoolable, IController
 {
     //Setting
-    public float speed = 20f;
-    public float lifeTime = 1f;
-    public float Acceleration = 0;
+    [BoxGroup("Settings"),SerializeField] private float speed = 20f;
+    [BoxGroup("Settings"),SerializeField] private float lifeTime = 1f;
+    [BoxGroup("Settings"),SerializeField] private float Acceleration = 0;
     private DamageOnTouch damageOnTouch;
-    private GameObject owner;
+    private Character owner;
 
     //Movement
     private Rigidbody rb;
@@ -53,9 +51,10 @@ public class Projectile : MonoBehaviour, IPoolable
     public void OnSpawn()
     {
         timer?.ReStart();
-        damageOnTouch.AddToIgnoreList(owner);
+        damageOnTouch.AddToIgnoreList(owner.gameObject);
         damageOnTouch.IgnoreTeamMembers();
         currentSpeed = speed;
+        // damageOnTouch.health?.ResetHealth();
     }
 
     public void OnDespawn()
@@ -63,10 +62,10 @@ public class Projectile : MonoBehaviour, IPoolable
         damageOnTouch.ClearIgnoreList();
     }
 
-    public Projectile SetOwner(GameObject o)
+    public Projectile SetOwner(Character o)
     {
         owner = o;
-        damageOnTouch.SetOwner(owner.GetComponent<Character>());
+        damageOnTouch.SetOwner(owner);
         return this;
     }
 

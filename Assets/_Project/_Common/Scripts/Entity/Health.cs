@@ -57,9 +57,12 @@ public abstract class Health : MonoBehaviour
         {
             onHitFeedbacks?.PlayFeedbacks();
             PhotonView.RPC(nameof(TakeDamageRPC), RpcTarget.All, damage, lastHitBy.PhotonView.ViewID);
+            UnityEngine.Debug.Log($"Health: {CurrentHealth} in TakeDamage");
+            if(CurrentHealth <= 0)
+                return true;
         }
 
-        return true;
+        return false;
     }
 
     [PunRPC]
@@ -67,6 +70,7 @@ public abstract class Health : MonoBehaviour
     {
         this.lastHitBy = lastHitBy;
         CurrentHealth -= damage;
+        UnityEngine.Debug.Log($"Health: {CurrentHealth} in TakeDamageRPC");
     }
 
     private void Die()

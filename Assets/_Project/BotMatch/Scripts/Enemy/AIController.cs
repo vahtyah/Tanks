@@ -34,8 +34,10 @@ public class AIController : MonoBehaviour, ICharacterController
 
         stateMachine.At(patrolState, chaseState, new FuncPredicate(() => playerDetector.CanDetectPlayer()));
         stateMachine.At(chaseState, patrolState, new FuncPredicate(() => !playerDetector.CanDetectPlayer()));
-        stateMachine.Any(dieState, ref character.Health.onDeath);
+        // stateMachine.Any(dieState, ref character.Health.onDeath);
         stateMachine.SetState(patrolState);
+        
+        
     }
 
     private void Update()

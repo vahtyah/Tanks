@@ -27,11 +27,11 @@ public class DatabaseManager : Singleton<DatabaseManager>, IEventListener<GameEv
                 var databaseURL = "https://tanks-c93ec-default-rtdb.firebaseio.com/";
                 reference = FirebaseDatabase.GetInstance(app, databaseURL).RootReference;
                 GetUsersSortedByScore();
-                Debug.Log("Firebase Database initialized successfully.");
+                UnityEngine.Debug.Log("Firebase Database initialized successfully.");
             }
             else
             {
-                Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
+                UnityEngine.Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
             }
         });
     }
@@ -46,17 +46,17 @@ public class DatabaseManager : Singleton<DatabaseManager>, IEventListener<GameEv
             {
                 if (task.IsCompleted)
                 {
-                    Debug.Log("User data written successfully.");
+                    UnityEngine.Debug.Log("User data written successfully.");
                 }
                 else
                 {
-                    Debug.LogError("Failed to write user data: " + task.Exception);
+                    UnityEngine.Debug.LogError("Failed to write user data: " + task.Exception);
                 }
             });
         }
         else
         {
-            Debug.LogError("Database reference is not initialized yet.");
+            UnityEngine.Debug.LogError("Database reference is not initialized yet.");
         }
     }
 
@@ -81,13 +81,13 @@ public class DatabaseManager : Singleton<DatabaseManager>, IEventListener<GameEv
                 }
                 else
                 {
-                    Debug.LogError("Failed to read user data: " + task.Exception);
+                    UnityEngine.Debug.LogError("Failed to read user data: " + task.Exception);
                 }
             });
         }
         else
         {
-            Debug.LogError("Database reference is not initialized yet.");
+            UnityEngine.Debug.LogError("Database reference is not initialized yet.");
         }
     }
 

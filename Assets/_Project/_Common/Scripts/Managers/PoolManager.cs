@@ -110,7 +110,7 @@ public class Pool
         }
         else
         {
-            Debug.LogWarning("Attempted to return an object that doesn't belong to any pool.");
+            UnityEngine.Debug.LogWarning("Attempted to return an object that doesn't belong to any pool.");
         }
     }
 
@@ -126,7 +126,7 @@ public class Pool
         }
         else
         {
-            Debug.LogWarning("Attempted to return an object that doesn't belong to any pool.");
+            UnityEngine.Debug.LogWarning("Attempted to return an object that doesn't belong to any pool.");
         }
     }
 

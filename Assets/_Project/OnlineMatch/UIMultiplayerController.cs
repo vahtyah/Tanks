@@ -183,7 +183,6 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
 
     private void OnPlayerJoin(Player newPlayer)
     {
-        Debug.Log("Player joined");
         var gameMode = roomSettings.GetGameMode();
         if (gameMode == GameMode.Deathmatch)
         {

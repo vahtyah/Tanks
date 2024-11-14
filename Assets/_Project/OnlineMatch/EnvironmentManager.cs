@@ -33,7 +33,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
         var map = GetMap(mapType);
         if (map == null)
         {
-            Debug.LogError($"Map not found for map type: {mapType}");
+            UnityEngine.Debug.LogError($"Map not found for map type: {mapType}");
             return null;
         }
         return Instantiate(map,transform);

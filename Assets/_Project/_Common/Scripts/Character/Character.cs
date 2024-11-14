@@ -5,24 +5,22 @@ using Photon.Pun;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : Entity
 {
-    [SerializeField] protected GameObject abilityNode;
-    [SerializeField] private CharacterModel model;
+    [SerializeField, BoxGroup("Character Components")] protected GameObject abilityNode;
+    [SerializeField, BoxGroup("Character Components")] private CharacterModel model;
 
     public ICharacterController Controller { get; private set; }
-    public Health Health { get; private set; }
+    public HealthTest Health { get; private set; }
 
     protected readonly List<CharacterAbility> abilities = new();
     public PhotonView PhotonView { get; private set; }
     public Collider Collider { get; private set; }
     public Weapon EquippedWeapon { get; private set; }
 
-    [ShowInInspector, TitleGroup("Debugs")]
-    public TeamType Team { get; protected set; }
+    [Debug] public TeamType Team { get; protected set; }
 
-    [ShowInInspector, TitleGroup("Debugs")]
-    public List<Character> Teammates { get; protected set; } = new();
+    [Debug] public List<Character> Teammates { get; protected set; } = new();
 
     public int MultiKillCount { get; private set; }
 
@@ -32,7 +30,7 @@ public class Character : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Health = GetComponent<Health>();
+        Health = GetComponent<HealthTest>();
         Collider = GetComponent<Collider>();
         PhotonView = GetComponent<PhotonView>();
         Controller = GetComponent<ICharacterController>();
@@ -67,6 +65,6 @@ public class Character : MonoBehaviour
 
         return index < 0 ? 1 : multiKills[index].BonusScore;
     }
-    
+
     public CharacterModel Model => model;
 }

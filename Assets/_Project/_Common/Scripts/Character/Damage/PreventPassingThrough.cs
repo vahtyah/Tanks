@@ -12,7 +12,7 @@ public class PreventPassingThrough : MonoBehaviour
     private Vector3 positionLastFrame;
     private ITrigger trigger;
     
-    private void Awake(){
+    private void Start(){
 
         collider = GetComponent<Collider>();
         trigger = GetComponent<ITrigger>();

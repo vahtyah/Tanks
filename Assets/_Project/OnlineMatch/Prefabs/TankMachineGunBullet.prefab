@@ -4924,7 +4924,6 @@ GameObject:
   - component: {fileID: 54994276034465240}
   - component: {fileID: 6909513333049971089}
   - component: {fileID: 445465729030438709}
-  - component: {fileID: 2284518110075264182}
   - component: {fileID: -4451364129896346190}
   m_Layer: 18
   m_Name: TankMachineGunBullet
@@ -5000,7 +4999,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &6909513333049971089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5032,25 +5031,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1032
   damage: 2
-  damageTaken: 2
+  damageTaken: 1
   model: {fileID: 0}
-  onHitFeedback: {fileID: 129939367651388674}
-  hitParticles: {fileID: 6793735854533676898}
---- !u!114 &2284518110075264182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854097648223014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e83bcb9aa28341299027fe04ecd541dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObstaclesLayerMask:
-    serializedVersion: 2
-    m_Bits: 1032
+  deathFeedbacks: {fileID: 129939367651388674}
 --- !u!114 &-4451364129896346190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5064,9 +5047,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1
-  disableColliderOnDeath: 1
-  onHitFeedbacks: {fileID: 0}
-  IsInvulnerable: 0
+  isInvulnerable: 0
+  deathFeedbacks: {fileID: 0}
+  destructionDelay: 1
+  disableModelOnDeath: 0
+  model: {fileID: 1622653139896216}
+  disableControllerOnDeath: 1
+  disableCollisionOnDeath: 1
 --- !u!1 &1018883284677772756
 GameObject:
   m_ObjectHideFlags: 0
@@ -10877,6 +10864,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4585949775055698}
     m_Modifications:
+    - target: {fileID: 1279437992981596140, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1279437992981596140, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1279437992981596140, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1279437992981596140, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1796437531259537002, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1796437531259537002, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1796437531259537002, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1796437531259537002, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3036081855788999947, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
@@ -10889,8 +10908,52 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5938658807126488570, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5938658807126488570, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5938658807126488570, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5938658807126488570, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6015340367056428161, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
       propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6151635907854608161, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6151635907854608161, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6151635907854608161, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6151635907854608161, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6702227914809282779, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6702227914809282779, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6702227914809282779, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6702227914809282779, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
@@ -10933,9 +10996,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6702227914809282779, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7082891797224122747, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
       propertyPath: m_Name
       value: LoftBulletImpact
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167450587813130381, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167450587813130381, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167450587813130381, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167450587813130381, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8513209184108671709, guid: 8c6c4b46f25c8674c836660af8f3582d, type: 3}
       propertyPath: m_Materials.Array.size

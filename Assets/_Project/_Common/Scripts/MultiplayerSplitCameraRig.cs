@@ -30,7 +30,7 @@ public class MultiplayerSplitCameraRig : MonoBehaviour
                 CameraControllers[3].SetViewportRect(new Rect(0.5f, 0, 0.5f, 0.5f)); // Bottom right
                 break;
             default:
-                Debug.LogError("Unsupported number of players. Only 2 to 4 players are supported.");
+                UnityEngine.Debug.LogError("Unsupported number of players. Only 2 to 4 players are supported.");
                 break;
         }
     }

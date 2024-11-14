@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4552430102813218241}
   - component: {fileID: 7968863728709433975}
   - component: {fileID: 8185724279000387379}
-  - component: {fileID: -3764603588121902343}
   m_Layer: 0
   m_Name: TankExplore
   m_TagString: Untagged
@@ -29,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -2.78, y: 4.81, z: -3.51}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5000001, z: 1.5000001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3030882867263896525}
@@ -4830,18 +4829,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &-3764603588121902343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3980047163374904550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6b33b30acd245f28aa18b963afa7cb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8169627752776691377
 GameObject:
   m_ObjectHideFlags: 0

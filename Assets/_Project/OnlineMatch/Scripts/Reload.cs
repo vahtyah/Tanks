@@ -16,7 +16,7 @@ public class Reload : MonoBehaviour, IEventListener<CharacterEvent>
                 if (weapon != null)
                     weapon.RegisterOnReloadListener(UpdateBar);
                 else
-                    Debug.Log("Weapon is null");
+                    UnityEngine.Debug.Log("Weapon is null");
                 break;
         }
     }

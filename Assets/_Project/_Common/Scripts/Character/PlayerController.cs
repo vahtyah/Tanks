@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour, ICharacterController
     private Vector3 networkPosition;
     private Quaternion networkRotation;
     public Collider Collider { get; private set; }
-    private Action<Collider> onTriggerEnter;
 
     private void Awake()
     {
@@ -55,6 +54,8 @@ public class PlayerController : MonoBehaviour, ICharacterController
     public void Reset() { }
 
     public Rigidbody GetRigidbody() { return rb; }
-
-    public void AddOnTriggerEnter(Action<Collider> action) { onTriggerEnter += action; }
+    public void AddOnTriggerEnter(Action<Collider> action)
+    {
+        
+    }
 }

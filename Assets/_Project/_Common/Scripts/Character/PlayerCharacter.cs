@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerCharacter : Character
+public class PlayerCharacter : Character, IController
 {
     [SerializeField] private string playerID = "Player1";
     public Transform CameraTarget { get; private set; }

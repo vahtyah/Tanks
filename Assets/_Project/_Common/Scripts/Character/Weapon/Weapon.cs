@@ -81,7 +81,7 @@ public class Weapon : MonoBehaviour
         if (spawnedProjectile.TryGetComponent(out Projectile projectile))
         {
             float networkLag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
-            projectile.SetOwner(WeaponOwner.gameObject)
+            projectile.SetOwner(WeaponOwner)
                 .SetWeapon(this)
                 .SetLag(networkLag)
                 .OnSpawn();

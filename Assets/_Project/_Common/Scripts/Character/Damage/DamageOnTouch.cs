@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public interface ITrigger
@@ -12,19 +10,30 @@ public interface ITrigger
 
 public class DamageOnTouch : MonoBehaviour, ITrigger
 {
-    [SerializeField] private LayerMask targetLayerMask;
-    [SerializeField] private float damage = 1;
-    [SerializeField] private float damageTaken;
+    [SerializeField, BoxGroup("Target Settings", showLabel:false)] private LayerMask targetLayerMask;
+    [SerializeField, BoxGroup("Damage Settings")]
+    private float damage = 1;
 
-    [SerializeField] private GameObject model;
+    [SerializeField, BoxGroup("Damage Settings")]
+    private float damageTaken;
 
+    [SerializeField, BoxGroup("Feedbacks")]
+    private MMFeedbacks deathFeedbacks;
 
-    [ShowInInspector, TitleGroup("Debugs")]
-    private List<GameObject> ignoredObjects = new();
-
-    [SerializeField] private MMFeedbacks onHitFeedback;
-    [SerializeField] private ParticleSystem hitParticles;
+    [Debug] private List<GameObject> ignoredObjects = new();
     private Character owner;
+    private HealthTest health;
+    private Vector3 initialPosition;
+
+    private void Awake()
+    {
+        health = GetComponent<HealthTest>();
+    }
+
+    private void OnEnable()
+    {
+        initialPosition = transform.position;
+    }
 
 
     private void Initialize()
@@ -69,9 +78,8 @@ public class DamageOnTouch : MonoBehaviour, ITrigger
         GameObject targetObject = collider.gameObject;
         if (!IsTargetAvailable(targetObject) || IsSameTeam(targetObject)) return;
 
-        GenerateHitParticles(transform.position);
-        ApplySelfDamage();
-        if (targetObject.TryGetComponent(out CharacterHealth targetHealth))
+        PreventPassThrough();
+        if (targetObject.TryGetComponent(out ChaHealth targetHealth))
         {
             if (targetHealth.IsInvulnerable)
             {
@@ -81,19 +89,34 @@ public class DamageOnTouch : MonoBehaviour, ITrigger
 
             targetHealth.TakeDamage(damage, owner);
         }
+
+        GenerateHitParticles(transform.position);
+        ApplySelfDamage();
+    }
+
+    private readonly RaycastHit[] raycastHitsCache = new RaycastHit[1]; // Cache array dùng cho RaycastNonAlloc
+
+    private void PreventPassThrough()
+    {
+        var movementDirection = transform.position - initialPosition;
+
+        if (movementDirection.sqrMagnitude > 0.1f)
+        {
+            var normalizedDirection = movementDirection.normalized;
+            var distanceMoved = movementDirection.magnitude;
+
+            if (Physics.RaycastNonAlloc(initialPosition, normalizedDirection, raycastHitsCache, distanceMoved,
+                    targetLayerMask) > 0)
+            {
+                transform.position = raycastHitsCache[0].point - normalizedDirection * 0.1f;
+            }
+        }
     }
 
 
     private void GenerateHitParticles(Vector3 position)
     {
-        if (hitParticles != null)
-        {
-            var newHitParticles = Pool.Spawn(this.hitParticles.gameObject, position)
-                .GetComponent<ParticleSystem>();
-            newHitParticles.Play();
-        }
-
-        onHitFeedback?.PlayFeedbacks(position);
+        deathFeedbacks?.PlayFeedbacks(position);
     }
 
     public void SetOwner(Character character)
@@ -103,7 +126,14 @@ public class DamageOnTouch : MonoBehaviour, ITrigger
 
     private void ApplySelfDamage()
     {
-        Pool.Despawn(gameObject);
+        if (health != null)
+        {
+            health.TakeDamage(damageTaken, owner);
+        }
+        else
+        {
+            Pool.Despawn(gameObject);
+        }
     }
 
     private bool IsTargetAvailable(GameObject targetObject)

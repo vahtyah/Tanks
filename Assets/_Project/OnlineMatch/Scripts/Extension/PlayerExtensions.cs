@@ -40,7 +40,7 @@ public static class PlayerExtensions
         var team = Team.GetTeamByType(teamType);
         if (team == null)
         {
-            Debug.LogWarning($"Team {teamType} does not exist");
+            UnityEngine.Debug.LogWarning($"Team {teamType} does not exist");
             return null;
         }
 
@@ -54,7 +54,7 @@ public static class PlayerExtensions
     {
         if (!player.CustomProperties.TryGetValue(GlobalString.TEAM, out var teamName))
         {
-            Debug.LogWarning("Player does not have a team");
+            UnityEngine.Debug.LogWarning("Player does not have a team");
             return null;
         }
 

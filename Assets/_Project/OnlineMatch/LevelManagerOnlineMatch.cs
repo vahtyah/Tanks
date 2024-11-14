@@ -380,8 +380,7 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
 
     private void UpdatePlayerStats(Character killer, Character victim)
     {
-        if(localPlayer.PhotonView.Owner != killer.PhotonView.Owner) return;
-        Debug.Log($"Killer: {killer.PhotonView.Owner.NickName} - Victim: {victim.PhotonView.Owner.NickName}");
+        if (!Equals(localPlayer.PhotonView.Owner, killer.PhotonView.Owner)) return;
         victim.SetPlayerDied(true);
         victim.AddDeath(1);
         victim.AddScore(-1);

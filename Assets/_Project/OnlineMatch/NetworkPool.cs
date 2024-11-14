@@ -15,7 +15,7 @@ public class NetworkPool : IPunPrefabPool
             res = Resources.Load<GameObject>(prefabId);
             if(res == null)
             {
-                Debug.LogError("Failed to load resource: " + prefabId);
+                UnityEngine.Debug.LogError("Failed to load resource: " + prefabId);
                 return null;
             }
             ResourceCache.Add(prefabId, res);

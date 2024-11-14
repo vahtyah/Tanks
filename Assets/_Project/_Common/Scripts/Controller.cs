@@ -128,7 +128,7 @@ public class Controller : MonoBehaviour
         }
         CurrentMovement = _movementVector;
 
-        Debug.Log("CurrentMovement = " + CurrentMovement);
+        UnityEngine.Debug.Log("CurrentMovement = " + CurrentMovement);
     }
 
     float AdjustDistance(float distance)
@@ -246,7 +246,7 @@ public class Controller : MonoBehaviour
     protected void MoveCharacterController()
     {
         GroundNormal.x = GroundNormal.y = GroundNormal.z = 0f;
-        Debug.Log("_motion = " + _motion);
+        UnityEngine.Debug.Log("_motion = " + _motion);
         _characterController.Move(_motion); // controller move
 
         _lastHitPoint = _hitPoint;

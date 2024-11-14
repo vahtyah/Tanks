@@ -19,7 +19,7 @@ public class AICharacter : Character
 
     public void Reset()
     {
-        Health.Reset();
+        Health.ResetHealth();
         Controller.Reset();
         gameObject.SetActive(true);
     }

@@ -6,10 +6,10 @@ using Photon.Pun;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class CharacterFlagCapture : CharacterAbility
+public class CharacterFlagCapture : CharacterAbility, IEventListener<CharacterEvent>
 {
-    [SerializeField] private float captureTime = 2f;
-    [SerializeField] private float handInTime = 1f;
+    [SerializeField, BoxGroup("Settings")] private float captureTime = 2f;
+    [SerializeField, BoxGroup("Settings")] private float handInTime = 1f;
 
 
     [ShowInInspector, TitleGroup("Debugs")]
@@ -21,16 +21,18 @@ public class CharacterFlagCapture : CharacterAbility
     [ShowInInspector, TitleGroup("Debugs")]
     private List<Flag> nearbyFlags = new();
 
-    private ForceFieldController flagDisplay;
-    private Renderer flagRenderer;
+    [Debug]private ForceFieldController flagDisplay;
+    [Debug]private Renderer flagRenderer;
     private Timer captureTimer;
     private Timer handInTimer;
-    private GUIManagerOnlineMatch GUI;
+    [Debug] private GUIManagerOnlineMatch GUI;
     private Transform teamArea;
 
     protected override void PreInitialize()
     {
         base.PreInitialize();
+        flagDisplay = Character.Model.FlagDisplay;
+        flagRenderer = Character.Model.FlagRenderer;
         if (PhotonNetwork.CurrentRoom.GetGameMode() != GameMode.CaptureTheFlag)
             Destroy(this);
     }
@@ -40,13 +42,12 @@ public class CharacterFlagCapture : CharacterAbility
         PhotonView.RPC(nameof(RPC_Initialize), RpcTarget.All);
         GUI = GUIManagerOnlineMatch.Instance;
         teamArea = EnvironmentManager.Instance.CurrentMap.GetAreaTransform(PhotonView.Owner.GetTeam());
-        flagDisplay = Character.Model.FlagDisplay;
-        flagRenderer = Character.Model.FlagRenderer;
         RegisterTimers();
     }
 
     private void RegisterTimers()
     {
+        if(!Character.PhotonView.IsMine) return;
         captureTimer = Timer.Register(captureTime)
             .OnStart(() =>
             {
@@ -132,6 +133,7 @@ public class CharacterFlagCapture : CharacterAbility
 
     private void HandleFlagProximity(Collider other, bool isEntering)
     {
+        if(!PhotonView.IsMine) return;
         if (other.CompareTag("Flag"))
         {
             Flag flag = other.GetComponent<Flag>();
@@ -257,7 +259,7 @@ public class CharacterFlagCapture : CharacterAbility
         currentFlag = TeamManager.Instance.GetFlag(teamType);
         if (!currentFlag)
         {
-            Debug.LogError("Flag reference is null");
+            UnityEngine.Debug.LogError("Flag reference is null");
             return;
         }
 
@@ -307,5 +309,27 @@ public class CharacterFlagCapture : CharacterAbility
         indicator.StopMovingEffect();
         currentFlag.Return();
         currentFlag = null;
+    }
+
+    public void OnEvent(CharacterEvent e)
+    {
+        if(!Character.PhotonView.IsMine) return;
+        switch (e.EventType)
+        {
+            case CharacterEventType.CharacterDeath:
+                if (currentFlag)
+                    ReleaseCapturedFlag(Character.transform.position);
+                break;
+        }
+    }
+    
+    private void OnEnable()
+    {
+        this.StartListening();
+    }
+    
+    private void OnDisable()
+    {
+        this.StopListening();
     }
 }

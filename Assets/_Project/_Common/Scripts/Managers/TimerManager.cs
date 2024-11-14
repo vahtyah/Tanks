@@ -67,7 +67,7 @@ public class OneShotTimer : Timer
     {
         if (IsRegistered || IsDone)
         {
-            Debug.LogWarning("Timer is already registered or done. Please use ReusableTimer instead.");
+            UnityEngine.Debug.LogWarning("Timer is already registered or done. Please use ReusableTimer instead.");
             return this;
         }
 
@@ -132,7 +132,7 @@ public class Timer
         });
         return timer;
     }
-
+    
     public static Timer Register(float duration)
     {
         var timer = new Timer(duration);
@@ -146,7 +146,7 @@ public class Timer
             manager = TimerManager.Instance;
             if (manager is null)
             {
-                Debug.LogWarning("TimerManager is not found. Creating a new one.");
+                UnityEngine.Debug.LogWarning("TimerManager is not found. Creating a new one.");
                 manager = new GameObject("TimerManager").AddComponent<TimerManager>();
             }
         }
@@ -230,7 +230,7 @@ public class Timer
     {
         if (owner == null)
         {
-            Debug.LogWarning("Owner is null. Please provide a valid owner.");
+            UnityEngine.Debug.LogWarning("Owner is null. Please provide a valid owner.");
             return this;
         }
 
@@ -247,7 +247,8 @@ public class Timer
     {
         if (IsRegistered || IsDone)
         {
-            Debug.LogWarning("Timer is already registered or done. Please use ReStart() instead.");
+            UnityEngine.Debug.Log($"IsRegistered: {IsRegistered}, IsCompleted: {IsCompleted}, IsCancelled: {IsCancelled}, IsOwnerDisappeared: {isOwnerDisappeared}");
+            UnityEngine.Debug.LogWarning("Timer is already registered or done. Please use ReStart() instead.");
             return this;
         }
 
@@ -301,7 +302,7 @@ public class Timer
     {
         if (IsPaused || IsDone)
         {
-            Debug.LogWarning("Timer is already paused or done.");
+            UnityEngine.Debug.LogWarning("Timer is already paused or done.");
             return;
         }
 
@@ -312,7 +313,7 @@ public class Timer
     {
         if (!IsPaused)
         {
-            Debug.LogWarning("Timer is not paused.");
+            UnityEngine.Debug.LogWarning("Timer is not paused.");
             return;
         }
 
@@ -327,6 +328,20 @@ public class Timer
 
     // protected virtual float GetWorldTime() => (float)(UsesRealTime ? Time.realtimeSinceStartup : PhotonNetwork.Time);
     protected virtual float GetWorldTime() => (float)PhotonNetwork.Time;
+    
+    public Timer Debug(string name, bool logProgress = false, bool logTimeRemaining = false, bool logRemaining = false)
+    {
+        OnStart(() => UnityEngine.Debug.Log($"{name} started"));
+        OnComplete(() => UnityEngine.Debug.Log($"{name} completed"));
+        
+        if (logProgress)
+            OnProgress(progress => UnityEngine.Debug.Log($"{name} progress: {progress}"));
+        if (logTimeRemaining)
+            OnTimeRemaining(timeRemaining => UnityEngine.Debug.Log($"{name} time remaining: {timeRemaining}"));
+        if (logRemaining)
+            OnRemaining(remaining => UnityEngine.Debug.Log($"{name} remaining: {remaining}"));
+        return this;
+    }
 
     public void Update()
     {
@@ -362,7 +377,7 @@ public class Timer
 
 public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<GameEvent>
 {
-    [ShowInInspector] private readonly List<Timer> timers = new();
+    [Debug] private readonly List<Timer> timers = new();
 
     private void Update()
     {

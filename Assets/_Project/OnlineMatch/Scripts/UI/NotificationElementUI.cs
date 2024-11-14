@@ -57,7 +57,7 @@ public class NotificationElementUI : MonoBehaviour
     IEnumerator DestroyNotification()
     {
         anim.Play(notiOutLeft);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         NotificationElementUI.Destroy(this);
     }
 }

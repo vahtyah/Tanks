@@ -59,7 +59,7 @@ public class FPSCounter : MonoBehaviour
 		{
 			if(GetComponent<TextMeshProUGUI>()==null)
 			{
-				Debug.LogWarning ("FPSCounter requires a GUIText component.");
+				UnityEngine.Debug.LogWarning ("FPSCounter requires a GUIText component.");
 				return;
 			}
 			_text = GetComponent<TextMeshProUGUI>();

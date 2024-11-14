@@ -16998,7 +16998,6 @@ GameObject:
   - component: {fileID: 1119928656908961567}
   - component: {fileID: 328713897041615419}
   - component: {fileID: 6988504222789331631}
-  - component: {fileID: 2649595721190862948}
   - component: {fileID: 3330573192274705494}
   - component: {fileID: 1817581257062871318}
   - component: {fileID: 8408129302591067597}
@@ -17007,6 +17006,7 @@ GameObject:
   - component: {fileID: 331112439879503538}
   - component: {fileID: 450069586800918167}
   - component: {fileID: 1482765878805452758}
+  - component: {fileID: 5511169899608041012}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -17023,7 +17023,7 @@ Transform:
   m_GameObject: {fileID: 1446509568547554811}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.4, y: 1.17, z: -6.6}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -17082,25 +17082,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &2649595721190862948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446509568547554811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4bfaadc2b5d400ebc4f14a473630892, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 20
-  disableColliderOnDeath: 0
-  onHitFeedbacks: {fileID: 7859523814737352465}
-  IsInvulnerable: 0
-  TankExplosionEffect: {fileID: 4058219447521929569, guid: 04f913ee24498ad40b8cc8cb0a67652e, type: 3}
-  protectionShield: {fileID: 4973728889562494143}
-  timeInvulnerableAfterSpawn: 4
 --- !u!114 &3330573192274705494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17233,6 +17214,30 @@ MonoBehaviour:
   iconPlayerPrefab: {fileID: 2701314516899328916, guid: bdc93968c92a22e4eb38ac236497efd4, type: 3}
   clampOnRadar: 1
   YourTeamDetected: 0
+--- !u!114 &5511169899608041012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446509568547554811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8835b41dd0934465a6b31ce90f404336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
+  isInvulnerable: 0
+  useFeedbacks: 0
+  deathFeedbacks: {fileID: 8851651631531317133}
+  destructionDelay: 2
+  disableModelOnDeath: 1
+  model: {fileID: 1433465730819351834}
+  disableControllerOnDeath: 1
+  disableCollisionOnDeath: 1
+  protectionShield: {fileID: 4973728889562494143}
+  timeInvulnerableAfterSpawn: 3
+  gotHitFeedbacks: {fileID: 7859523814737352465}
 --- !u!1 &1581382633788936089
 GameObject:
   m_ObjectHideFlags: 0
@@ -33254,7 +33259,7 @@ GameObject:
   - component: {fileID: 6143600334575152881}
   - component: {fileID: 8851651631531317133}
   m_Layer: 0
-  m_Name: DieFeedbacks
+  m_Name: DeathFeedbacks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33269,10 +33274,11 @@ Transform:
   m_GameObject: {fileID: 3594272461965688104}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.2666674, y: -0.78, z: 4.4000006}
-  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2464744835001151852}
   m_Father: {fileID: 8951565356752955151}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8851651631531317133
@@ -33374,10 +33380,11 @@ MonoBehaviour:
   DebugActive: 0
   FeedbacksList:
   - rid: 172579747421749252
+  - rid: 3447791715391635456
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 0
-  PlayCount: 0
+  PlayCount: 6
   references:
     version: 2
     RefIds:
@@ -33402,7 +33409,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 0
+          PlayCount: 12
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -33465,8 +33472,8 @@ MonoBehaviour:
         PoolSize: 10
         UseLegacyEventsMode: 0
         StopSoundOnFeedbackStop: 1
-        MinVolume: 1
-        MaxVolume: 1
+        MinVolume: 2
+        MaxVolume: 2
         MinPitch: 1
         MaxPitch: 1
         SfxAudioMixerGroup: {fileID: 0}
@@ -33506,6 +33513,92 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+    - rid: 3447791715391635456
+      type: {class: MMF_Particles, ns: MoreMountains.Feedbacks, asm: MoreMountains.Tools}
+      data:
+        Active: 1
+        UniqueID: -2069608032
+        Label: Particles Play
+        ChannelMode: 0
+        Channel: 0
+        MMChannelDefinition: {fileID: 0}
+        Chance: 100
+        DisplayColor: {r: 0, g: 0, b: 0, a: 1}
+        Timing:
+          TimescaleMode: 0
+          ExcludeFromHoldingPauses: 0
+          ContributeToTotalDuration: 1
+          InitialDelay: 0
+          CooldownDuration: 0
+          InterruptsOnStop: 1
+          NumberOfRepeats: 0
+          RepeatForever: 0
+          DelayBetweenRepeats: 1
+          PlayCount: 3
+          LimitPlayCount: 0
+          MaxPlayCount: 3
+          SetPlayCountToZeroOnReset: 0
+          MMFeedbacksDirectionCondition: 0
+          PlayDirection: 0
+          ConstantIntensity: 0
+          UseIntensityInterval: 0
+          IntensityIntervalMin: 0
+          IntensityIntervalMax: 0
+          Sequence: {fileID: 0}
+          TrackID: 0
+          Quantized: 0
+          TargetBPM: 120
+        AutomatedTargetAcquisition:
+          Mode: 0
+          ChildIndex: 0
+        RandomizeOutput: 0
+        RandomMultiplier: {x: 0.8, y: 1}
+        RandomizeDuration: 0
+        RandomDurationMultiplier: {x: 0.5, y: 2}
+        UseRange: 0
+        RangeDistance: 5
+        UseRangeFalloff: 0
+        RangeFalloff:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        RemapRangeFalloff: {x: 0, y: 1}
+        AutomaticShakerSetupButton:
+          ButtonText: 
+        Owner: {fileID: 8851651631531317133}
+        DebugActive: 0
+        Mode: 0
+        EmitCount: 100
+        BoundParticleSystem: {fileID: 8326843476616060634}
+        RandomParticleSystems: []
+        MoveToPosition: 0
+        ActivateOnPlay: 0
+        StopSystemOnInit: 1
+        StopSystemOnReset: 1
+        StopSystemOnStopFeedback: 1
+        DeclaredDuration: 0
+        ForceSimulationSpeed: 0
+        ForcedSimulationSpeed: {x: 0.1, y: 1}
 --- !u!1 &3794849015423964577
 GameObject:
   m_ObjectHideFlags: 0
@@ -45192,7 +45285,7 @@ MonoBehaviour:
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 0
-  PlayCount: 0
+  PlayCount: 12
   references:
     version: 2
     RefIds:
@@ -45217,7 +45310,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 0
+          PlayCount: 12
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -45296,7 +45389,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 0
+          PlayCount: 12
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -71136,9 +71229,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8350629121807381692}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.2666674, y: -0.78, z: 4.4000006}
-  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8951565356752955151}
@@ -71270,7 +71363,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 0
+          PlayCount: 71
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -71333,16 +71426,16 @@ MonoBehaviour:
         PoolSize: 10
         UseLegacyEventsMode: 0
         StopSoundOnFeedbackStop: 1
-        MinVolume: 1
-        MaxVolume: 1
+        MinVolume: 2
+        MaxVolume: 2
         MinPitch: 1
         MaxPitch: 1
         SfxAudioMixerGroup: {fileID: 0}
         Priority: 128
         PanStereo: 0
         SpatialBlend: 0
-        DopplerLevel: 1
-        Spread: 0
+        DopplerLevel: 5
+        Spread: 360
         RolloffMode: 0
         MinDistance: 1
         MaxDistance: 500
@@ -86291,6 +86384,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d3090430ec4badb98e2478de5bb24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &2096974632459625645
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6143600334575152881}
+    m_Modifications:
+    - target: {fileID: 3980047163374904550, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_Name
+      value: TankExplore
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+--- !u!4 &2464744835001151852 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4552430102813218241, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+  m_PrefabInstance: {fileID: 2096974632459625645}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8326843476616060634 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7968863728709433975, guid: f7eb50d98a70b5e4eb38fea275f815a0, type: 3}
+  m_PrefabInstance: {fileID: 2096974632459625645}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3758044657233195880
 PrefabInstance:
   m_ObjectHideFlags: 0

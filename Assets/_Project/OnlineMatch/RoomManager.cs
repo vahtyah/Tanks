@@ -24,7 +24,7 @@ public class Team
 
     public TeamType TeamType;
     public Color TeamColor;
-    [ShowInInspector] public List<Player> Players { get; private set; } = new();
+    [Debug] public List<Player> Players { get; private set; } = new();
 
     private Action<Player, Team> onPlayerJoin;
     private Action<Player, Team> onPlayerLeft;
@@ -133,8 +133,8 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
 {
     public Info roomNameInfo;
     public Info teamNameInfo;
-    [ShowInInspector] public Dictionary<Character, TeamType> TeamCharacters = new();
-    [ShowInInspector] public Dictionary<TeamType, Team> Teams { get; private set; } = new();
+    [Debug] public Dictionary<Character, TeamType> TeamCharacters = new();
+    [Debug] public Dictionary<TeamType, Team> Teams { get; private set; } = new();
 
     private void Start()
     {
@@ -158,7 +158,7 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
     {
         if (!Teams.TryAdd(team.TeamType, team))
         {
-            Debug.LogWarning($"Team {team.TeamType} already exists");
+            UnityEngine.Debug.LogWarning($"Team {team.TeamType} already exists");
         }
     }
 
