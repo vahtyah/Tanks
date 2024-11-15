@@ -82,4 +82,14 @@ public class AIController : MonoBehaviour, ICharacterController
     {
         
     }
+
+    public bool GetInputSkillUp()
+    {
+        return false;
+    }
+
+    public bool GetInputSkillDown()
+    {
+        return false;
+    }
 }

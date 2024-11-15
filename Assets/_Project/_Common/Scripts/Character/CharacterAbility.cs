@@ -17,7 +17,7 @@ public abstract class CharacterAbility : MonoBehaviour
     protected virtual void PreInitialize()
     {
         Character = GetComponentInParent<Character>();
-        PhotonView = Character.PhotonView;
+        PhotonView = GetComponent<PhotonView>();
         Controller = Character.Controller;
     }
 

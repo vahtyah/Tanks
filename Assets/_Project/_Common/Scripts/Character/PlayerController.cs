@@ -58,4 +58,14 @@ public class PlayerController : MonoBehaviour, ICharacterController
     {
         
     }
+
+    public bool GetInputSkillUp()
+    {
+        return input.GetInputSkillUp();
+    }
+    
+    public bool GetInputSkillDown()
+    {
+        return input.GetInputSkillDown();
+    }
 }

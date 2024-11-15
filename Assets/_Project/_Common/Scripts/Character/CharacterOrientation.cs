@@ -30,7 +30,7 @@ public class CharacterOrientation : CharacterAbility, IPunObservable
 
     void RotateToFaceMovementDirection()
     {
-        currentDirection = movement.direction.normalized;
+        currentDirection = movement.MovementDirection.normalized;
         if (currentDirection.sqrMagnitude >= .5f)
         {
             lastMovementDirection = currentDirection;

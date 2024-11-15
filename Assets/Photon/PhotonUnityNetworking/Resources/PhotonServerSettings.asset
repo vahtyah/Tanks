@@ -69,6 +69,7 @@ MonoBehaviour:
   - RPC_SetDetected
   - RPC_TakeDamage
   - RPC_ResetHealth
+  - RPC_Feedback
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

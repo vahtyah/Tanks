@@ -29,4 +29,14 @@ public class InputManager
     {
       return Input.GetMouseButton(1);   
     }
+
+    public bool GetInputSkillUp()
+    {
+        return Input.GetMouseButtonUp(1);
+    }
+
+    public bool GetInputSkillDown()
+    {
+        return Input.GetMouseButtonDown(1);
+    }
 }

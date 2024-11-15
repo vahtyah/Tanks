@@ -7,8 +7,11 @@ using UnityEngine;
 
 public class Character : Entity
 {
-    [SerializeField, BoxGroup("Character Components")] protected GameObject abilityNode;
-    [SerializeField, BoxGroup("Character Components")] private CharacterModel model;
+    [SerializeField, BoxGroup("Character Components"), Required]
+    protected GameObject abilityNode;
+
+    [SerializeField, BoxGroup("Character Components"), Required]
+    private CharacterModel model;
 
     public ICharacterController Controller { get; private set; }
     public HealthTest Health { get; private set; }

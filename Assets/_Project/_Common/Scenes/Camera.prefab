@@ -1101,7 +1101,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 40
+    FieldOfView: 50
     OrthographicSize: 5
     NearClipPlane: 10
     FarClipPlane: 5000
@@ -1172,6 +1172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
+  playerID: Player1
   FollowsAPlayer: 1
   TargetCharacter: {fileID: 0}
   BoundsCollider: {fileID: 2856158765760906608}

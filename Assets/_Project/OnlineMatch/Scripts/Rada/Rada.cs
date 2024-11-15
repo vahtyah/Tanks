@@ -64,7 +64,7 @@ public class Rada : MonoBehaviour, IEventListener<CharacterEvent>
     {
         if (e.EventType == CharacterEventType.CharacterSpawned)
         {
-            Player = e.Character.GetComponent<CharacterTank>().Turret;
+            Player = e.Character.Model.Turret;
             player = e.Character.PhotonView.Owner;
         }
     }

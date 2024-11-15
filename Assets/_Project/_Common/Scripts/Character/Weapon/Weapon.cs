@@ -64,13 +64,19 @@ public class Weapon : MonoBehaviour
         
     }
 
-    public void UseWeapon()
+    public bool UseWeapon()
     {
         if (!weaponCooldownTimer.IsCompleted || magazineReloadTimer.IsRunning)
-            return;
+            return false;
         weaponCooldownTimer.ReStart();
         photonView.RPC(nameof(UseWeaponRPC), RpcTarget.All);
         localWeaponUseFeedback?.PlayFeedbacks();
+        return true;
+    }
+    
+    public bool IsMagazineEmpty()
+    {
+        return remainingProjectiles <= 0;
     }
 
     [PunRPC]

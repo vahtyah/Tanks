@@ -10,4 +10,6 @@ public interface ICharacterController
     void Reset();
     Rigidbody GetRigidbody();
     void AddOnTriggerEnter(System.Action<Collider> action);
+    bool GetInputSkillUp();
+    bool GetInputSkillDown();
 }
