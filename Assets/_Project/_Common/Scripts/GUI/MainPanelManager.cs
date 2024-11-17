@@ -16,6 +16,7 @@ public class MainPanelManager : MonoBehaviour
 {
     [SerializeField] private List<PanelItem> panels = new();
 
+
     private PanelItem currentPanel;
     private int currentPanelIndex;
 
@@ -30,7 +31,7 @@ public class MainPanelManager : MonoBehaviour
 
     void OnEnable()
     {
-        ChangePanel(1);
+        ChangePanel(0);
     }
 
     public void ChangePanel(int index)
@@ -47,6 +48,7 @@ public class MainPanelManager : MonoBehaviour
         PlayAnimation(panels[index], currentPanelIndex <= index ? panelInLeft : panelInRight, buttonFadeIn);
         currentPanel = panels[index];
         currentPanelIndex = index;
+        GUIMainMenuManager.Instance.HandleHomePanel();
     }
 
     private void PlayAnimation(PanelItem panelItem, string panelAnimation, string buttonAnimation)
@@ -62,5 +64,10 @@ public class MainPanelManager : MonoBehaviour
         if (panel == currentPanel)
             yield break;
         panel.panelObject.SetActive(false);
+    }
+
+    public PanelItem GetCurrentPanelName()
+    {
+        return currentPanel;
     }
 }

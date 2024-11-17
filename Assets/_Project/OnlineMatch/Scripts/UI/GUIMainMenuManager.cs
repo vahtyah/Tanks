@@ -11,10 +11,13 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
     [TabGroup("Loading")] [SerializeField] private TextMeshProUGUI loadingText;
 
     [TabGroup("Main Panel")] [SerializeField]
-    private GameObject mainPanel;
+    private MainPanelManager mainPanel;
 
     [TabGroup("Main Panel"), SerializeField]
     private UIMultiplayerController multiplayerUI;
+
+    [TabGroup("Main Panel"), SerializeField]
+    private UIHomeController homeUI;
 
     [TabGroup("Player")] [SerializeField] private TMP_InputField playerNameInput;
     [TabGroup("Window")] [SerializeField] private GameObject gameFullWindow;
@@ -26,25 +29,25 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
         SetMainPanelVisibility(false);
     }
 
-    #region Pun Callbacks 
-    
+    #region Pun Callbacks
+
     public void OnJoinedLobby()
     {
         SetLoadingPanelVisibility(false);
         SetMainPanelVisibility(true);
     }
-    
+
     public void OnDisconnected(DisconnectCause cause)
     {
         SetLoadingPanelVisibility(true);
         SetMainPanelVisibility(false);
     }
-    
+
     public void OnLeftRoom()
     {
         multiplayerUI.RemoveAllPlayerElements();
     }
-    
+
     public void OnRoomListUpdate(List<RoomInfo> rooms)
     {
         multiplayerUI.RoomListUpdate(rooms);
@@ -68,13 +71,35 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
     #endregion
 
     #region Main Panel
+    
+    public void HandleHomePanel()
+    {
+        if (mainPanel.GetCurrentPanelName().panelName == "Home")
+        {
+            ShowSelectCharacterPanel();
+        }
+        else
+        {
+            HideSelectCharacterPanel();
+        }
+    }
 
     public void SetMainPanelVisibility(bool isVisible)
     {
-        mainPanel.SetActive(isVisible);
+        mainPanel.gameObject.SetActive(isVisible);
     }
 
+    public void HideSelectCharacterPanel()
+    {
+        homeUI.CharacterSelector.TurnOffDisplay();
+        homeUI.CharacterSelector.SetCanChangeSelection(false);
+    }
 
+    public void ShowSelectCharacterPanel()
+    {
+        homeUI.CharacterSelector.TurnOnDisplay();
+        homeUI.CharacterSelector.SetCanChangeSelection(true);
+    }
 
     #endregion
 
@@ -84,32 +109,32 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
     {
         playerNameInput.text = playerName;
     }
-    
+
     public string GetPlayerName()
     {
         return playerNameInput.text;
     }
-    
+
     public void RegisterPlayerNameInputListener(UnityEngine.Events.UnityAction<string> action)
     {
         playerNameInput.onEndEdit.AddListener(action);
     }
-    
+
     public void SetPlayerReady(int actorNumber, bool isReady)
     {
         multiplayerUI.SetPlayerReady(actorNumber, isReady);
     }
-    
+
     public void AddPlayerElement(Player player, GameObject prefab, Transform parent)
     {
         multiplayerUI.AddPlayerElement(player, prefab, parent);
     }
-    
+
     public void RemovePlayerElement(int actorNumber)
     {
         multiplayerUI.RemovePlayerElement(actorNumber);
     }
-    
+
     public PlayerElement GetPlayerElement(int actorNumber)
     {
         return multiplayerUI.GetPlayerElement(actorNumber);

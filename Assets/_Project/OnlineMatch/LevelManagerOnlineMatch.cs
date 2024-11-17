@@ -243,7 +243,7 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
     private void SpawnPlayer()
     {
         var spawnPoint = GetSpawnPointForTeam();
-        localPlayer = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint, Quaternion.identity)
+        localPlayer = PhotonNetwork.Instantiate(GameManager.Instance.SelectedCharacter.CharacterPrefab.name, spawnPoint, Quaternion.identity)
             .GetComponent<PlayerCharacter>();
         CharacterEvent.Trigger(CharacterEventType.CharacterSpawned, localPlayer);
         // photonView.RPC(nameof(AssignTeam), RpcTarget.AllBuffered, team);

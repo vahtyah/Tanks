@@ -38,7 +38,13 @@ public class CharacterBoosterSkill : CharacterAbility
         cooldownTimer = Timer.Register(skillCooldown)
             .AutoDestroyWhenOwnerDisappear(this);
     }
-    
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+        PhotonView = GetComponent<PhotonView>();
+    }
+
     public override void ProcessAbility()
     {
         base.ProcessAbility();
