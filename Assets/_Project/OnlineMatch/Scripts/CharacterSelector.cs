@@ -26,8 +26,6 @@ public class CharacterSelector : MonoBehaviour
 
     private void Start()
     {
-        CurrentSelection = AvailableCharacters[0];
-
         for (var i = 0; i < AvailableCharacters.Length; i++)
         {
             var tankDisplay = Instantiate(AvailableCharacters[i].DisplayPrefab, Vector3.zero.Add(x: i * 50),
@@ -36,19 +34,19 @@ public class CharacterSelector : MonoBehaviour
         }
 
         emptyTransform = new GameObject("EmptyTransform").transform;
-        SetEmptyTransformPosition();
+        SelectNextCharacter();
         TurnOffDisplay();
         AddListenerButtons();
     }
 
     private void AddListenerButtons()
     {
-        if(nextButton != null)
+        if (nextButton != null)
         {
             nextButton.onClick.AddListener(SelectNextCharacter);
         }
 
-        if(previousButton != null)
+        if (previousButton != null)
         {
             previousButton.onClick.AddListener(SelectPreviousCharacter);
         }
@@ -82,9 +80,17 @@ public class CharacterSelector : MonoBehaviour
 
     private void SelectNextCharacter()
     {
-        var index = Array.IndexOf(AvailableCharacters, CurrentSelection);
-        index = (index + 1) % AvailableCharacters.Length;
-        CurrentSelection = AvailableCharacters[index];
+        if (CurrentSelection == null)
+        {
+            CurrentSelection = AvailableCharacters[0];
+        }
+        else
+        {
+            var index = Array.IndexOf(AvailableCharacters, CurrentSelection);
+            index = (index + 1) % AvailableCharacters.Length;
+            CurrentSelection = AvailableCharacters[index];
+        }
+
         SetEmptyTransformPosition();
         cameraMainMenu.ChangeTarget(CurrentSelection.DisplayTransform);
         GameManager.Instance.SelectedCharacter = CurrentSelection;
@@ -92,9 +98,17 @@ public class CharacterSelector : MonoBehaviour
 
     private void SelectPreviousCharacter()
     {
-        var index = Array.IndexOf(AvailableCharacters, CurrentSelection);
-        index = (index - 1 + AvailableCharacters.Length) % AvailableCharacters.Length;
-        CurrentSelection = AvailableCharacters[index];
+        if (CurrentSelection == null)
+        {
+            CurrentSelection = AvailableCharacters[0];
+        }
+        else
+        {
+            var index = Array.IndexOf(AvailableCharacters, CurrentSelection);
+            index = (index - 1 + AvailableCharacters.Length) % AvailableCharacters.Length;
+            CurrentSelection = AvailableCharacters[index];
+        }
+
         SetEmptyTransformPosition();
         cameraMainMenu.ChangeTarget(CurrentSelection.DisplayTransform);
         GameManager.Instance.SelectedCharacter = CurrentSelection;
@@ -104,7 +118,7 @@ public class CharacterSelector : MonoBehaviour
     {
         emptyTransform.position = CurrentSelection.DisplayTransform.position.Add(x: -25);
     }
-    
+
     public void SetCanChangeSelection(bool value)
     {
         canChangeSelection = value;

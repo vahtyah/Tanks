@@ -9,8 +9,6 @@ public class CharacterBoosterSkill : CharacterAbility
     [SerializeField] private float skillDuration = 3f;
     [SerializeField] private float skillCooldown = 2f;
     
-    
-    
     private Timer skillTimer;
     private Timer cooldownTimer;
     private CharacterMovement movement;
@@ -19,6 +17,7 @@ public class CharacterBoosterSkill : CharacterAbility
     protected override void PreInitialize()
     {
         base.PreInitialize();
+        if(!PhotonView.IsMine) return;
         movement = GetComponent<CharacterMovement>();
         skillTimer = Timer.Register(skillDuration)
             .OnStart(() =>
@@ -32,16 +31,14 @@ public class CharacterBoosterSkill : CharacterAbility
                 movement.SpeedMultiplier = multiplierSpeedStorage;
                 PhotonView.RPC(nameof(RPC_Feedback), RpcTarget.All, false);
                 cooldownTimer.ReStart();
+                SkillEvent.TriggerEvent(WeaponState.Reloading, skillDuration);
             })
             .AutoDestroyWhenOwnerDisappear(this);
 
         cooldownTimer = Timer.Register(skillCooldown)
             .AutoDestroyWhenOwnerDisappear(this);
-    }
-
-    protected override void Initialize()
-    {
-        base.Initialize();
+        
+        SkillEvent.TriggerEvent(WeaponState.Initializing, skillCooldown);
         PhotonView = GetComponent<PhotonView>();
     }
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 public class CharacterMachineGun : CharacterAbility
 {
@@ -7,19 +8,39 @@ public class CharacterMachineGun : CharacterAbility
     [SerializeField] private Weapon weapon;
     [SerializeField] private float multiplierSpeed = 0.5f;
 
-
     private CharacterMovement movement;
     private float multiplierSpeedStorage;
+    // private StateMachine<WeaponState> weaponState;
 
     protected override void PreInitialize()
     {
         base.PreInitialize();
-        weaponHolder = Character.Model.SkillWeaponHolder;
+        if (PhotonView.IsMine)
+        {
+
+            // weaponState = new StateMachine<WeaponState>(gameObject, TriggerType.Once);
+            // weaponState.ChangeState(WeaponState.Initializing, weapon.WeaponCountdownDuration);
+            //
+            // weapon.weaponCooldownTimer.OnStart(()=> weaponState.ChangeState(WeaponState.Firing, weapon.RemainingProjectiles));
+            // weapon.magazineReloadTimer.OnStart(()=> weaponState.ChangeState(WeaponState.Reloading, weapon.MagazineReloadDuration))
+            //     .OnTimeRemaining((remaining)=> weaponState.ChangeState(WeaponState.Reloading, remaining));
+
+            SkillEvent.TriggerEvent(WeaponState.Initializing, weapon.MagazineReloadDuration);
+
+            weapon.weaponCooldownTimer.OnStart(() =>
+                SkillEvent.TriggerEvent(WeaponState.Firing, weapon.RemainingProjectiles));
+            weapon.magazineReloadTimer.OnStart(() =>
+                    SkillEvent.TriggerEvent(WeaponState.Reloading, weapon.MagazineReloadDuration))
+                .OnComplete(() => SkillEvent.TriggerEvent(WeaponState.Ready, weapon.RemainingProjectiles));
+
+            weaponHolder = Character.Model.SkillWeaponHolder;
+            movement = GetComponent<CharacterMovement>();
+        }
         projectileSpawnPoint = Character.Model.SkillSpawnPoint;
-        movement = GetComponent<CharacterMovement>();
         EquipWeapon();
     }
-
+    
+    [PunRPC]
     private void EquipWeapon()
     {
         weapon.WeaponOwner = Character;

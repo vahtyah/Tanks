@@ -11,6 +11,11 @@ public interface IEventListener<T> : IEventListenerBase
     void OnEvent(T e);
 }
 
+public interface ITransferData<T> : IEventListenerBase
+{
+    void SetData(T data);
+}
+
 public static class EventManger
 {
     private static readonly Dictionary<Type, List<IEventListenerBase>> subscribers = new();

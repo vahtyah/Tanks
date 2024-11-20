@@ -19,8 +19,9 @@ public class CharacterOrientation : CharacterAbility, IPunObservable
         base.PreInitialize();
         movement = GetComponent<CharacterMovement>();
         weaponModel = Character.Model.Turret;
+
     }
-    
+
     public override void ProcessAbility()
     {
         RotateToFaceWeaponDirection();

@@ -10,7 +10,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private MMF_Player globalWeaponUseFeedback;
     [SerializeField] private MMF_Player localWeaponUseFeedback;
     [SerializeField] private float weaponCountdownDuration = 1;
-
+    public float WeaponCountdownDuration => weaponCountdownDuration;
 
     [FoldoutGroup("Magazine")] [SerializeField]
     private bool useMagazine = false;
@@ -23,19 +23,27 @@ public class Weapon : MonoBehaviour
 
     [FoldoutGroup("Magazine"), ShowIf(nameof(useMagazine))] [SerializeField]
     private float magazineReloadDuration = 1;
+
+    public float MagazineReloadDuration => magazineReloadDuration;
+
     private int remainingProjectiles;
+
+    public int RemainingProjectiles => remainingProjectiles;
 
     public Character WeaponOwner { get; set; }
 
     private PhotonView photonView;
     private Transform projectileSpawnPoint;
-    private Timer weaponCooldownTimer;
-    private Timer magazineReloadTimer;
-
+    public Timer weaponCooldownTimer { get; private set; }
+    public Timer magazineReloadTimer { get; private set; }
     private float currentReloadTime;
+
 
     private void Awake()
     {
+        // stateMachine = new WeaponStateMachine(weaponCountdownDuration);
+        // stateMachine.ChangeState(WeaponState.Initializing);
+
         photonView = GetComponent<PhotonView>();
         remainingProjectiles = magazineCapacity;
         weaponCooldownTimer = Timer.Register(new LocalTimer(weaponCountdownDuration))
@@ -43,10 +51,7 @@ public class Weapon : MonoBehaviour
             .AutoDestroyWhenOwnerDisappear(this);
 
         magazineReloadTimer = Timer.Register(new LocalTimer(magazineReloadDuration))
-            .OnComplete(() =>
-            {
-                remainingProjectiles = magazineCapacity;
-            })
+            .OnComplete(() => { remainingProjectiles = magazineCapacity; })
             .AutoDestroyWhenOwnerDisappear(this);
 
         // reloadTimer = Timer.Register(reloadDuration)
@@ -61,7 +66,6 @@ public class Weapon : MonoBehaviour
 
     private void Initialize()
     {
-        
     }
 
     public bool UseWeapon()
@@ -73,7 +77,7 @@ public class Weapon : MonoBehaviour
         localWeaponUseFeedback?.PlayFeedbacks();
         return true;
     }
-    
+
     public bool IsMagazineEmpty()
     {
         return remainingProjectiles <= 0;
@@ -82,6 +86,7 @@ public class Weapon : MonoBehaviour
     [PunRPC]
     private void UseWeaponRPC(PhotonMessageInfo info)
     {
+        UnityEngine.Debug.Log(projectileSpawnPoint);
         var spawnedProjectile =
             Pool.Spawn(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
         if (spawnedProjectile.TryGetComponent(out Projectile projectile))

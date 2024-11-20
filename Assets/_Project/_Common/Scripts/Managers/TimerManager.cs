@@ -111,7 +111,7 @@ public class Timer
     public bool IsRunning => !IsDone && !IsPaused && IsRegistered;
     public float Progress => GetElapsedTime() / duration;
     public float TimeRemaining => duration - GetElapsedTime();
-    public float Remaining => duration / GetElapsedTime();
+    public float Remaining => 1 - Progress;
 
     private bool isOwnerDisappeared => hasOwner && (owner == null || !owner.gameObject.activeSelf);
 

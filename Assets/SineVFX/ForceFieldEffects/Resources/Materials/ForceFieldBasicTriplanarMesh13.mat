@@ -130,7 +130,7 @@ Material:
     - _MaskAppearNoiseTriplanar: 1
     - _MaskAppearNoiseTriplanarTiling: 0.1
     - _MaskAppearPower: 0.5
-    - _MaskAppearProgress: -0.99613994
+    - _MaskAppearProgress: -0.9970816
     - _MaskAppearRemapLocalY: 0.5
     - _MaskAppearSubtract: 0.25
     - _MaskAppearUseWorldPosition: 1
@@ -167,5 +167,5 @@ Material:
     - _ProvedrualColor100: {r: 1, g: 0.72413796, b: 0, a: 1}
     - _ProvedrualColorEnd: {r: 1, g: 0.7306288, b: 0.3897058, a: 1}
     - _ProvedrualColorStart: {r: 1, g: 0.24604455, b: 0.07352937, a: 1}
-    - _RampColorTint: {r: 1, g: 0, b: 0, a: 1}
+    - _RampColorTint: {r: 0, g: 0, b: 1, a: 1}
   m_BuildTextureStacks: []
