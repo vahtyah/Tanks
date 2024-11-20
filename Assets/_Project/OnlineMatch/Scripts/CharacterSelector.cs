@@ -21,6 +21,7 @@ public class CharacterSelector : MonoBehaviour
     [SerializeField] private Button nextButton;
     [SerializeField] private Button previousButton;
 
+
     private Transform emptyTransform;
     private bool canChangeSelection = false;
 
@@ -92,7 +93,7 @@ public class CharacterSelector : MonoBehaviour
         }
 
         SetEmptyTransformPosition();
-        cameraMainMenu.ChangeTarget(CurrentSelection.DisplayTransform);
+        TurnOnDisplay();
         GameManager.Instance.SelectedCharacter = CurrentSelection;
     }
 
@@ -110,7 +111,7 @@ public class CharacterSelector : MonoBehaviour
         }
 
         SetEmptyTransformPosition();
-        cameraMainMenu.ChangeTarget(CurrentSelection.DisplayTransform);
+        TurnOnDisplay();
         GameManager.Instance.SelectedCharacter = CurrentSelection;
     }
 

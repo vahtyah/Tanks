@@ -9,7 +9,6 @@ public class PopupManager : MonoBehaviour
     private void Awake()
     {
         exitButton.onClick.AddListener(OnExitButtonClick);
-        
         exitWindow.SetActive(false);
     }
 

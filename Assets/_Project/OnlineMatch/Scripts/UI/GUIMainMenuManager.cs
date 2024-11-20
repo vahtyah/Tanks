@@ -71,7 +71,7 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
     #endregion
 
     #region Main Panel
-    
+
     public void HandleHomePanel()
     {
         if (mainPanel.GetCurrentPanelName().panelName == "Home")
@@ -99,6 +99,11 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
     {
         homeUI.CharacterSelector.TurnOnDisplay();
         homeUI.CharacterSelector.SetCanChangeSelection(true);
+    }
+
+    public void SetCanChangeSelection(bool canChange)
+    {
+        homeUI.CharacterSelector.SetCanChangeSelection(canChange);
     }
 
     #endregion

@@ -86,7 +86,6 @@ public class Weapon : MonoBehaviour
     [PunRPC]
     private void UseWeaponRPC(PhotonMessageInfo info)
     {
-        UnityEngine.Debug.Log(projectileSpawnPoint);
         var spawnedProjectile =
             Pool.Spawn(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
         if (spawnedProjectile.TryGetComponent(out Projectile projectile))

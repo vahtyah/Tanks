@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ExitWindow : MonoBehaviour
@@ -22,14 +23,14 @@ public class ExitWindow : MonoBehaviour
     {
         anim.Play("In");
     }
-
+    
     private void OnCancelButtonClick()
     {
         anim.Play("Out");
         StartCoroutine(DisableWindow());
     }
 
-    private System.Collections.IEnumerator DisableWindow()
+    private IEnumerator DisableWindow()
     {
         yield return new WaitForSeconds(0.5f);
         gameObject.SetActive(false);
