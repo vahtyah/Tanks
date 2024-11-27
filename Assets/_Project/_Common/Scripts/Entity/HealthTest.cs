@@ -35,7 +35,7 @@ public abstract class HealthTest : MonoBehaviour
     [SerializeField, BoxGroup("Death Settings")]
     private bool disableCollisionOnDeath = false;
 
-    [Debug] private float currentHealth;
+    [Log] private float currentHealth;
     private Action<float> OnHealthChanged { get; set; }
     private Collider col;
     private Entity entity;

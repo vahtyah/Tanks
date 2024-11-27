@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterMovement : CharacterAbility, IPunObservable
 {
     [SerializeField, BoxGroup("Settings")] private float moveSpeed = 150f;
-    [Debug] private float speedMultiplier = 1f;
+    [Log] private float speedMultiplier = 1f;
     public Vector3 MovementDirection { get; private set; }
     
     private Vector3 syncedPosition;

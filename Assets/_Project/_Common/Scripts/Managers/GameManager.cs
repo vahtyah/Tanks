@@ -13,10 +13,10 @@ public enum GameMode
 
 public sealed class GameManager : PersistentSingleton<GameManager>, IEventListener<GameEvent>
 {
-    [Debug] public CharacterData SelectedCharacter { get; set; }
-    [Debug] public GameMode GameMode { get; private set; }
+    [Log] public CharacterData SelectedCharacter { get; set; }
+    [Log] public GameMode GameMode { get; private set; }
 
-    [Debug] public GameEventType CurrentGameType { get; private set; }
+    [Log] public GameEventType CurrentGameType { get; private set; }
 
     private GameEventType previousGameType { get; set; }
 

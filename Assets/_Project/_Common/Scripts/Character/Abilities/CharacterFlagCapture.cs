@@ -21,11 +21,11 @@ public class CharacterFlagCapture : CharacterAbility, IEventListener<CharacterEv
     [ShowInInspector, TitleGroup("Debugs")]
     private List<Flag> nearbyFlags = new();
 
-    [Debug]private ForceFieldController flagDisplay;
-    [Debug]private Renderer flagRenderer;
+    [Log]private ForceFieldController flagDisplay;
+    [Log]private Renderer flagRenderer;
     private Timer captureTimer;
     private Timer handInTimer;
-    [Debug] private GUIManagerOnlineMatch GUI;
+    [Log] private GUIManagerOnlineMatch GUI;
     private Transform teamArea;
 
     protected override void PreInitialize()

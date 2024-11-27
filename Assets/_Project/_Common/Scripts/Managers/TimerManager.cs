@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Photon.Pun;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GlobalTimer : Timer
@@ -78,7 +77,6 @@ public class OneShotTimer : Timer
     }
 }
 
-
 public class Timer
 {
     protected static TimerManager manager;
@@ -146,7 +144,7 @@ public class Timer
             manager = TimerManager.Instance;
             if (manager is null)
             {
-                UnityEngine.Debug.LogWarning("TimerManager is not found. Creating a new one.");
+                UnityEngine.Debug.LogWarning("Please add TimerManager to the scene and don't register Timer in Awake method.");
                 manager = new GameObject("TimerManager").AddComponent<TimerManager>();
             }
         }
@@ -297,6 +295,11 @@ public class Timer
     {
         IsCancelled = true;
     }
+    
+    public void Complete()
+    {
+        IsCompleted = true;
+    }
 
     public void Pause()
     {
@@ -331,6 +334,7 @@ public class Timer
     
     public Timer Debug(string name, bool logProgress = false, bool logTimeRemaining = false, bool logRemaining = false)
     {
+        UnityEngine.Debug.Log($"{name} is registered with duration: {Duration}.");
         OnStart(() => UnityEngine.Debug.Log($"{name} started"));
         OnComplete(() => UnityEngine.Debug.Log($"{name} completed"));
         
@@ -377,7 +381,7 @@ public class Timer
 
 public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<GameEvent>
 {
-    [Debug] private readonly List<Timer> timers = new();
+    [Log] private readonly List<Timer> timers = new();
 
     private void Update()
     {
@@ -418,7 +422,7 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
         }
     }
 
-    private void CancelTimers()
+    public void CancelTimers()
     {
         for (int i = timers.Count - 1; i >= 0; i--)
         {
@@ -426,6 +430,14 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
         }
 
         timers.Clear();
+    }
+    
+    public void CompleteTimers()
+    {
+        for (int i = timers.Count - 1; i >= 0; i--)
+        {
+            timers[i].Complete();
+        }
     }
 
     public void OnEvent(GameEvent e)

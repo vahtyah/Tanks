@@ -21,9 +21,9 @@ public class Character : Entity
     public Collider Collider { get; private set; }
     public Weapon EquippedWeapon { get; private set; }
 
-    [Debug] public TeamType Team { get; protected set; }
+    [Log] public TeamType Team { get; protected set; }
 
-    [Debug] public List<Character> Teammates { get; protected set; } = new();
+    [Log] public List<Character> Teammates { get; protected set; } = new();
 
     public int MultiKillCount { get; private set; }
 

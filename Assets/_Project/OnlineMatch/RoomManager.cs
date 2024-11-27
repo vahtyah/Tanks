@@ -24,7 +24,7 @@ public class Team
 
     public TeamType TeamType;
     public Color TeamColor;
-    [Debug] public List<Player> Players { get; private set; } = new();
+    [Log] public List<Player> Players { get; private set; } = new();
 
     private Action<Player, Team> onPlayerJoin;
     private Action<Player, Team> onPlayerLeft;
@@ -133,8 +133,8 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
 {
     public Info roomNameInfo;
     public Info teamNameInfo;
-    [Debug] public Dictionary<Character, TeamType> TeamCharacters = new();
-    [Debug] public Dictionary<TeamType, Team> Teams { get; private set; } = new();
+    [Log] public Dictionary<Character, TeamType> TeamCharacters = new();
+    [Log] public Dictionary<TeamType, Team> Teams { get; private set; } = new();
 
     private void Start()
     {

@@ -20,7 +20,7 @@ public class DamageOnTouch : MonoBehaviour, ITrigger
     [SerializeField, BoxGroup("Feedbacks")]
     private MMFeedbacks deathFeedbacks;
 
-    [Debug] private List<GameObject> ignoredObjects = new();
+    [Log] private List<GameObject> ignoredObjects = new();
     private Character owner;
     private HealthTest health;
     private Vector3 initialPosition;
