@@ -15,6 +15,8 @@ MonoBehaviour:
   sceneDatas_byGuid:
     keys:
     - cd5a4e5b0d4f49c42aeead116e97b288
+    - 37689eec9c7a635419b5c0a70265dfc1
+    - 087147c8001da4e48968f3196528ad9f
     values:
     - goDatas_byGlobalId:
         keys:
@@ -28,6 +30,9 @@ MonoBehaviour:
         - globalObjectIdString: GlobalObjectId_V1-2-cd5a4e5b0d4f49c42aeead116e97b288-612618176-0
         - globalObjectIdString: GlobalObjectId_V1-2-cd5a4e5b0d4f49c42aeead116e97b288-1533869535-0
         - globalObjectIdString: GlobalObjectId_V1-2-cd5a4e5b0d4f49c42aeead116e97b288-892046963-0
+        - globalObjectIdString: GlobalObjectId_V1-2-cd5a4e5b0d4f49c42aeead116e97b288-850519840-0
+        - globalObjectIdString: GlobalObjectId_V1-2-cd5a4e5b0d4f49c42aeead116e97b288-922322509-0
+        - globalObjectIdString: GlobalObjectId_V1-2-cd5a4e5b0d4f49c42aeead116e97b288-712033861-0
         values:
         - colorIndex: 1
           iconNameOrGuid: 
@@ -39,13 +44,55 @@ MonoBehaviour:
           iconNameOrGuid: Folder Icon
         - colorIndex: 0
           iconNameOrGuid: Camera Icon
-        - colorIndex: 0
+        - colorIndex: 4
           iconNameOrGuid: Folder Icon
         - colorIndex: 0
           iconNameOrGuid: Canvas Icon
-        - colorIndex: 0
+        - colorIndex: 5
           iconNameOrGuid: Canvas Icon
         - colorIndex: 0
           iconNameOrGuid: EventSystem Icon
         - colorIndex: 0
-          iconNameOrGuid: cs Script Icon
+          iconNameOrGuid: AvatarMask On Icon
+        - colorIndex: 0
+          iconNameOrGuid: Settings Icon
+        - colorIndex: 6
+          iconNameOrGuid: Folder Icon
+        - colorIndex: 0
+          iconNameOrGuid: Folder Icon
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-37689eec9c7a635419b5c0a70265dfc1-1763642222-0
+        - globalObjectIdString: GlobalObjectId_V1-2-37689eec9c7a635419b5c0a70265dfc1-570049340-0
+        - globalObjectIdString: GlobalObjectId_V1-2-37689eec9c7a635419b5c0a70265dfc1-641803551-0
+        - globalObjectIdString: GlobalObjectId_V1-2-37689eec9c7a635419b5c0a70265dfc1-1465226408-0
+        - globalObjectIdString: GlobalObjectId_V1-2-37689eec9c7a635419b5c0a70265dfc1-1978568266-0
+        values:
+        - colorIndex: 2
+          iconNameOrGuid: 
+        - colorIndex: 3
+          iconNameOrGuid: 
+        - colorIndex: 4
+          iconNameOrGuid: 
+        - colorIndex: 4
+          iconNameOrGuid: 
+        - colorIndex: 5
+          iconNameOrGuid: 
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-087147c8001da4e48968f3196528ad9f-1763642222-0
+        - globalObjectIdString: GlobalObjectId_V1-2-087147c8001da4e48968f3196528ad9f-570049340-0
+        - globalObjectIdString: GlobalObjectId_V1-2-087147c8001da4e48968f3196528ad9f-641803551-0
+        - globalObjectIdString: GlobalObjectId_V1-2-087147c8001da4e48968f3196528ad9f-1465226408-0
+        - globalObjectIdString: GlobalObjectId_V1-2-087147c8001da4e48968f3196528ad9f-1978568266-0
+        values:
+        - colorIndex: 2
+          iconNameOrGuid: 
+        - colorIndex: 3
+          iconNameOrGuid: 
+        - colorIndex: 4
+          iconNameOrGuid: 
+        - colorIndex: 4
+          iconNameOrGuid: 
+        - colorIndex: 5
+          iconNameOrGuid: 
