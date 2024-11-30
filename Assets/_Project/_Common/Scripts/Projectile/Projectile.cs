@@ -1,11 +1,14 @@
+using System;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
+using Unity.MLAgents;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : Entity, IPoolable, IController
 {
     //Setting
-    [BoxGroup("Settings"),SerializeField] private float speed = 20f;
+    [BoxGroup("Settings"),SerializeField] protected float speed = 20f;
     [BoxGroup("Settings"),SerializeField] private float lifeTime = 1f;
     [BoxGroup("Settings"),SerializeField] private float Acceleration = 0;
     private DamageOnTouch damageOnTouch;
@@ -14,15 +17,15 @@ public class Projectile : Entity, IPoolable, IController
     //Movement
     private Rigidbody rb;
     Vector3 moveDirection;
-    private float currentSpeed;
+    protected float currentSpeed;
 
     //Pooling
     
     Weapon weapon;
 
-    Timer timer;
+    protected Timer timer;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>(); 
         damageOnTouch = GetComponent<DamageOnTouch>();
@@ -30,7 +33,8 @@ public class Projectile : Entity, IPoolable, IController
 
     private void Start()
     {
-        timer = Timer.Register(lifeTime)
+        timer = Timer.Register(new LocalTimer(lifeTime))
+            // .Debug("Projectile", logRemaining:true)
             .OnComplete(() => Pool.Despawn(gameObject))
             .AutoDestroyWhenOwnerDisappear(this)
             .Start();
@@ -48,7 +52,7 @@ public class Projectile : Entity, IPoolable, IController
         currentSpeed += Acceleration * Time.fixedDeltaTime;
     }
 
-    public void OnSpawn()
+    public virtual void OnSpawn()
     {
         timer?.ReStart();
         damageOnTouch.AddToIgnoreList(owner.gameObject);
@@ -66,6 +70,11 @@ public class Projectile : Entity, IPoolable, IController
     {
         owner = o;
         damageOnTouch.SetOwner(owner);
+        return this;
+    }
+
+    public virtual Projectile SetOwner(CharacterAgent agent)
+    {
         return this;
     }
 

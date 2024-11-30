@@ -10,13 +10,14 @@ public class PanelItem
     public string panelName;
     public GameObject panelObject;
     public Button buttonObject;
+    public Action chooseAction;
 }
 
 public class MainPanelManager : MonoBehaviour
 {
     [SerializeField] private List<PanelItem> panels = new();
-
-
+    [SerializeField, Range(0, 3)] private int defaultPanelIndex = 0;
+    
     private PanelItem currentPanel;
     private int currentPanelIndex;
 
@@ -31,7 +32,7 @@ public class MainPanelManager : MonoBehaviour
 
     void OnEnable()
     {
-        ChangePanel(0);
+        ChangePanel(defaultPanelIndex);
     }
 
     public void ChangePanel(int index)
@@ -48,6 +49,7 @@ public class MainPanelManager : MonoBehaviour
         PlayAnimation(panels[index], currentPanelIndex <= index ? panelInLeft : panelInRight, buttonFadeIn);
         currentPanel = panels[index];
         currentPanelIndex = index;
+        currentPanel.chooseAction?.Invoke();
         GUIMainMenuManager.Instance.HandleHomePanel();
     }
 

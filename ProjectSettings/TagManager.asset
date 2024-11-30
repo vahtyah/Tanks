@@ -9,6 +9,7 @@ TagManager:
   - Projectile
   - Flag
   - SpawnArea
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Ground
   - Enemy
   - Protective
-  - 
+  - Volume
   - 
   - 
   - 

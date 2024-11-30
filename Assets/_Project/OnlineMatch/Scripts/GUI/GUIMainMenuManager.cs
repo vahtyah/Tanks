@@ -18,6 +18,9 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
 
     [TabGroup("Main Panel"), SerializeField]
     private UIHomeController homeUI;
+    
+    [TabGroup("Main Panel"), SerializeField]
+    private GraphicSettingsPanel settingsUI;
 
     [TabGroup("Player")] [SerializeField] private TMP_InputField playerNameInput;
     [TabGroup("Window")] [SerializeField] private GameObject gameFullWindow;
@@ -81,6 +84,12 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
         else
         {
             HideSelectCharacterPanel();
+        }
+        
+        if (mainPanel.GetCurrentPanelName().panelName == "Settings")
+        {
+            SettingsManager.Instance.LoadSettings();
+            settingsUI.ResetSettings();
         }
     }
 

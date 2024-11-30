@@ -16,6 +16,8 @@ public class GUIManagerOnlineMatch : SerializedSingleton<GUIManagerOnlineMatch>,
 
     [SerializeField] private PlayerHUD playerHUD;
     [SerializeField] private FillAmountImage targetIndicator;
+    [SerializeField] private GraphicSettingsPanel settingsPanel;
+    
     
     private void Start()
     {
@@ -124,6 +126,7 @@ public class GUIManagerOnlineMatch : SerializedSingleton<GUIManagerOnlineMatch>,
         {
             case GameEventType.GamePause:
                 SetVisiblePausePanel(true);
+                settingsPanel.ResetSettings();
                 break;
             case GameEventType.GameRunning:
                 SetVisiblePausePanel(false);

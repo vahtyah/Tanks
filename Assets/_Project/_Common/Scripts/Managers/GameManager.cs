@@ -22,6 +22,8 @@ public sealed class GameManager : PersistentSingleton<GameManager>, IEventListen
 
     private void Start()
     {
+        Application.targetFrameRate = 60;
+        
         GameEvent.Trigger(GameEventType.GameMainMenu);
     }
 

@@ -2,38 +2,39 @@
 using MoreMountains.Feedbacks;
 using Photon.Pun;
 using Sirenix.OdinInspector;
+using Unity.MLAgents;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private MMF_Player globalWeaponUseFeedback;
-    [SerializeField] private MMF_Player localWeaponUseFeedback;
+    [SerializeField] protected GameObject projectilePrefab;
+    [SerializeField] protected MMF_Player globalWeaponUseFeedback;
+    [SerializeField] protected MMF_Player localWeaponUseFeedback;
     [SerializeField] private float weaponCountdownDuration = 1;
     public float WeaponCountdownDuration => weaponCountdownDuration;
 
     [FoldoutGroup("Magazine")] [SerializeField]
-    private bool useMagazine = false;
+    protected bool useMagazine = false;
 
     [FoldoutGroup("Magazine"), ShowIf(nameof(useMagazine))] [SerializeField]
     private int magazineCapacity = 30;
 
-    [FoldoutGroup("Magazine"), ShowIf(nameof(useMagazine))] [SerializeField]
-    private bool autoReload = true;
+    // [FoldoutGroup("Magazine"), ShowIf(nameof(useMagazine))] [SerializeField]
+    // private bool autoReload = true;
 
     [FoldoutGroup("Magazine"), ShowIf(nameof(useMagazine))] [SerializeField]
     private float magazineReloadDuration = 1;
 
     public float MagazineReloadDuration => magazineReloadDuration;
 
-    private int remainingProjectiles;
+    protected int remainingProjectiles;
 
     public int RemainingProjectiles => remainingProjectiles;
 
     public Character WeaponOwner { get; set; }
 
     private PhotonView photonView;
-    private Transform projectileSpawnPoint;
+    protected Transform projectileSpawnPoint;
     public Timer weaponCooldownTimer { get; private set; }
     public Timer magazineReloadTimer { get; private set; }
     private float currentReloadTime;
@@ -68,7 +69,7 @@ public class Weapon : MonoBehaviour
     {
     }
 
-    public bool UseWeapon()
+    public virtual bool UseWeapon()
     {
         if (!weaponCooldownTimer.IsCompleted || magazineReloadTimer.IsRunning)
             return false;
@@ -117,5 +118,14 @@ public class Weapon : MonoBehaviour
     public void RegisterOnReloadListener(Action<float> updateReloadUI)
     {
         weaponCooldownTimer.OnProgress(updateReloadUI);
+    }
+    
+    public void SetOwner(Character character)
+    {
+        WeaponOwner = character;
+    }
+    
+    public virtual void SetOwner(CharacterAgent agent)
+    {
     }
 }

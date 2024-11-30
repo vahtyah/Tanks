@@ -11,31 +11,39 @@ public class HelpfulButtons : OdinEditorWindow
     {
         GetWindow<HelpfulButtons>().Show();
     }
-    
-    [ButtonGroup("Scenes")]
+
+    [TabGroup("Buttons", "Main Scenes")]
+    [ResponsiveButtonGroup("Buttons/Main Scenes/TestScene")]
     private void Test2Scene()
     {
         LoadScene("Assets/_Project/_Common/Scenes/Test2.unity");
     }
-    
-    [ButtonGroup("Scenes")]
+
+    [ResponsiveButtonGroup("Buttons/Main Scenes/Main Menu")]
     private void MainMenu()
     {
         LoadScene("Assets/_Project/_Common/Scenes/MainMenu.unity");
     }
-    
-    [ButtonGroup("Scenes")]
+
+    [TabGroup("Buttons", "Game Modes")]
+    [ResponsiveButtonGroup("Buttons/Game Modes/Capture The Flag")]
     private void TheCaptureTheFlag()
     {
         LoadScene("Assets/_Project/OnlineMatch/CaptureTheFlag.unity");
     }
-    
-    [ButtonGroup("Scenes")]
+
+    [ResponsiveButtonGroup("Buttons/Game Modes/Deathmatch")]
     private void TheDeathmatch()
     {
         LoadScene("Assets/_Project/OnlineMatch/Deathmatch.unity");
     }
-    
+
+    [TabGroup("Buttons", "Trainings")]
+    [ResponsiveButtonGroup("Buttons/Trainings/Deathmatch Training")]
+    private void Deathmatch()
+    {
+        LoadScene("Assets/_Project/Training/Scenes/DeathmatchTraining.unity");
+    }
 
     private void LoadScene(string scenePath)
     {

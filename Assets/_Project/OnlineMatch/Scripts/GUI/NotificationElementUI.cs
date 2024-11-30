@@ -25,8 +25,8 @@ public class NotificationElementUI : MonoBehaviour
 
 
     private Animator anim;
-    private string notiInLeft = "In";
-    private string notiOutRight = "Out";
+    // private string notiInLeft = "In";
+    // private string notiOutRight = "Out";
 
     private string notiInRight = "InRight";
     private string notiOutLeft = "OutLeft";

@@ -5,7 +5,7 @@ public class HealthBar : MonoBehaviour, IEventListener<CharacterEvent>
 {
     [SerializeField] private Transform foregroundBar;
     [SerializeField] private Transform delayedBarDecreasing;
-    [SerializeField] private string playerID = "Player1";
+    // [SerializeField] private string playerID = "Player1";
     private HealthTest health;
 
     private void UpdateBar(float value)

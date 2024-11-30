@@ -25,7 +25,7 @@ public class DamageOnTouch : MonoBehaviour, ITrigger
     private HealthTest health;
     private Vector3 initialPosition;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         health = GetComponent<HealthTest>();
     }
@@ -73,7 +73,7 @@ public class DamageOnTouch : MonoBehaviour, ITrigger
         ignoredObjects.Clear();
     }
 
-    public void OnTriggerEnter(Collider collider)
+    public virtual void OnTriggerEnter(Collider collider)
     {
         GameObject targetObject = collider.gameObject;
         if (!IsTargetAvailable(targetObject) || IsSameTeam(targetObject)) return;
@@ -96,7 +96,7 @@ public class DamageOnTouch : MonoBehaviour, ITrigger
 
     private readonly RaycastHit[] raycastHitsCache = new RaycastHit[1]; // Cache array dùng cho RaycastNonAlloc
 
-    private void PreventPassThrough()
+    protected void PreventPassThrough()
     {
         var movementDirection = transform.position - initialPosition;
 
@@ -136,7 +136,7 @@ public class DamageOnTouch : MonoBehaviour, ITrigger
         }
     }
 
-    private bool IsTargetAvailable(GameObject targetObject)
+    protected bool IsTargetAvailable(GameObject targetObject)
     {
         return !ignoredObjects.Contains(targetObject) && IsLayerInTargetMask(targetObject.layer);
     }

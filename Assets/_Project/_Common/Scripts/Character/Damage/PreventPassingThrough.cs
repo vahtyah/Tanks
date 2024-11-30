@@ -4,7 +4,7 @@ using UnityEngine;
 public class PreventPassingThrough : MonoBehaviour
 {
     public LayerMask ObstaclesLayerMask; 
-    private Collider collider;
+    private Collider col;
     private float sqrBoundsWidth;
     private static readonly RaycastHit[] raycastHits = new RaycastHit[1]; // Cache array dùng cho RaycastNonAlloc
 
@@ -14,18 +14,18 @@ public class PreventPassingThrough : MonoBehaviour
     
     private void Start(){
 
-        collider = GetComponent<Collider>();
+        col = GetComponent<Collider>();
         trigger = GetComponent<ITrigger>();
         
         if(trigger == null)
             throw new Exception("PreventPassingThrough requires a component that implements ITrigger");
         
-        var adjustmentDistance = Mathf.Min(Mathf.Min(collider.bounds.extents.x, collider.bounds.extents.y),
-            collider.bounds.extents.z);
+        var adjustmentDistance = Mathf.Min(Mathf.Min(col.bounds.extents.x, col.bounds.extents.y),
+            col.bounds.extents.z);
         var adjustedDistance = adjustmentDistance * (1.0f - 0.1f);
         sqrBoundsWidth = adjustedDistance * adjustedDistance;
         
-        collider.enabled = false;
+        col.enabled = false;
     }
 
     private void OnEnable()

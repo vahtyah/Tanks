@@ -19,7 +19,6 @@ public class CharacterOrientation : CharacterAbility, IPunObservable
         base.PreInitialize();
         movement = GetComponent<CharacterMovement>();
         weaponModel = Character.Model.Turret;
-
     }
 
     public override void ProcessAbility()
@@ -47,7 +46,7 @@ public class CharacterOrientation : CharacterAbility, IPunObservable
     private void RotateToFaceWeaponDirection()
     {
         if (!shouldRotateWeapon) return;
-            Vector3 aimDirection = Controller.GetAimDirection();
+        Vector3 aimDirection = Controller.GetAimDirection();
         if (aimDirection != Vector3.zero)
         {
             Quaternion targetWeaponRotation = Quaternion.LookRotation(aimDirection);

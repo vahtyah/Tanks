@@ -5,7 +5,7 @@ using UnityEngine;
 public class CinemachineCameraController : MonoBehaviour, IEventListener<CharacterEvent>
 {
     [SerializeField] Camera cam;
-    [SerializeField] private string playerID = "Player1";
+    // [SerializeField] private string playerID = "Player1";
     private CinemachineVirtualCamera virtualCamera;
     private CinemachineConfiner confiner;
 

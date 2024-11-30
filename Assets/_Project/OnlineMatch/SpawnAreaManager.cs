@@ -7,7 +7,7 @@ public class SpawnAreaManager : MonoBehaviour
 {
     private Dictionary<TeamType, SpawnArea> spawnAreas = new();
     
-    TeamType teamType = TeamType.None;
+    // TeamType teamType = TeamType.None;
     
     private void Awake()
     {

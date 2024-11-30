@@ -39,17 +39,18 @@ public class Pool
     {
         return Spawn(prefab, Vector3.zero, Quaternion.identity);
     }
-    
+
     public static GameObject Spawn(GameObject prefab, Transform parent)
     {
         return Spawn(prefab, Vector3.zero, Quaternion.identity, parent);
     }
 
-    public static GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation = default, Transform parent = null)
+    public static GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation = default,
+        Transform parent = null)
     {
         EnsureManagerExists();
         var pool = _manager.GetPool(prefab) ?? Register(prefab, parent);
-        if(pool.availableObjects.Count > 0)
+        if (pool.availableObjects.Count > 0)
         {
             var obj = pool.availableObjects.Dequeue();
             _manager.TrackObject(obj, pool);
@@ -57,7 +58,7 @@ public class Pool
             obj.SetActive(true);
             return obj;
         }
-        
+
         var newObj = Object.Instantiate(prefab, position, rotation, pool.parentTransform);
         _manager.TrackObject(newObj, pool);
         newObj.SetActive(true);
@@ -85,14 +86,14 @@ public class Pool
         newObj.SetActive(true);
         return newObj;
     }
-    
+
     public void Return(GameObject obj)
     {
         EnsureManagerExists();
-    
+
         if (availableObjects.Contains(obj))
             return;
-    
+
         _manager.UntrackObject(obj);
         obj.SetActive(false);
         availableObjects.Enqueue(obj);
@@ -113,7 +114,7 @@ public class Pool
             UnityEngine.Debug.LogWarning("Attempted to return an object that doesn't belong to any pool.");
         }
     }
-
+    
     public static void PhotonDespawn(PhotonView obj)
     {
         EnsureManagerExists();
@@ -146,9 +147,8 @@ public class Pool
 
 public class PoolManager : Singleton<PoolManager>
 {
-    private readonly Dictionary<GameObject, Pool> pools = new();
-    private readonly Dictionary<GameObject, Pool> trackedObjects = new();
-    public List<GameObject> prefabs = new List<GameObject>();
+    [Log] private readonly Dictionary<GameObject, Pool> pools = new();
+    [Log] private readonly Dictionary<GameObject, Pool> trackedObjects = new();
 
     public Pool GetPool(GameObject prefab) => pools.GetValueOrDefault(prefab);
 
@@ -156,11 +156,22 @@ public class PoolManager : Singleton<PoolManager>
 
     public Pool UntrackObject(GameObject obj) =>
         !trackedObjects.Remove(obj, out var pool) ? null : pool;
+    
+    public List<Pool> UntrackAllObjects()
+    {
+        var poolList = new List<Pool>();
+        foreach (var obj in trackedObjects.Keys)
+        {
+            poolList.Add(trackedObjects[obj]);
+            trackedObjects.Remove(obj);
+        }
+
+        return poolList;
+    }
 
     public Pool RegisterPool(GameObject prefab, Pool pool)
     {
         pools.TryAdd(prefab, pool);
-        prefabs.Add(prefab);
         return pools[prefab];
     }
 }
