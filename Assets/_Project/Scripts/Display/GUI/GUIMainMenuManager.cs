@@ -20,7 +20,9 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
     private UIHomeController homeUI;
     
     [TabGroup("Main Panel"), SerializeField]
-    private GraphicSettingsPanel settingsUI;
+    private GraphicSettingsPanel graphicSettingsUI;
+    [TabGroup("Main Panel"), SerializeField]
+    private AudioSettingsPanel audioSettingsUI;
 
     [TabGroup("Player")] [SerializeField] private TMP_InputField playerNameInput;
     [TabGroup("Window")] [SerializeField] private GameObject gameFullWindow;
@@ -89,7 +91,8 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
         if (mainPanel.GetCurrentPanelName().panelName == "Settings")
         {
             SettingsManager.Instance.LoadSettings();
-            settingsUI.ResetSettings();
+            graphicSettingsUI.ResetSettings();
+            audioSettingsUI.ResetSettings();
         }
     }
 

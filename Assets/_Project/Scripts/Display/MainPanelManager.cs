@@ -10,7 +10,6 @@ public class PanelItem
     public string panelName;
     public GameObject panelObject;
     public Button buttonObject;
-    public Action chooseAction;
 }
 
 public class MainPanelManager : MonoBehaviour
@@ -49,7 +48,6 @@ public class MainPanelManager : MonoBehaviour
         PlayAnimation(panels[index], currentPanelIndex <= index ? panelInLeft : panelInRight, buttonFadeIn);
         currentPanel = panels[index];
         currentPanelIndex = index;
-        currentPanel.chooseAction?.Invoke();
         GUIMainMenuManager.Instance.HandleHomePanel();
     }
 

@@ -6,7 +6,7 @@ public class GraphicSettingsManager : SettingsManager
 {
     List<Setting> settings = new();
     
-    public override List<Setting> GetGraphicSettings() => settings;
+    public override List<Setting> GetSettings() => settings;
     public override T Get<T>()
     {
         foreach (var setting in settings)
@@ -40,15 +40,14 @@ public class GraphicSettingsManager : SettingsManager
     {
         base.Awake();
         settings = GetComponents<Setting>().ToList();
-    }
-    
-    private void Start()
-    {
         foreach (var setting in settings)
         {
             setting.Initialize();
         }
-
+    }
+    
+    private void Start()
+    {
         LoadSettings();
         ApplySettings();
     }

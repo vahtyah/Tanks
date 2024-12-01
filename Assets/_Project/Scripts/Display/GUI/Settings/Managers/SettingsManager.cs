@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class SettingsManager : PersistentSingleton<SettingsManager>
 {
     [Log] protected List<GraphicSettingsApplier> GraphicSettingsAppliers { get; set; } = new();
-    public abstract List<Setting> GetGraphicSettings();
+    public abstract List<Setting> GetSettings();
     
     public abstract T Get<T>() where T : Setting;
     
@@ -30,9 +30,17 @@ public abstract class SettingsManager : PersistentSingleton<SettingsManager>
         GraphicSettingsAppliers.Remove(graphicSettingsApplier);
     }
 }
+
+public enum SettingType
+{
+    Graphic,
+    Audio,
+}
+
 [RequireComponent(typeof(GraphicSettingsManager))]
 public abstract class Setting : MonoBehaviour, IGraphicSetting
 {
+    public SettingType settingType = SettingType.Graphic;
     protected SettingsStorage SettingsStorage { get; set; }
 
     protected virtual void Awake()
@@ -86,13 +94,13 @@ public abstract class GraphicSettingsApplier : MonoBehaviour
     //     }
     // }
     //
-    // protected virtual void OnDisable()
-    // {
-    //     if (SettingsManager.Instance != null)
-    //     {
-    //         SettingsManager.Instance.Unregister(this);
-    //     }
-    // }
+    protected virtual void OnDisable()
+    {
+        if (SettingsManager.Instance != null)
+        {
+            SettingsManager.Instance.Unregister(this);
+        }
+    }
 
     public abstract void ApplySettings();
 }

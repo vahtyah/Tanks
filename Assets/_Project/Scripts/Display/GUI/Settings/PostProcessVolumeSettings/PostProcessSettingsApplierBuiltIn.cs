@@ -25,6 +25,7 @@ public class PostProcessSettingsApplierBuiltIn : GraphicSettingsApplier
         ApplySetting<MotionBlurSetting, MotionBlur>();
         ApplySetting<AmbientOcclusionSetting, AmbientOcclusion>();
         ApplySetting<ChromaticAberrationSetting, ChromaticAberration>();
+        ApplySetting<VignetteSetting, Vignette>();
     }
     
     void ApplySetting<TGraphicSetting, TPostProcessEffect>()

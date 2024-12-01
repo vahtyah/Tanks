@@ -24,21 +24,21 @@ public class GraphicSettingsPanel : MonoBehaviour
     
     private void Start()
     {
-        var settings = graphicSettingsManager.GetGraphicSettings();
+        var settings = graphicSettingsManager.GetSettings();
         
         for (var i = 0; i < settings.Count; i++)
         {
-            if (settings[i] is IMultiOptionGraphicSetting multiOptionSettings)
+            if (settings[i] is IMultiOptionGraphicSetting multiOptionSettings && settings[i].settingType == SettingType.Graphic)
             {
                 var multiOptionSelector = Instantiate(multiOptionSelectorPrefab, container);
                 multiOptionSelector.Initialize(settings[i].GetSettingName(), multiOptionSettings.GetOptionNames(), multiOptionSettings.GetIndex(), multiOptionSettings.SetIndex);  
                 selectors.Add(multiOptionSelector, multiOptionSettings);
             }
         }
-        if (selectors.Count > 0)
-        {
-            EventSystem.current.SetSelectedGameObject(selectors.Keys.First().gameObject);
-        }
+        // if (selectors.Count > 0)
+        // {
+        //     EventSystem.current.SetSelectedGameObject(selectors.Keys.First().gameObject);
+        // }
     }
     
     public void ResetSettings()
