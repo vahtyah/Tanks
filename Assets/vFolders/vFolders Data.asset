@@ -20,8 +20,13 @@ MonoBehaviour:
     - 7f2ebd57141e4f92b64cce514af53288
     - bfc335c0e9f6e6748a09e49f9a693fed
     - 8cdef86e62424da783458197ec47d169
+    - 541c07765e1e33e46b58cdf7224bc711
+    - fee7cc80481523b4690834cd9c808144
+    - 741aca722ef41de43bce64bbba7ca3db
+    - 06b9a4b886087d14e8b5072a63d9da36
+    - 54110a69297e33647b32ff8e79118a55
     values:
-    - iconNameOrGuid: none
+    - iconNameOrGuid: Folder On Icon
       colorIndex: 1
       isIconRecursive: 0
       isColorRecursive: 0
@@ -37,12 +42,32 @@ MonoBehaviour:
       colorIndex: 7
       isIconRecursive: 0
       isColorRecursive: 0
-    - iconNameOrGuid: 
-      colorIndex: 5
+    - iconNameOrGuid: none
+      colorIndex: 2
       isIconRecursive: 0
       isColorRecursive: 0
     - iconNameOrGuid: 
       colorIndex: 4
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: AnimatorController Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: PrefabModel Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: Texture Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: Texture Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: Texture Icon
+      colorIndex: 0
       isIconRecursive: 0
       isColorRecursive: 0
   bookmarks:

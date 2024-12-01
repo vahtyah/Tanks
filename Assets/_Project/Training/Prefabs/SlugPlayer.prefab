@@ -52801,7 +52801,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 565a867ffb5e2be40948f90bd5fb5f23, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: e7aceeb622543484590be80865a2a90a, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: Tank
@@ -73082,7 +73082,6 @@ MonoBehaviour:
   weaponCountdownDuration: 1
   useMagazine: 0
   magazineCapacity: 30
-  autoReload: 1
   magazineReloadDuration: 1
 --- !u!1 &6521643014409450082
 GameObject:
@@ -79827,7 +79826,6 @@ MonoBehaviour:
   weaponCountdownDuration: 0.1
   useMagazine: 1
   magazineCapacity: 30
-  autoReload: 1
   magazineReloadDuration: 5
 --- !u!114 &4086923580548209759
 MonoBehaviour:
