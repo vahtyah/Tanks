@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GlobalSettingsApplier : GraphicSettingsApplier
+public class GlobalSettingsApplier : SettingsApplier
 {
     public override void ApplySettings()
     {

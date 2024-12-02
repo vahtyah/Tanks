@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-public class PostProcessSettingsApplierBuiltIn : GraphicSettingsApplier
+public class PostProcessSettingsApplierBuiltIn : SettingsApplier
 {
     public PostProcessVolume PostProcessVolume { get; set; }
     GraphicSettingsManager GraphicSettingsManager { get; set; }

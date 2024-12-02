@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
-public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
+public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<ButtonEvent>
 {
     [TabGroup("Loading")] [SerializeField] private GameObject loadingPanel;
     [TabGroup("Loading")] [SerializeField] private TextMeshProUGUI loadingText;
@@ -76,25 +77,6 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
     #endregion
 
     #region Main Panel
-
-    public void HandleHomePanel()
-    {
-        if (mainPanel.GetCurrentPanelName().panelName == "Home")
-        {
-            ShowSelectCharacterPanel();
-        }
-        else
-        {
-            HideSelectCharacterPanel();
-        }
-        
-        if (mainPanel.GetCurrentPanelName().panelName == "Settings")
-        {
-            SettingsManager.Instance.LoadSettings();
-            graphicSettingsUI.ResetSettings();
-            audioSettingsUI.ResetSettings();
-        }
-    }
 
     public void SetMainPanelVisibility(bool isVisible)
     {
@@ -167,4 +149,34 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>
     }
 
     #endregion
+
+    
+    private void OnEnable()
+    {
+        this.StartListening();
+    }
+    
+    private void OnDisable()
+    {
+        this.StopListening();
+    }
+
+    public void OnEvent(ButtonEvent e)
+    {
+        switch (e.ButtonType)
+        {
+            case ButtonType.Home:
+                ShowSelectCharacterPanel();
+                break;
+            case ButtonType.Settings:
+                SettingsManager.Instance.LoadSettings();
+                graphicSettingsUI.ResetSettings();
+                audioSettingsUI.ResetSettings();
+                HideSelectCharacterPanel();
+                break;
+            default:
+                HideSelectCharacterPanel();
+                break;
+        }
+    }
 }

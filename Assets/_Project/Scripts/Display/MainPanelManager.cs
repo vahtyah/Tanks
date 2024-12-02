@@ -7,9 +7,9 @@ using UnityEngine.UI;
 [System.Serializable]
 public class PanelItem
 {
-    public string panelName;
     public GameObject panelObject;
     public Button buttonObject;
+    public ButtonType buttonType;
 }
 
 public class MainPanelManager : MonoBehaviour
@@ -29,9 +29,18 @@ public class MainPanelManager : MonoBehaviour
     string buttonFadeOut = "Pressed To Dissolve";
     // string buttonFadeNormal = "Pressed To Normal";
 
+    private void Awake()
+    {
+        foreach (var panel in panels)
+        {
+            panel.panelObject.SetActive(false);
+            panel.buttonObject.onClick.AddListener(() => ChangePanel(panels.IndexOf(panel)));
+        }
+    }
+
     void OnEnable()
     {
-        ChangePanel(defaultPanelIndex);
+        ActivateNewPanel(defaultPanelIndex);
     }
 
     public void ChangePanel(int index)
@@ -41,14 +50,25 @@ public class MainPanelManager : MonoBehaviour
 
         if (currentPanel != null)
         {
-            PlayAnimation(currentPanel, currentPanelIndex < index ? panelOutRight : panelOutLeft, buttonFadeOut);
-            StartCoroutine(DisablePreviousPanel(currentPanel));
+            DeactivateCurrentPanel(index);
         }
 
+        ActivateNewPanel(index);
+    }
+
+    private void DeactivateCurrentPanel(int index)
+    {
+        PlayAnimation(currentPanel, currentPanelIndex < index ? panelOutRight : panelOutLeft, buttonFadeOut);
+        StartCoroutine(DisablePreviousPanel(currentPanel));
+    }
+
+    private void ActivateNewPanel(int index)
+    {
         PlayAnimation(panels[index], currentPanelIndex <= index ? panelInLeft : panelInRight, buttonFadeIn);
         currentPanel = panels[index];
         currentPanelIndex = index;
-        GUIMainMenuManager.Instance.HandleHomePanel();
+        Debug.Log(currentPanel.buttonType);
+        ButtonEvent.Trigger(currentPanel.buttonType);
     }
 
     private void PlayAnimation(PanelItem panelItem, string panelAnimation, string buttonAnimation)

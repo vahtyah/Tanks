@@ -1,7 +1,7 @@
 ﻿using MoreMountains.Tools;
 using UnityEngine;
 
-public class AudioSettingsApplier : GraphicSettingsApplier
+public class AudioSettingsApplier : SettingsApplier
 {
     private MMSoundManager soundManager;
     

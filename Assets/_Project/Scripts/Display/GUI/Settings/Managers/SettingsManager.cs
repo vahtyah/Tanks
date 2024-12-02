@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class SettingsManager : PersistentSingleton<SettingsManager>
 {
-    [Log] protected List<GraphicSettingsApplier> GraphicSettingsAppliers { get; set; } = new();
+    [Log] protected List<SettingsApplier> GraphicSettingsAppliers { get; set; } = new();
     public abstract List<Setting> GetSettings();
     
     public abstract T Get<T>() where T : Setting;
@@ -17,17 +17,17 @@ public abstract class SettingsManager : PersistentSingleton<SettingsManager>
     
     public abstract void ApplySettings();
 
-    public void Register(GraphicSettingsApplier graphicSettingsApplier)
+    public void Register(SettingsApplier settingsApplier)
     {
-        if (graphicSettingsApplier != null && !GraphicSettingsAppliers.Contains(graphicSettingsApplier))
+        if (settingsApplier != null && !GraphicSettingsAppliers.Contains(settingsApplier))
         {
-            GraphicSettingsAppliers.Add(graphicSettingsApplier);
+            GraphicSettingsAppliers.Add(settingsApplier);
         }
     }
 
-    public void Unregister(GraphicSettingsApplier graphicSettingsApplier)
+    public void Unregister(SettingsApplier settingsApplier)
     {
-        GraphicSettingsAppliers.Remove(graphicSettingsApplier);
+        GraphicSettingsAppliers.Remove(settingsApplier);
     }
 }
 
@@ -38,7 +38,7 @@ public enum SettingType
 }
 
 [RequireComponent(typeof(GraphicSettingsManager))]
-public abstract class Setting : MonoBehaviour, IGraphicSetting
+public abstract class Setting : MonoBehaviour, ISetting
 {
     public SettingType settingType = SettingType.Graphic;
     protected SettingsStorage SettingsStorage { get; set; }
@@ -68,13 +68,13 @@ public abstract class SettingsStorage : MonoBehaviour
 
 
 
-public interface IGraphicSetting
+public interface ISetting
 {
     void Initialize();
     string GetSettingName();
 }
 
-public abstract class GraphicSettingsApplier : MonoBehaviour
+public abstract class SettingsApplier : MonoBehaviour
 {
     protected virtual void Start()
     {
