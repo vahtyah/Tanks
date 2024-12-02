@@ -62,7 +62,8 @@ public class FullScreenModeSetting : MultiOptionGraphicSetting<FullScreenMode>
     };
 
     public override string GetSettingName() => "Full Screen Mode";
-    
+    public override string GetSettingDescription() => "Choose the preferred window mode.";
+
     public override void SaveSetting()
     {
         SettingsStorage.SetInt("Full Screen Mode", (int)GetSelectedOption());

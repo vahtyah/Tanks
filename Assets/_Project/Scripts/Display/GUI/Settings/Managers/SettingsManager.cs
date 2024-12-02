@@ -6,15 +6,15 @@ public abstract class SettingsManager : PersistentSingleton<SettingsManager>
 {
     [Log] protected List<SettingsApplier> GraphicSettingsAppliers { get; set; } = new();
     public abstract List<Setting> GetSettings();
-    
+
     public abstract T Get<T>() where T : Setting;
-    
+
     public abstract bool TryGet<T>(out T graphicSetting) where T : Setting;
-    
+
     public abstract void LoadSettings();
-    
+
     public abstract void SaveSettings();
-    
+
     public abstract void ApplySettings();
 
     public void Register(SettingsApplier settingsApplier)
@@ -50,6 +50,7 @@ public abstract class Setting : MonoBehaviour, ISetting
 
     public abstract void Initialize();
     public abstract string GetSettingName();
+    public abstract string GetSettingDescription();
     public abstract void LoadSetting();
     public abstract void SaveSetting();
 }
@@ -67,11 +68,11 @@ public abstract class SettingsStorage : MonoBehaviour
 }
 
 
-
 public interface ISetting
 {
     void Initialize();
     string GetSettingName();
+    string GetSettingDescription();
 }
 
 public abstract class SettingsApplier : MonoBehaviour

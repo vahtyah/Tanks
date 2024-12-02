@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,7 +12,7 @@ public class GraphicSettingsPanel : MonoBehaviour
     [SerializeField] private Button applyButton;
     private GraphicSettingsManager graphicSettingsManager;
     private Dictionary<MultiOptionSelector, IMultiOptionGraphicSetting> selectors = new();
-    
+
     private void Awake()
     {
         graphicSettingsManager = FindObjectOfType<GraphicSettingsManager>();
@@ -21,26 +22,41 @@ public class GraphicSettingsPanel : MonoBehaviour
             graphicSettingsManager.SaveSettings();
         });
     }
-    
+
+    private void OnEnable()
+    {
+        if (selectors.Count > 0)
+        {
+            EventSystem.current.SetSelectedGameObject(selectors.Keys.First().gameObject);
+            OptionSelectorEvent.Trigger(null, (selectors.Values.First() as Setting)?.GetSettingName(),
+                (selectors.Values.First() as Setting)?.GetSettingDescription());
+        }
+    }
+
     private void Start()
     {
         var settings = graphicSettingsManager.GetSettings();
-        
+
         for (var i = 0; i < settings.Count; i++)
         {
-            if (settings[i] is IMultiOptionGraphicSetting multiOptionSettings && settings[i].settingType == SettingType.Graphic)
+            if (settings[i] is IMultiOptionGraphicSetting multiOptionSettings &&
+                settings[i].settingType == SettingType.Graphic)
             {
                 var multiOptionSelector = Instantiate(multiOptionSelectorPrefab, container);
-                multiOptionSelector.Initialize(settings[i].GetSettingName(), multiOptionSettings.GetOptionNames(), multiOptionSettings.GetIndex(), multiOptionSettings.SetIndex);  
+                multiOptionSelector.Initialize(settings[i], multiOptionSettings.GetOptionNames(),
+                    multiOptionSettings.GetIndex(), multiOptionSettings.SetIndex);
                 selectors.Add(multiOptionSelector, multiOptionSettings);
             }
         }
-        // if (selectors.Count > 0)
-        // {
-        //     EventSystem.current.SetSelectedGameObject(selectors.Keys.First().gameObject);
-        // }
+
+        if (selectors.Count > 0)
+        {
+            EventSystem.current.SetSelectedGameObject(selectors.Keys.First().gameObject);
+            OptionSelectorEvent.Trigger(null, (selectors.Values.First() as Setting)?.GetSettingName(),
+                (selectors.Values.First() as Setting)?.GetSettingDescription());
+        }
     }
-    
+
     public void ResetSettings()
     {
         SettingsManager.Instance.LoadSettings();

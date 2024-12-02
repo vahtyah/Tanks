@@ -16,6 +16,9 @@ public class QualitySetting : MultiOptionGraphicSetting<int>
 
     public override string GetSettingName() => "Quality";
 
+    public override string GetSettingDescription() =>
+        "Choose the quality level. Higher quality levels may affect performance.";
+
     public override void LoadSetting()
     {
         string key = GetSettingName();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -23,6 +24,8 @@ public class DefaultMultiOptionSelector : MultiOptionSelector, IMoveHandler
     
     [SerializeField] private PointerDownHandler previousButton;
 
+    private Setting setting;
+    private Button button;
     int currentIndex = 0;
 
     public int CurrentIndex
@@ -61,16 +64,22 @@ public class DefaultMultiOptionSelector : MultiOptionSelector, IMoveHandler
 
     private void Awake()
     {
+        button = GetComponent<Button>();
         AudioSource = GetComponent<AudioSource>();
         nextButton.OnClick.AddListener(SelectNextOption);
         previousButton.OnClick.AddListener(SelectPreviousOption);
+        
+        button.onClick.AddListener(() =>
+        {
+            OptionSelectorEvent.Trigger(null, setting.GetSettingName(), setting.GetSettingDescription());
+        });
     }
 
-    public override void Initialize(string label, List<string> values, int index, UnityAction<int> onSelectionChanged)
+    public override void Initialize(Setting setting, List<string> values, int index, UnityAction<int> onSelectionChanged)
     {
+        this.setting = setting;
         OnSelectionChanged += onSelectionChanged;
-
-        labelText.text = label;
+        labelText.text = this.setting.GetSettingName();
         Values = values;
         currentIndex = index;
 
@@ -81,7 +90,6 @@ public class DefaultMultiOptionSelector : MultiOptionSelector, IMoveHandler
     {
         CurrentIndex = index;
     }
-
 
     public void OnMove(AxisEventData eventData)
     {
@@ -119,6 +127,8 @@ public class DefaultMultiOptionSelector : MultiOptionSelector, IMoveHandler
                 PlayAudioFeedback(verticalMovementSFX);
             }
         }
+        
+        button.Select();
     }
 
     void UpdateValueText()

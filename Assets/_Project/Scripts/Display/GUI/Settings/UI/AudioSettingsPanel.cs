@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class AudioSettingsPanel : MonoBehaviour
@@ -22,6 +24,16 @@ public class AudioSettingsPanel : MonoBehaviour
         });
     }
 
+    private void OnEnable()
+    {
+        if (sliderSettings.Count > 0)
+        {
+            EventSystem.current.SetSelectedGameObject(sliderSettings.Keys.First().gameObject);
+            OptionSelectorEvent.Trigger(null, (sliderSettings.Values.First() as Setting)?.GetSettingName(),
+                (sliderSettings.Values.First() as Setting)?.GetSettingDescription());
+        }
+    }
+
     private void Start()
     {
         var settings = audioSettingsManager.GetSettings();
@@ -30,9 +42,16 @@ public class AudioSettingsPanel : MonoBehaviour
             if (setting is ISliderSetting sliderSetting && setting.settingType == SettingType.Audio)
             {
                 var slider = Instantiate(sliderOptionSelector, container);
-                slider.Initialize(setting.GetSettingName(), sliderSetting.GetValue(), sliderSetting.SetValue);
+                slider.Initialize(setting, sliderSetting.GetValue(), sliderSetting.SetValue);
                 sliderSettings.Add(slider, sliderSetting);
             }
+        }
+        
+        if (sliderSettings.Count > 0)
+        {
+            EventSystem.current.SetSelectedGameObject(sliderSettings.Keys.First().gameObject);
+            OptionSelectorEvent.Trigger(null, (sliderSettings.Values.First() as Setting)?.GetSettingName(),
+                (sliderSettings.Values.First() as Setting)?.GetSettingDescription());
         }
     }
     

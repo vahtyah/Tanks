@@ -15,6 +15,7 @@ public class ResolutionSetting : MultiOptionGraphicSetting<Resolution>
     }
 
     public override string GetSettingName() => "Resolution";
+    public override string GetSettingDescription() => "Choose the resolution of the game.";
 
     public override void LoadSetting()
     {
