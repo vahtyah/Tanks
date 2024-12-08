@@ -1929,6 +1929,14 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2988502268127621179, guid: eec343fdd9c5d524f9dfae59cbe02d4c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 44.831043
+      objectReference: {fileID: 0}
+    - target: {fileID: 2988502268127621179, guid: eec343fdd9c5d524f9dfae59cbe02d4c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3158318480122159032, guid: eec343fdd9c5d524f9dfae59cbe02d4c, type: 3}
       propertyPath: sceneViewId
       value: 153
@@ -1964,7 +1972,7 @@ PrefabInstance:
     - target: {fileID: 9138744695758667971, guid: eec343fdd9c5d524f9dfae59cbe02d4c, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: 19f9aa70d8244064f8088c3454648a33, type: 3}
+      objectReference: {fileID: 5022602860645237092, guid: 2ef4519571768a140b052bb86a1ee977, type: 3}
     - target: {fileID: 9171519104975062754, guid: eec343fdd9c5d524f9dfae59cbe02d4c, type: 3}
       propertyPath: sceneViewId
       value: 199

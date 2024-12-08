@@ -38,7 +38,7 @@ public enum SettingType
 }
 
 [RequireComponent(typeof(GraphicSettingsManager))]
-public abstract class Setting : MonoBehaviour, ISetting
+public abstract class Setting : MonoBehaviour, ISetting, ISettingStorage
 {
     public SettingType settingType = SettingType.Graphic;
     protected SettingsStorage SettingsStorage { get; set; }
@@ -73,6 +73,12 @@ public interface ISetting
     void Initialize();
     string GetSettingName();
     string GetSettingDescription();
+}
+
+public interface ISettingStorage
+{
+    void LoadSetting();
+    void SaveSetting();
 }
 
 public abstract class SettingsApplier : MonoBehaviour

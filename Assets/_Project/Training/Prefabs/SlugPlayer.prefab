@@ -52801,7 +52801,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 19f9aa70d8244064f8088c3454648a33, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 2ef4519571768a140b052bb86a1ee977, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: Tank

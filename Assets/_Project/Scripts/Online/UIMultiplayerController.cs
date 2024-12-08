@@ -15,17 +15,32 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
 
     [SerializeField] private Button buttonOpenRoomSettings;
 
+    [SerializeField] private RoomSettingPanel roomSettingPanel;
 
-    [SerializeField] private RoomSettings roomSettings;
+    [SerializeField] private GameObject inRoomPanel;
+    
     [SerializeField] private BoardTeamPanel boardTeamPanel;
     [SerializeField] private TeamBoard teamBoardDeathmatch;
 
+    [SerializeField] private Button readyButton;
+    
+
     private string roomName;
     private int teamSize;
-    private int playerPerTeam;
+    private int playerSize;
+    private GameMode gameMode;
+    private bool isCreateBots;
 
     private Dictionary<string, RoomElement> roomList = new();
     private Dictionary<int, PlayerElement> playerList = new();
+    
+    public void SetInRoomPanelVisible(bool isVisible)
+    {
+        inRoomPanel.SetActive(isVisible);
+        if(gameMode == GameMode.Deathmatch)
+            teamBoardDeathmatch.gameObject.SetActive(isVisible);
+        else boardTeamPanel.gameObject.SetActive(isVisible);
+    }
 
     public void SetPlayerReady(int actorNumber, bool isReady)
     {
@@ -94,51 +109,82 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
 
     private void Start()
     {
-        Initialize();
-    }
-
-    private void Initialize()
-    {
         buttonOpenRoomSettings.onClick.AddListener(OnOpenRoomSettingsButtonClick);
-        roomSettings.SetCreateRoomButtonListener(OnCreateRoomButtonClick);
+        readyButton.onClick.AddListener(() =>
+        {
+            PhotonNetwork.LocalPlayer.SetReadyInLobby(!PhotonNetwork.LocalPlayer.IsReadyInLobby());
+        });
+    }
+    
+    public void SetRoomName(string roomName)
+    {
+        this.roomName = roomName;
     }
 
-    private void OnCreateRoomButtonClick()
+    public void SetGameMode(GameMode gameMode)
     {
-        roomSettings.gameObject.SetActive(false);
+        this.gameMode = gameMode;
+    }
+    
+    public void SetTeamSize(int teamSize)
+    {
+        this.teamSize = teamSize;
+    }
+    
+    public void SetCreateBots(bool isCreateBots)
+    {
+        this.isCreateBots = isCreateBots;
+    }
+    
+    public void SetPlayerSize(int playerSize)
+    {
+        this.playerSize = playerSize;
+    }
 
-        roomName = roomSettings.GetRoomName();
-        teamSize = roomSettings.GetMaxTeamSize();
-        playerPerTeam = roomSettings.GetMaxPlayerPerTeam();
+    public void OnCreateRoomButtonClick()
+    {
+        roomSettingPanel.gameObject.SetActive(false);
 
+        int maxPlayers = 0;
+        
+        if(gameMode == GameMode.Deathmatch)
+        {
+            maxPlayers = playerSize;
+        }
+        else if(gameMode == GameMode.CaptureTheFlag)
+        {
+            maxPlayers = teamSize * 4;
+        }
+        
         var roomOptions = new RoomOptions
         {
-            MaxPlayers = (byte)(teamSize * playerPerTeam),
+            MaxPlayers = maxPlayers,
             IsVisible = true,
             IsOpen = true
         };
-
+        
         PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
 
     private void OnOpenRoomSettingsButtonClick()
     {
-        roomSettings.gameObject.SetActive(true);
+        roomSettingPanel.gameObject.SetActive(true);
     }
 
     public void OnJoinRoom(Room room)
     {
-        var gameMode = roomSettings.GetGameMode();
-
+        Debug.Log("Join room: " + room.Name);
+        Debug.Log("GameMode: " + gameMode);
+        gameMode = room.GetGameMode() == GameMode.None ? gameMode : room.GetGameMode();
+        SetInRoomPanelVisible(true);
+        Debug.Log("GameMode: " + gameMode);
         if (gameMode == GameMode.CaptureTheFlag)
         {
-            boardTeamPanel.gameObject.SetActive(true);
             var teams = Team.GetAllTeams();
             boardTeamPanel.Initialize(teams);
         }
         else if (gameMode == GameMode.Deathmatch)
         {
-            teamBoardDeathmatch.gameObject.SetActive(true);
             foreach (var player in room.Players)
             {
                 teamBoardDeathmatch.AddMember(player.Value);
@@ -149,7 +195,7 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
     private void OnCreatedRoom(Room room)
     {
         room.SetTeamSize(teamSize);
-        room.SetGameMode(roomSettings.GetGameMode());
+        room.SetGameMode(gameMode);
         var teams = room.CreateTeams(teamSize);
     }
 
@@ -174,7 +220,6 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
 
     private void OnPlayerLeft(Player ePlayer)
     {
-        var gameMode = roomSettings.GetGameMode();
         if (gameMode == GameMode.Deathmatch)
         {
             teamBoardDeathmatch.RemoveMember(ePlayer);
@@ -183,7 +228,6 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
 
     private void OnPlayerJoin(Player newPlayer)
     {
-        var gameMode = roomSettings.GetGameMode();
         if (gameMode == GameMode.Deathmatch)
         {
             teamBoardDeathmatch.AddMember(newPlayer);

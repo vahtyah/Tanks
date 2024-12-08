@@ -91,7 +91,7 @@ Material:
     - _MaskAppearLocalYRemap: 6
     - _MaskAppearNoiseTriplanar: 1
     - _MaskAppearNoiseTriplanarTiling: 0.1
-    - _MaskAppearProgress: -1.0088731
+    - _MaskAppearProgress: -1.0090772
     - _MaskAppearUseWorldPosition: 1
     - _MaskDepthFadeDistance: 12
     - _MaskDepthFadeEnabled: 0

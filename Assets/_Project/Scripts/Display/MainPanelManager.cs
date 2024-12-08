@@ -67,7 +67,6 @@ public class MainPanelManager : MonoBehaviour
         PlayAnimation(panels[index], currentPanelIndex <= index ? panelInLeft : panelInRight, buttonFadeIn);
         currentPanel = panels[index];
         currentPanelIndex = index;
-        Debug.Log(currentPanel.buttonType);
         ButtonEvent.Trigger(currentPanel.buttonType);
     }
 

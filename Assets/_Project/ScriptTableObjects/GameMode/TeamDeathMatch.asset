@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67afecfc27ef46ab9d26f2f24a8a0946, type: 3}
+  m_Name: TeamDeathMatch
+  m_EditorClassIdentifier: 
+  Name: Team DeathMatch
+  Preview: {fileID: 21300000, guid: eadd20165cfe050409bdf7a7f4125f47, type: 3}
+  Description: Teams compete to kill enemy players and earn points.
+  GameMode: 2

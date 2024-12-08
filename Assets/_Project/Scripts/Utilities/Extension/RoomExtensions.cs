@@ -41,6 +41,14 @@ public static class RoomExtensions
         });
     }
     
+    public static void SetGameMap(this Room room, GameMap gameMap)
+    {
+        room.SetCustomProperties(new Hashtable
+        {
+            {GlobalString.GAME_MAP, gameMap}
+        });
+    }
+    
     public static GameMode GetGameMode(this Room room)
     {
         if (room.CustomProperties.TryGetValue(GlobalString.GAME_MODE, out var gameMode))
@@ -48,6 +56,6 @@ public static class RoomExtensions
             return (GameMode)gameMode;
         }
 
-        return GameMode.Deathmatch;
+        return GameMode.None;
     }
 }

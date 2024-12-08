@@ -24,7 +24,7 @@ public class BoardTeamPanel : MonoBehaviour
     public void AddPlayer(Player player, Team team)
     {
         if (this != null)
-            teamBoards[team].AddMember(player);
+            teamBoards[team].AddMember(player, (int)team.TeamType % 2 != 0);
     }
 
     public void RemovePlayer(Player player, Team team)

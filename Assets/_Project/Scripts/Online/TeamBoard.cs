@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TeamBoard : MonoBehaviour
 {
@@ -14,18 +16,24 @@ public class TeamBoard : MonoBehaviour
     }
 
     [SerializeField] private Transform memberContainer;
-    [SerializeField] private GameObject memberPrefab;
+    [SerializeField] private GameObject memberPrefabLeft;
+    [SerializeField] private GameObject memberPrefabRight;
     [SerializeField] private TextMeshProUGUI teamName;
+    [SerializeField] private Image teamBackground;
     Dictionary<Player, PlayerElement> playerEntries = new();
+
 
     private void Initialize(Team team)
     {
         teamName.text = team.TeamType.ToString();
+        var color = team.TeamColor;
+        color.a = 0.25f;
+        teamBackground.color = color;
     }
 
-    public void AddMember(Player player)
+    public void AddMember(Player player, bool isRight = false)
     {
-        PunManager.Instance.AddPlayerDisPlayInRoom(player, memberPrefab, memberContainer);
+        PunManager.Instance.AddPlayerDisPlayInRoom(player, isRight ? memberPrefabRight : memberPrefabLeft, memberContainer);
         var playerElement = PunManager.Instance.GetPlayerElement(player.ActorNumber);
         playerEntries.Add(player, playerElement);
     }
