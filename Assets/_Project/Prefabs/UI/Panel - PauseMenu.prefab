@@ -983,6 +983,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6254704511493096373, guid: 642acc228a01faa42a6f0dcb2e2e6289, type: 3}
+      propertyPath: panels.Array.data[0].navigationType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254704511493096373, guid: 642acc228a01faa42a6f0dcb2e2e6289, type: 3}
+      propertyPath: panels.Array.data[1].navigationType
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6331699554982847527, guid: 642acc228a01faa42a6f0dcb2e2e6289, type: 3}
       propertyPath: m_IsActive
       value: 1

@@ -11,6 +11,6 @@
     
     public static void TriggerEvent(WeaponState state, float param)
     {
-        EventManger.TriggerEvent(new SkillEvent(state, param));
+        EventManager.TriggerEvent(new SkillEvent(state, param));
     }
 }

@@ -58,4 +58,14 @@ public static class RoomExtensions
 
         return GameMode.None;
     }
+    
+    public static bool IsInMatchMaking(this Room room)
+    {
+        if (room.CustomProperties.TryGetValue(GlobalString.IS_IN_MATCHMAKING, out var isInMatchMaking))
+        {
+            return (bool)isInMatchMaking;
+        }
+
+        return false;
+    }
 }

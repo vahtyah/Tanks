@@ -9,7 +9,7 @@ public class PanelItem
 {
     public GameObject panelObject;
     public Button buttonObject;
-    public ButtonType buttonType;
+    public NavigationType navigationType;
 }
 
 public class MainPanelManager : MonoBehaviour
@@ -67,7 +67,7 @@ public class MainPanelManager : MonoBehaviour
         PlayAnimation(panels[index], currentPanelIndex <= index ? panelInLeft : panelInRight, buttonFadeIn);
         currentPanel = panels[index];
         currentPanelIndex = index;
-        ButtonEvent.Trigger(currentPanel.buttonType);
+        NavigationEvent.Trigger(currentPanel.navigationType);
     }
 
     private void PlayAnimation(PanelItem panelItem, string panelAnimation, string buttonAnimation)

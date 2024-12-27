@@ -37,7 +37,7 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
     public void SetInRoomPanelVisible(bool isVisible)
     {
         inRoomPanel.SetActive(isVisible);
-        if(gameMode == GameMode.Deathmatch)
+        if(gameMode == GameMode.DeathMatch)
             teamBoardDeathmatch.gameObject.SetActive(isVisible);
         else boardTeamPanel.gameObject.SetActive(isVisible);
     }
@@ -84,6 +84,8 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
     {
         foreach (var room in rooms)
         {
+            if(room.CustomProperties.ContainsKey(GlobalString.IS_IN_MATCHMAKING) && (bool)room.CustomProperties[GlobalString.IS_IN_MATCHMAKING])
+                continue;
             if (room.RemovedFromList)
             {
                 if (roomList.TryGetValue(room.Name, out var roomElement))
@@ -147,7 +149,7 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
 
         int maxPlayers = 0;
         
-        if(gameMode == GameMode.Deathmatch)
+        if(gameMode == GameMode.DeathMatch)
         {
             maxPlayers = playerSize;
         }
@@ -156,14 +158,7 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
             maxPlayers = teamSize * 4;
         }
         
-        var roomOptions = new RoomOptions
-        {
-            MaxPlayers = maxPlayers,
-            IsVisible = true,
-            IsOpen = true
-        };
-        
-        PhotonNetwork.CreateRoom(roomName, roomOptions);
+        PunManager.Instance.CreateCustomRoom(roomName, maxPlayers, teamSize, gameMode);
     }
 
     private void OnOpenRoomSettingsButtonClick()
@@ -183,7 +178,7 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
             var teams = Team.GetAllTeams();
             boardTeamPanel.Initialize(teams);
         }
-        else if (gameMode == GameMode.Deathmatch)
+        else if (gameMode == GameMode.DeathMatch)
         {
             foreach (var player in room.Players)
             {
@@ -220,7 +215,7 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
 
     private void OnPlayerLeft(Player ePlayer)
     {
-        if (gameMode == GameMode.Deathmatch)
+        if (gameMode == GameMode.DeathMatch)
         {
             teamBoardDeathmatch.RemoveMember(ePlayer);
         }
@@ -228,7 +223,7 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
 
     private void OnPlayerJoin(Player newPlayer)
     {
-        if (gameMode == GameMode.Deathmatch)
+        if (gameMode == GameMode.DeathMatch)
         {
             teamBoardDeathmatch.AddMember(newPlayer);
         }

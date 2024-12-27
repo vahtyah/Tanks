@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
-public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<ButtonEvent>
+public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<NavigationEvent>
 {
     [TabGroup("Loading")] [SerializeField] private GameObject loadingPanel;
     [TabGroup("Loading")] [SerializeField] private TextMeshProUGUI loadingText;
@@ -161,14 +161,14 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
         this.StopListening();
     }
 
-    public void OnEvent(ButtonEvent e)
+    public void OnEvent(NavigationEvent e)
     {
-        switch (e.ButtonType)
+        switch (e.NavigationType)
         {
-            case ButtonType.Home:
+            case NavigationType.Home:
                 ShowSelectCharacterPanel();
                 break;
-            case ButtonType.Settings:
+            case NavigationType.Settings:
                 SettingsManager.Instance.LoadSettings();
                 graphicSettingsUI.ResetSettings();
                 audioSettingsUI.ResetSettings();

@@ -11,36 +11,27 @@ public interface IEventListener<T> : IEventListenerBase
     void OnEvent(T e);
 }
 
-public interface ITransferData<T> : IEventListenerBase
+public static class EventManager
 {
-    void SetData(T data);
-}
-
-public static class EventManger
-{
-    private static readonly Dictionary<Type, List<IEventListenerBase>> subscribers = new();
+    private static readonly Dictionary<Type, HashSet<IEventListenerBase>> subscribers = new();
 
     public static void AddListener<T>(IEventListener<T> listener) where T : struct
     {
         Type eventType = typeof(T);
         if (!subscribers.TryGetValue(eventType, out var subs))
         {
-            subs = new List<IEventListenerBase>();
+            subs = new HashSet<IEventListenerBase>();
             subscribers[eventType] = subs;
         }
 
-        if (!subs.Contains(listener))
-        {
-            subs.Add(listener);
-        }
+        subs.Add(listener);
     }
 
     public static void RemoveListener<T>(IEventListener<T> listener) where T : struct
     {
         Type eventType = typeof(T);
         if (!subscribers.TryGetValue(eventType, out var subs)) return;
-        subs.Remove(listener);
-        if (subs.Count == 0)
+        if (subs.Remove(listener) && subs.Count == 0)
         {
             subscribers.Remove(eventType);
         }
@@ -55,23 +46,27 @@ public static class EventManger
     {
         Type eventType = typeof(T);
         if (!subscribers.TryGetValue(eventType, out var subs)) return;
-        foreach (var listener in subs.ToList())
+        HashSet<IEventListenerBase> subsCopy = new HashSet<IEventListenerBase>(subs);
+        foreach (var listenerBase in subsCopy)
         {
-            (listener as IEventListener<T>)?.OnEvent(e);
+            if (listenerBase is IEventListener<T> listener)
+            {
+                listener.OnEvent(e);
+            }
         }
     }
 }
 
-public static class EventRegister
+public static class EventExtensions
 {
     public static void StartListening<T>(this IEventListener<T> listener) where T : struct
     {
-        EventManger.AddListener(listener);
+        EventManager.AddListener(listener);
     }
 
     public static void StopListening<T>(this IEventListener<T> listener) where T : struct
     {
-        EventManger.RemoveListener(listener);
+        EventManager.RemoveListener(listener);
     }
 }
 

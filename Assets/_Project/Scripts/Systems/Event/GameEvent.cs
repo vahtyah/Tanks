@@ -14,5 +14,5 @@ public struct GameEvent
 
     private GameEvent(GameEventType eventType) { EventType = eventType; }
 
-    public static void Trigger(GameEventType eventType) { EventManger.TriggerEvent(new GameEvent(eventType)); }
+    public static void Trigger(GameEventType eventType) { EventManager.TriggerEvent(new GameEvent(eventType)); }
 }

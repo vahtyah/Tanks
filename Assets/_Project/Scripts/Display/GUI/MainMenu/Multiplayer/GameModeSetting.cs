@@ -22,7 +22,7 @@ public class GameModeSetting : MultiOptionRoomSetting
 
     private void HandleSetting(GameModeData data)
     {
-        if (data.GameMode == GameMode.Deathmatch)
+        if (data.GameMode == GameMode.DeathMatch)
         {
             selectAmountAnimator.Play("MaxPlayers");
         }

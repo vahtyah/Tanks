@@ -142,9 +142,9 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
     {
         var gameMode = PhotonNetwork.CurrentRoom.GetGameMode();
 
-        if (gameMode is GameMode.CaptureTheFlag or GameMode.TeamDeathmatch)
+        if (gameMode is GameMode.CaptureTheFlag or GameMode.TeamDeathMatch)
             DetermineWinnerCaptureTheFlag();
-        else if (gameMode == GameMode.Deathmatch)
+        else if (gameMode == GameMode.DeathMatch)
             DetermineWinnerDeathmatch();
     }
 

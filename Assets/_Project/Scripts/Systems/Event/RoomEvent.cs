@@ -24,11 +24,11 @@ public struct RoomEvent
     
     public static void Trigger(RoomEventType eventType,  Player player)
     {
-        EventManger.TriggerEvent(new RoomEvent(eventType, null, player));
+        EventManager.TriggerEvent(new RoomEvent(eventType, null, player));
     }
 
     public static void Trigger(RoomEventType eventType, Room room)
     {
-        EventManger.TriggerEvent(new RoomEvent(eventType, room));
+        EventManager.TriggerEvent(new RoomEvent(eventType, room));
     }
 }

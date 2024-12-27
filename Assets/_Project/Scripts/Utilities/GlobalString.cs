@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GlobalString 
 {
+    public const string IS_IN_MATCHMAKING = "IsInMatchmaking";
     public const string GAME_MAP = "GameMap";
     public const string GAME_MODE = "GameMode";
     public const string PLAYER_READY_INGAME = "IsPlayerReadyInGame";

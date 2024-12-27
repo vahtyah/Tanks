@@ -20,7 +20,7 @@ public struct CharacterEvent
 
     public static void Trigger(CharacterEventType eventType, Character character)
     {
-        EventManger.TriggerEvent(new CharacterEvent(eventType, character));
+        EventManager.TriggerEvent(new CharacterEvent(eventType, character));
     }
 }
 
@@ -44,6 +44,6 @@ public struct InGameEvent
 
     public static void Trigger(InGameEventType eventType, Character killer, Character victim)
     {
-        EventManger.TriggerEvent(new InGameEvent(eventType, killer, victim));
+        EventManager.TriggerEvent(new InGameEvent(eventType, killer, victim));
     }
 }

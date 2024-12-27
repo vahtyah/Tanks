@@ -25,6 +25,6 @@ public struct OptionSelectorEvent
         cacheEvent.Preview = preview;
         cacheEvent.SettingName = settingName;
         cacheEvent.SettingDescription = settingDescription;
-        EventManger.TriggerEvent(cacheEvent);
+        EventManager.TriggerEvent(cacheEvent);
     }
 }

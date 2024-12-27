@@ -311,10 +311,10 @@ MonoBehaviour:
   panels:
   - panelObject: {fileID: 993796175550598553}
     buttonObject: {fileID: 5436406703931223569}
-    buttonType: 4
+    navigationType: 0
   - panelObject: {fileID: 1986344866983567301}
     buttonObject: {fileID: 5305201709019266897}
-    buttonType: 5
+    navigationType: 0
   defaultPanelIndex: 0
 --- !u!1 &1366740818387128620
 GameObject:

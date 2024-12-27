@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class GlobalTimer : Timer
 {
@@ -71,15 +72,46 @@ public class OneShotTimer : Timer
         }
 
         startTime = GetWorldTime();
-        manager.RegisterTimer(this);
         onStart?.Invoke();
         return this;
     }
 }
 
+public class StopWatch : Timer
+{
+    public StopWatch() : base(0)
+    {
+    }
+
+    public override Timer Start()
+    {
+        startTime = GetWorldTime();
+        IsCompleted = false;
+        IsCancelled = false;
+        timeElapsedBeforePause = null;
+        onStart?.Invoke();
+        return this;
+    }
+
+    public override void Cancel()
+    {
+        onDone?.Invoke();
+    }
+
+    public override void Update()
+    {
+        onTimeRemaining?.Invoke(GetElapsedTime());
+    }
+
+    protected override float GetWorldTime()
+    {
+        return Time.time;
+    }
+}
+
 public class Timer
 {
-    protected static TimerManager manager;
+    private static TimerManager manager;
     private readonly float duration;
     protected float startTime;
     protected float? timeElapsedBeforePause;
@@ -90,9 +122,9 @@ public class Timer
     private Action<float> onUpdate;
     private Action<float> onProgress;
     private Action<float> onRemaining;
-    private Action<float> onTimeRemaining;
+    protected Action<float> onTimeRemaining;
     private Action onComplete;
-    private Action onDone;
+    protected Action onDone;
 
     private readonly List<Action> activeActions = new();
 
@@ -122,7 +154,11 @@ public class Timer
     {
         EnsureManagerExits();
 
-        timer.OnStart(() => timer.IsRegistered = true);
+        timer.OnStart(() =>
+        {
+            timer.IsRegistered = true;
+            manager.RegisterTimer(timer);
+        });
         timer.OnDone(() =>
         {
             timer.IsRegistered = false;
@@ -130,7 +166,7 @@ public class Timer
         });
         return timer;
     }
-    
+
     public static Timer Register(float duration)
     {
         var timer = new Timer(duration);
@@ -139,15 +175,12 @@ public class Timer
 
     private static void EnsureManagerExits()
     {
-        if (manager == null)
-        {
-            manager = TimerManager.Instance;
-            if (manager is null)
-            {
-                UnityEngine.Debug.LogWarning("Please add TimerManager to the scene and don't register Timer in Awake method.");
-                manager = new GameObject("TimerManager").AddComponent<TimerManager>();
-            }
-        }
+        if (manager != null) return;
+        manager = TimerManager.Instance ?? Object.FindObjectOfType<TimerManager>();
+        if (manager is not null) return;
+        UnityEngine.Debug.LogWarning(
+            "Please add TimerManager to the scene.");
+        manager = new GameObject("TimerManager").AddComponent<TimerManager>();
     }
 
     public Timer OnStart(Action onStart)
@@ -245,13 +278,13 @@ public class Timer
     {
         if (IsRegistered || IsDone)
         {
-            UnityEngine.Debug.Log($"IsRegistered: {IsRegistered}, IsCompleted: {IsCompleted}, IsCancelled: {IsCancelled}, IsOwnerDisappeared: {isOwnerDisappeared}");
+            UnityEngine.Debug.Log(
+                $"IsRegistered: {IsRegistered}, IsCompleted: {IsCompleted}, IsCancelled: {IsCancelled}, IsOwnerDisappeared: {isOwnerDisappeared}");
             UnityEngine.Debug.LogWarning("Timer is already registered or done. Please use ReStart() instead.");
             return this;
         }
 
         startTime = GetWorldTime();
-        manager.RegisterTimer(this);
         onStart?.Invoke();
         // RegisterActions();
         return this;
@@ -291,11 +324,11 @@ public class Timer
         return this;
     }
 
-    public void Cancel()
+    public virtual void Cancel()
     {
         IsCancelled = true;
     }
-    
+
     public void Complete()
     {
         IsCompleted = true;
@@ -324,20 +357,21 @@ public class Timer
         timeElapsedBeforePause = null;
     }
 
-    private float GetElapsedTime()
+    protected float GetElapsedTime()
     {
         return IsCompleted ? duration : timeElapsedBeforePause ?? GetWorldTime() - startTime;
     }
 
     // protected virtual float GetWorldTime() => (float)(UsesRealTime ? Time.realtimeSinceStartup : PhotonNetwork.Time);
     protected virtual float GetWorldTime() => (float)PhotonNetwork.Time;
-    
+
     public Timer Debug(string name, bool logProgress = false, bool logTimeRemaining = false, bool logRemaining = false)
     {
         UnityEngine.Debug.Log($"{name} is registered with duration: {Duration}.");
         OnStart(() => UnityEngine.Debug.Log($"{name} started"));
         OnComplete(() => UnityEngine.Debug.Log($"{name} completed"));
-        
+        OnDone(() => UnityEngine.Debug.Log($"{name} done"));
+
         if (logProgress)
             OnProgress(progress => UnityEngine.Debug.Log($"{name} progress: {progress}"));
         if (logTimeRemaining)
@@ -347,7 +381,7 @@ public class Timer
         return this;
     }
 
-    public void Update()
+    public virtual void Update()
     {
         if (IsDone)
         {
@@ -431,7 +465,7 @@ public class TimerManager : PersistentSingleton<TimerManager>, IEventListener<Ga
 
         timers.Clear();
     }
-    
+
     public void CompleteTimers()
     {
         for (int i = timers.Count - 1; i >= 0; i--)

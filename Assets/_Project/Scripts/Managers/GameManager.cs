@@ -7,8 +7,8 @@ using UnityEngine;
 public enum GameMode
 {
     None,
-    Deathmatch,
-    TeamDeathmatch,
+    DeathMatch,
+    TeamDeathMatch,
     CaptureTheFlag
 }
 

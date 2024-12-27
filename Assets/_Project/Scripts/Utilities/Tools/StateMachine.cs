@@ -57,12 +57,12 @@ public class StateMachine<T> : IStateMachine where T : struct
         }
         if (TriggerType == TriggerType.Once)
         {
-            EventManger.TriggerEvent(new StateMachineEvent<T>(this));
+            EventManager.TriggerEvent(new StateMachineEvent<T>(this));
             TriggerType = TriggerType.None;
         }
         else
         {
-            EventManger.TriggerEvent(new StateMachineEvent<T>(this));
+            EventManager.TriggerEvent(new StateMachineEvent<T>(this));
         }
     }
 }

@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Project/Scenes/MainMenu.unity
+    path: Assets/_Project/Scenes/Main Menu/MainMenu.unity
     guid: cd5a4e5b0d4f49c42aeead116e97b288
   - enabled: 1
     path: Assets/_Project/LocalMatch/Scenes/LocalMatch.unity
@@ -15,10 +15,10 @@ EditorBuildSettings:
     path: Assets/_Project/BotMatch/Scenes/BotMatch.unity
     guid: 6f7cbc1b9165a264fadf7889793c9a87
   - enabled: 1
-    path: Assets/_Project/Scenes/CaptureTheFlag.unity
+    path: Assets/_Project/Scenes/Game Modes/CaptureTheFlag.unity
     guid: 087147c8001da4e48968f3196528ad9f
   - enabled: 1
-    path: Assets/_Project/Scenes/Deathmatch.unity
+    path: Assets/_Project/Scenes/Game Modes/Deathmatch.unity
     guid: 37689eec9c7a635419b5c0a70265dfc1
   - enabled: 1
     path: Assets/_Project/Training/Scenes/DeathmatchTraining.unity
