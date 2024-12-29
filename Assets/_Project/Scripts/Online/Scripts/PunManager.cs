@@ -134,6 +134,8 @@ public class PunManager : SingletonPunCallbacks<PunManager>
         };
         PhotonNetwork.JoinRandomRoom(roomProperties, 0);
         isMatchMaking = true;
+        
+        Debug.Log("Finding Match");
     }
 
     public void CancelFindMatch()
