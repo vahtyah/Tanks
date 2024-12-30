@@ -332,9 +332,11 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
 
     private void CheckPlayerLeftRoom()
     {
-        if (PhotonNetwork.PlayerList.Length == 1 && GameManager.Instance.CurrentGameType != GameEventType.GameOver)
+        var teams = Team.GetAllTeams();
+        foreach (var team in teams)
         {
-            GameEvent.Trigger(GameEventType.GameOver);
+            if(team.Players.Count == 0)
+                GameEvent.Trigger(GameEventType.GameOver);
         }
     }
 

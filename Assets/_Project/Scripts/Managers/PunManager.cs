@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Random = UnityEngine.Random;
 
 public class PunManager : SingletonPunCallbacks<PunManager>
 {
@@ -15,6 +17,7 @@ public class PunManager : SingletonPunCallbacks<PunManager>
     //MatchMaking
     GameMode gameMode;
     GameMap gameMap;
+    public Action<int> onPlayersChanged;
 
     private void Start()
     {
@@ -80,15 +83,22 @@ public class PunManager : SingletonPunCallbacks<PunManager>
         LocalPlayerPropertiesUpdated();
     }
 
+    public override void OnJoinedRoom()
+    {
+        onPlayersChanged?.Invoke(PhotonNetwork.CurrentRoom.PlayerCount);
+    }
+
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         LocalPlayerPropertiesUpdated();
         JoinMatchGame();
+        onPlayersChanged?.Invoke(PhotonNetwork.CurrentRoom.PlayerCount);
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         LocalPlayerPropertiesUpdated();
+        onPlayersChanged?.Invoke(PhotonNetwork.CurrentRoom.PlayerCount);
     }
 
 
@@ -101,17 +111,16 @@ public class PunManager : SingletonPunCallbacks<PunManager>
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         if (!PhotonNetwork.IsConnectedAndReady) return;
-
         RoomOptions roomOptions = new RoomOptions
         {
-            MaxPlayers = 4,
+            MaxPlayers = 2,
             IsVisible = true,
             IsOpen = true,
             CustomRoomProperties = new Hashtable
             {
                 { GlobalString.IS_IN_MATCHMAKING, true },
                 { GlobalString.GAME_MODE, gameMode },
-                { GlobalString.TEAM_SIZE, 4 }
+                { GlobalString.TEAM_SIZE, 2 }
             },
             CustomRoomPropertiesForLobby = new string[]
                 { GlobalString.GAME_MODE, GlobalString.TEAM_SIZE, GlobalString.IS_IN_MATCHMAKING },
@@ -134,8 +143,6 @@ public class PunManager : SingletonPunCallbacks<PunManager>
         };
         PhotonNetwork.JoinRandomRoom(roomProperties, 0);
         isMatchMaking = true;
-        
-        Debug.Log("Finding Match");
     }
 
     public void CancelFindMatch()
@@ -148,13 +155,31 @@ public class PunManager : SingletonPunCallbacks<PunManager>
     {
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers && IsInMatchMakingRoom)
         {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.CurrentRoom.IsVisible = false;
-            var gameMode = PhotonNetwork.CurrentRoom.GetGameMode();
-            if (gameMode == GameMode.DeathMatch)
-                PhotonNetwork.LoadLevel(Scene.SceneName.Deathmatch.ToString());
-            else
-                PhotonNetwork.LoadLevel(Scene.SceneName.CaptureTheFlag.ToString());
+            StartCoroutine(DelayedJoinMatchGame());
+        }
+    }
+    //TODO: Need some cleaner way to do
+    IEnumerator DelayedJoinMatchGame()
+    {
+        var players = PhotonNetwork.CurrentRoom.Players;
+        while (true)
+        {
+            if(PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers) yield return null;
+            var allPlayersReady = true;
+            foreach (var player in players)
+            {
+                if (player.Value.GetTeam() == null)
+                {
+                    allPlayersReady = false;
+                }
+            }
+            if(allPlayersReady)
+            {
+                JoinGame();
+                yield return null;
+            }
+            
+            yield return new WaitForSeconds(.5f);
         }
     }
     
@@ -194,7 +219,7 @@ public class PunManager : SingletonPunCallbacks<PunManager>
     private bool CheckAllPlayersReady()
     {
         if (!PhotonNetwork.IsMasterClient) return false;
-        // if (PhotonNetwork.PlayerList.Length < 2) return false;
+        if (PhotonNetwork.PlayerList.Length < 2) return false;
 
         foreach (var player in PhotonNetwork.PlayerList)
         {
@@ -217,15 +242,19 @@ public class PunManager : SingletonPunCallbacks<PunManager>
                 }
             }
 
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.CurrentRoom.IsVisible = false;
-
-            var gameMode = PhotonNetwork.CurrentRoom.GetGameMode();
-            if (gameMode == GameMode.DeathMatch)
-                PhotonNetwork.LoadLevel(Scene.SceneName.Deathmatch.ToString());
-            else
-                PhotonNetwork.LoadLevel(Scene.SceneName.CaptureTheFlag.ToString());
+            JoinGame();
         }
+    }
+    
+    private static void JoinGame()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
+        var gameMode = PhotonNetwork.CurrentRoom.GetGameMode();
+        if (gameMode == GameMode.DeathMatch)
+            PhotonNetwork.LoadLevel(Scene.SceneName.Deathmatch.ToString());
+        else
+            PhotonNetwork.LoadLevel(Scene.SceneName.CaptureTheFlag.ToString());
     }
 
     #endregion

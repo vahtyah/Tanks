@@ -27,11 +27,11 @@ public class DatabaseManager : Singleton<DatabaseManager>, IEventListener<GameEv
                 var databaseURL = "https://tanks-c93ec-default-rtdb.firebaseio.com/";
                 reference = FirebaseDatabase.GetInstance(app, databaseURL).RootReference;
                 GetUsersSortedByScore();
-                UnityEngine.Debug.Log("Firebase Database initialized successfully.");
+                Debug.Log("Firebase Database initialized successfully.");
             }
             else
             {
-                UnityEngine.Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
+                Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
             }
         });
     }

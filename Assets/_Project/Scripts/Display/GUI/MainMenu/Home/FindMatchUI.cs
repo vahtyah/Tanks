@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class FindMatchUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI numberOfPlayersText;
+    
     [SerializeField] private FindMatchSupport findMatchSupport;
 
     [SerializeField] private GameModeSelector gameModeSelector;
@@ -35,6 +37,16 @@ public class FindMatchUI : MonoBehaviour
         matchTimer = Timer.Register(new StopWatch())
             .OnTimeRemaining(SetTimerText)
             .OnTimeRemaining(findMatchSupport.SetTimerText);
+    }
+
+    private void Start()
+    {
+        PunManager.Instance.onPlayersChanged += OnPlayersChanged;
+    }
+
+    private void OnPlayersChanged(int obj)
+    {
+        numberOfPlayersText.text = $"{obj}/{PhotonNetwork.CurrentRoom.MaxPlayers}";
     }
 
     void SetTimerText(float time)

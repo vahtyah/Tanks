@@ -35,7 +35,10 @@ public class CharacterFlagCapture : CharacterAbility, IEventListener<CharacterEv
         flagRenderer = Character.Model.FlagRenderer;
         if (PhotonNetwork.CurrentRoom.GetGameMode() != GameMode.CaptureTheFlag)
             Destroy(this);
-        
+    }
+
+    protected override void Initialize()
+    {
         PhotonView.RPC(nameof(RPC_Initialize), RpcTarget.All);
         GUI = GUIManagerOnlineMatch.Instance;
         teamArea = EnvironmentManager.Instance.CurrentMap.GetAreaTransform(PhotonView.Owner.GetTeam());
