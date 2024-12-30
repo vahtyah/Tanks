@@ -11,7 +11,7 @@ To view the full source code of the project, please switch to the **PUN2 branch*
 Since the project is not yet complete, there may be some bugs or issues during testing. I’m actively working to fix them and will update them as soon as possible.
 
 ## 3. Latest Demo
-The latest demo link (the CV might have old demos):  
+The latest demo link (the CV have old demos):  
 [Demo Link](https://youtu.be/P1_RLRtm75s)
 
 ## 4. Incorrect GitHub Link
