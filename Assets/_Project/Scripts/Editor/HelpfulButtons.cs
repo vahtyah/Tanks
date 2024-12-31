@@ -270,7 +270,6 @@ public class HelpfulButtons : EditorWindow
     {
         GUILayout.BeginVertical();
 
-        // Tạo một style đẹp cho nút
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
         // buttonStyle.normal.textColor = Color.white;
         // buttonStyle.normal.background = MakeTexture(2, 2, Color.white);

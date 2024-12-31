@@ -69,7 +69,8 @@ public class Team
     public static Team GetTeamByPlayer(Player player)
     {
         EnsureManagerExists();
-        return GetTeamByType(player.GetTeam().TeamType);
+        var team = player.GetTeam();
+        return team ?? GetTeamByType(TeamType.None);
     }
 
     public static List<Player> GetPlayersByTeam(TeamType teamType)
@@ -112,10 +113,11 @@ public class Team
 
     public void RemovePlayerFromTeam(Player player)
     {
+        Debug.Log($"Removing {player.NickName} from team {TeamType}");
         Players.Remove(player);
         onPlayerLeft?.Invoke(player, this);
     }
-    
+
     private static Color GetColorByTeamType(TeamType teamType)
     {
         return teamType switch
@@ -158,7 +160,7 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
     {
         if (!Teams.TryAdd(team.TeamType, team))
         {
-            UnityEngine.Debug.LogWarning($"Team {team.TeamType} already exists");
+            Debug.LogWarning($"Team {team.TeamType} already exists");
         }
     }
 
@@ -186,7 +188,7 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
         team?.RemovePlayerFromTeam(otherPlayer);
         RoomEvent.Trigger(RoomEventType.PlayerLeft, otherPlayer);
     }
-    
+
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         RoomEvent.Trigger(RoomEventType.PlayerJoin, newPlayer);
@@ -196,8 +198,17 @@ public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
     {
         if (changedProps.TryGetValue(GlobalString.TEAM, out var teamType))
         {
-            var team = Team.GetTeamByType((TeamType)teamType);
-            team?.AddPlayer(targetPlayer);
+            if ((TeamType)teamType == TeamType.None)
+            {
+                var oldTeam = Team.GetTeamByPlayer(targetPlayer);
+                if (oldTeam == null || oldTeam.TeamType == TeamType.None) return;
+                oldTeam.RemovePlayerFromTeam(targetPlayer);
+            }
+            else
+            {
+                var team = Team.GetTeamByType((TeamType)teamType);
+                team?.AddPlayer(targetPlayer);
+            }
         }
     }
 

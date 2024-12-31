@@ -49,6 +49,13 @@ public static class PlayerExtensions
 
         return team;
     }
+    
+    // public static void RemoveTeam(this Player player)
+    // {
+    //     // var team = player.GetTeam();
+    //     // team.RemovePlayerFromTeam(player);
+    //     player.SetCustomProperties(new Hashtable { { GlobalString.TEAM, TeamType.None } });
+    // }
 
     public static Team GetTeam(this Player player)
     {

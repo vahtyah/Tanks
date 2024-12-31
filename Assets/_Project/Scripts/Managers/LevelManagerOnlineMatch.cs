@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
@@ -150,17 +151,17 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
 
     private void DetermineWinnerDeathmatch()
     {
-        var players = PhotonNetwork.PlayerList;
-        var winnerTmp = players[0];
-        bool isDraw = players.Length > 1;
+        var players = PhotonNetwork.CurrentRoom.Players;
+        var winnerTmp = players.First();
+        bool isDraw = players.Count > 1;
         foreach (var player in players)
         {
-            if (player.GetScore() > winnerTmp.GetScore())
+            if (player.Value.GetScore() > winnerTmp.Value.GetScore())
             {
                 winnerTmp = player;
                 isDraw = false;
             }
-            else if (player.GetScore() < winnerTmp.GetScore())
+            else if (player.Value.GetScore() < winnerTmp.Value.GetScore())
             {
                 isDraw = false;
             }
@@ -173,7 +174,7 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
         }
 
 
-        if (winner.GetTeamType() == PhotonNetwork.LocalPlayer.GetTeam().TeamType)
+        if (Equals(winnerTmp.Value, PhotonNetwork.LocalPlayer))
         {
             guiManager.SetVisibleWinScreen(true);
         }
@@ -185,9 +186,17 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
 
     private void DetermineWinnerCaptureTheFlag()
     {
-        var teams = Team.GetAllTeams();
+        var teams = Team.GetAllTeams().Where(team => team.Players.Count > 0).ToList();
+
+        if (teams.Count == 0)
+        {
+            guiManager.SetVisibleDrawScreen(true);
+            return;
+        }
+
         var winner = teams[0];
         bool isDraw = teams.Count > 1;
+
         foreach (var team in teams)
         {
             if (team.GetTeamScore() > winner.GetTeamScore())
@@ -201,14 +210,16 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
             }
         }
 
+        if (winner.TeamType == TeamType.None)
+        {
+            isDraw = true;
+        }
+
         if (isDraw)
         {
             guiManager.SetVisibleDrawScreen(true);
-            return;
         }
-
-
-        if (winner.TeamType == PhotonNetwork.LocalPlayer.GetTeam().TeamType)
+        else if (winner.TeamType == PhotonNetwork.LocalPlayer.GetTeam().TeamType)
         {
             guiManager.SetVisibleWinScreen(true);
         }
@@ -243,7 +254,8 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
     private void SpawnPlayer()
     {
         var spawnPoint = GetSpawnPointForTeam();
-        localPlayer = PhotonNetwork.Instantiate(GameManager.Instance.SelectedCharacter.CharacterPrefab.name, spawnPoint, Quaternion.identity)
+        localPlayer = PhotonNetwork.Instantiate(GameManager.Instance.SelectedCharacter.CharacterPrefab.name, spawnPoint,
+                Quaternion.identity)
             .GetComponent<PlayerCharacter>();
         CharacterEvent.Trigger(CharacterEventType.CharacterSpawned, localPlayer);
         // photonView.RPC(nameof(AssignTeam), RpcTarget.AllBuffered, team);
@@ -332,11 +344,19 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
 
     private void CheckPlayerLeftRoom()
     {
-        var teams = Team.GetAllTeams();
-        foreach (var team in teams)
+        var gameMode = PhotonNetwork.CurrentRoom.GetGameMode();
+        if (gameMode == GameMode.CaptureTheFlag || gameMode == GameMode.TeamDeathMatch)
         {
-            if(team.Players.Count == 0)
-                GameEvent.Trigger(GameEventType.GameOver);
+            var teams = Team.GetAllTeams();
+            foreach (var team in teams)
+            {
+                if (team.Players.Count == 0)
+                    GameEvent.Trigger(GameEventType.GameOver);
+            }
+        }
+        else if (gameMode == GameMode.DeathMatch && PhotonNetwork.CurrentRoom.Players.Count == 1)
+        {
+            GameEvent.Trigger(GameEventType.GameOver);
         }
     }
 

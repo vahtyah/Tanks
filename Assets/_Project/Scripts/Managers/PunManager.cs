@@ -168,7 +168,7 @@ public class PunManager : SingletonPunCallbacks<PunManager>
             var allPlayersReady = true;
             foreach (var player in players)
             {
-                if (player.Value.GetTeam() == null)
+                if (player.Value.GetTeam() is null)
                 {
                     allPlayersReady = false;
                 }

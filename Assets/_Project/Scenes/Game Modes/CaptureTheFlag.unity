@@ -4504,7 +4504,7 @@ MonoBehaviour:
   - Message: Vasage!
     BonusScore: 3
   playerPrefab: {fileID: 1817581257062871318, guid: d1a99c458c9e30f4da9ef4ce53a83d3d, type: 3}
-  gameDuration: 180
+  gameDuration: 90
   preStartDuration: 5
   respawnDuration: 5
 --- !u!114 &2141255833

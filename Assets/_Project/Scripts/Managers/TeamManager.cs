@@ -25,7 +25,6 @@ public class TeamManager : Singleton<TeamManager>, IEventListener<GameEvent>
     protected override void Awake()
     {
         base.Awake();
-        Debug.Log("GameMode: " + PhotonNetwork.CurrentRoom.GetGameMode());
         if (PhotonNetwork.CurrentRoom.GetGameMode() != GameMode.CaptureTheFlag)
             Destroy(this);
     }

@@ -21,8 +21,6 @@ public class SpawnAreaManager : MonoBehaviour
     
     public SpawnArea GetSpawnAreaByTeam(Team team)
     {
-        Debug.Log("SpawnArea " + spawnAreas);
-        Debug.Log("TeamType " + team.TeamType);
         return spawnAreas[team.TeamType];
     }
     
