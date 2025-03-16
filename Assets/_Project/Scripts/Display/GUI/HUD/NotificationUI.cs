@@ -16,7 +16,7 @@ public class NotificationUI : MonoBehaviour, IEventListener<InGameEvent>
         notificationQueue.Enqueue(notification);
         if (notificationQueue.Count > 5)
         {
-            notificationQueue.Dequeue().DisableNotification();
+            notificationQueue.Dequeue().HideNotification();
         }
     }
     

@@ -6,8 +6,9 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
-public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<NavigationEvent>
+public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<NavigationEvent>, IEventListener<GameEvent>, IEventListener<AuthenticationEvent>
 {
+    [TabGroup("Authentication")] [SerializeField] private AuthenPanel authenPanel;
     [TabGroup("Loading")] [SerializeField] private GameObject loadingPanel;
     [TabGroup("Loading")] [SerializeField] private TextMeshProUGUI loadingText;
 
@@ -25,14 +26,14 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
     [TabGroup("Main Panel"), SerializeField]
     private AudioSettingsPanel audioSettingsUI;
 
-    [TabGroup("Player")] [SerializeField] private TMP_InputField playerNameInput;
+    [TabGroup("Player")] [SerializeField] private TextMeshProUGUI playerNameText;
     [TabGroup("Window")] [SerializeField] private GameObject gameFullWindow;
 
     protected override void Awake()
     {
         base.Awake();
         SetLoadingPanelVisibility(true);
-        SetMainPanelVisibility(false);
+        mainPanel.SetVisible(false);
     }
 
     #region Pun Callbacks
@@ -40,13 +41,14 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
     public void OnJoinedLobby()
     {
         SetLoadingPanelVisibility(false);
-        SetMainPanelVisibility(true);
+        // SetMainPanelVisibility(true);
+        GameEvent.Trigger(GameEventType.GameAuthentication);
     }
 
     public void OnDisconnected(DisconnectCause cause)
     {
         SetLoadingPanelVisibility(true);
-        SetMainPanelVisibility(false);
+        mainPanel.SetVisible(false);
     }
 
     public void OnLeftRoom()
@@ -78,11 +80,6 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
 
     #region Main Panel
 
-    public void SetMainPanelVisibility(bool isVisible)
-    {
-        mainPanel.gameObject.SetActive(isVisible);
-    }
-
     public void HideSelectCharacterPanel()
     {
         homeUI.CharacterSelector.TurnOffDisplay();
@@ -106,17 +103,12 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
 
     public void SetPlayerName(string playerName)
     {
-        playerNameInput.text = playerName;
+        playerNameText.text = playerName;
     }
 
     public string GetPlayerName()
     {
-        return playerNameInput.text;
-    }
-
-    public void RegisterPlayerNameInputListener(UnityEngine.Events.UnityAction<string> action)
-    {
-        playerNameInput.onEndEdit.AddListener(action);
+        return playerNameText.text;
     }
 
     public void SetPlayerReady(int actorNumber, bool isReady)
@@ -150,17 +142,6 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
 
     #endregion
 
-    
-    private void OnEnable()
-    {
-        this.StartListening();
-    }
-    
-    private void OnDisable()
-    {
-        this.StopListening();
-    }
-
     public void OnEvent(NavigationEvent e)
     {
         switch (e.NavigationType)
@@ -178,5 +159,46 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
                 HideSelectCharacterPanel();
                 break;
         }
+    }
+
+    public void OnEvent(GameEvent e)
+    {
+        switch (e.EventType)
+        {
+            case GameEventType.GameAuthentication:
+                HideSelectCharacterPanel();
+                authenPanel.SetVisible(true);
+                mainPanel.SetVisible(false);
+                break;
+            // case GameEventType.GameMainMenu:
+            //     mainPanel.SetVisible(false);
+            //     break;
+        }
+    }
+
+    public void OnEvent(AuthenticationEvent e)
+    {
+        switch (e.EventType)
+        {
+            case AuthenticationEventType.LoginSuccessful:
+                NotificationEvent.Trigger("Authentication", "Welcome back! " + e.User.DisplayName);
+                authenPanel.SetVisible(false);
+                mainPanel.SetVisible(true);
+                break;
+        }
+    }
+
+    private void OnEnable()
+    {
+        this.StartListening<NavigationEvent>();
+        this.StartListening<GameEvent>();
+        this.StartListening<AuthenticationEvent>();
+    }
+
+    private void OnDisable()
+    {
+        this.StopListening<NavigationEvent>();
+        this.StopListening<GameEvent>();
+        this.StopListening<AuthenticationEvent>();
     }
 }

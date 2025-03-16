@@ -20,7 +20,6 @@ public class GUIManagerOnlineMatch : SerializedSingleton<GUIManagerOnlineMatch>,
     [SerializeField] private AudioSettingsPanel audioSettingsPanel;
     
     
-    
     private void Start()
     {
         SetVisibleGameTimerText(false);

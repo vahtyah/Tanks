@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "360247574609",
+    "firebase_url": "https://tanks-c93ec-default-rtdb.firebaseio.com",
+    "project_id": "tanks-c93ec",
+    "storage_bucket": "tanks-c93ec.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360247574609:android:f03e48de19a9027ac77870",
+        "android_client_info": {
+          "package_name": "com.tanks.db"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360247574609-t1v79k2e849jiovhpb64629rtk3lcu02.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtqtPpxeOzZ-msdfVIkUVKujm4Rpej9h0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360247574609-t1v79k2e849jiovhpb64629rtk3lcu02.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

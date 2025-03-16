@@ -78,15 +78,17 @@ public class GUIManagerBotMatch : Singleton<GUIManagerBotMatch>, IEventListener<
     
     private int CalculateRankingInTheScoreboard(int score)
     {
-        var scoreboards = DatabaseManager.Instance.users;
-        for (int i = 0; i < scoreboards.Count; i++)
-        {
-            if (scoreboards[i].score < score)
-            {
-                return i + 1;
-            }
-        }
-        return scoreboards.Count;
+        // var scoreboards = DatabaseManager.Instance.users;
+        // for (int i = 0; i < scoreboards.Count; i++)
+        // {
+        //     if (scoreboards[i].score < score)
+        //     {
+        //         return i + 1;
+        //     }
+        // }
+        // return scoreboards.Count;
+
+        return 1;
     }
 
     private void SetUserName(string inputFieldText)

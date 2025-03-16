@@ -7,7 +7,7 @@ using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Random = UnityEngine.Random;
 
-public class PunManager : SingletonPunCallbacks<PunManager>
+public class PunManager : SingletonPunCallbacks<PunManager>, IEventListener<AuthenticationEvent>
 {
     private const string gameVersion = "1";
     private GUIMainMenuManager GUI;
@@ -22,13 +22,8 @@ public class PunManager : SingletonPunCallbacks<PunManager>
     private void Start()
     {
         GUI = GUIMainMenuManager.Instance;
-
         PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.NickName = "Player_" + Random.Range(0, 1000);
-        GUI.SetPlayerName(PhotonNetwork.NickName);
-        GUI.RegisterPlayerNameInputListener((value) => { PhotonNetwork.NickName = value; });
-
-        OnLoginButtonClicked();
+        Connect();
     }
 
     private void Update()
@@ -36,14 +31,17 @@ public class PunManager : SingletonPunCallbacks<PunManager>
         GUI.SetLoadingText(PhotonNetwork.NetworkClientState.ToString());
     }
 
-    private void OnLoginButtonClicked()
+    private void Connect()
     {
         StartCoroutine(Reconnection());
     }
 
     IEnumerator Reconnection()
     {
-        while (true)
+        int maxAttempts = 10;
+        int attempts = 0;
+
+        while (attempts < maxAttempts)
         {
             yield return new WaitForSeconds(2f);
 
@@ -51,7 +49,18 @@ public class PunManager : SingletonPunCallbacks<PunManager>
             {
                 PhotonNetwork.ConnectUsingSettings();
                 PhotonNetwork.GameVersion = gameVersion;
+                attempts++;
             }
+            else if (PhotonNetwork.IsConnected)
+            {
+                // Successfully connected, break the loop
+                break;
+            }
+        }
+
+        if (attempts >= maxAttempts && !PhotonNetwork.IsConnected)
+        {
+            Debug.LogWarning("Failed to connect to Photon after multiple attempts");
         }
     }
 
@@ -153,18 +162,20 @@ public class PunManager : SingletonPunCallbacks<PunManager>
 
     private void JoinMatchGame()
     {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers && IsInMatchMakingRoom)
+        if (PhotonNetwork.IsMasterClient &&
+            PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers && IsInMatchMakingRoom)
         {
             StartCoroutine(DelayedJoinMatchGame());
         }
     }
+
     //TODO: Need some cleaner way to do
     IEnumerator DelayedJoinMatchGame()
     {
         var players = PhotonNetwork.CurrentRoom.Players;
         while (true)
         {
-            if(PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers) yield return null;
+            if (PhotonNetwork.CurrentRoom.PlayerCount != PhotonNetwork.CurrentRoom.MaxPlayers) yield return null;
             var allPlayersReady = true;
             foreach (var player in players)
             {
@@ -173,16 +184,17 @@ public class PunManager : SingletonPunCallbacks<PunManager>
                     allPlayersReady = false;
                 }
             }
-            if(allPlayersReady)
+
+            if (allPlayersReady)
             {
                 JoinGame();
                 yield return null;
             }
-            
+
             yield return new WaitForSeconds(.5f);
         }
     }
-    
+
     public void CreateCustomRoom(string roomName, int maxPlayers, int teamSize, GameMode gameMode)
     {
         if (!PhotonNetwork.IsConnectedAndReady) return;
@@ -219,11 +231,11 @@ public class PunManager : SingletonPunCallbacks<PunManager>
     private bool CheckAllPlayersReady()
     {
         if (!PhotonNetwork.IsMasterClient) return false;
-        if (PhotonNetwork.PlayerList.Length < 2) return false;
+        // if (PhotonNetwork.PlayerList.Length < 2) return false;
 
-        foreach (var player in PhotonNetwork.PlayerList)
+        foreach (var player in PhotonNetwork.CurrentRoom.Players)
         {
-            if (!player.IsReadyInLobby())
+            if (!player.Value.IsReadyInLobby())
                 return false;
         }
 
@@ -236,16 +248,16 @@ public class PunManager : SingletonPunCallbacks<PunManager>
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                foreach (var player in PhotonNetwork.PlayerList)
+                foreach (var player in PhotonNetwork.CurrentRoom.Players)
                 {
-                    player.SetReadyInLobby(false);
+                    player.Value.SetReadyInLobby(false);
                 }
             }
 
             JoinGame();
         }
     }
-    
+
     private static void JoinGame()
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -258,4 +270,30 @@ public class PunManager : SingletonPunCallbacks<PunManager>
     }
 
     #endregion
+
+    public void OnEvent(AuthenticationEvent e)
+    {
+        switch (e.EventType)
+        {
+            case AuthenticationEventType.LoginSuccessful:
+                PhotonNetwork.NickName = e.User.DisplayName;
+                GUI.SetPlayerName(PhotonNetwork.NickName);
+                break;
+            case AuthenticationEventType.LogoutSuccessful:
+                PhotonNetwork.Disconnect();
+                break;
+        }
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        this.StartListening();
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        this.StopListening();
+    }
 }

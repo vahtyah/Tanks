@@ -7,6 +7,7 @@ public class ExitWindow : MonoBehaviour
     [SerializeField] private Button openPanelButton;
     
     [SerializeField] private Button cancelButton;
+    [SerializeField] private Button logoutButton;
     [SerializeField] private Button confirmButton;
     
     private Animator anim;
@@ -17,6 +18,15 @@ public class ExitWindow : MonoBehaviour
         cancelButton.onClick.AddListener(OnCancelButtonClick);
         confirmButton.onClick.AddListener(OnConfirmButtonClick);
         openPanelButton.onClick.AddListener(OnOpenPanelButtonClick);
+        logoutButton.onClick.AddListener(OnLogoutButtonClick);
+    }
+
+    private void OnLogoutButtonClick()
+    {
+        anim.Play("Out");
+        StartCoroutine(DisableWindow());
+        PlayerPrefs.SetInt(GlobalString.REMEMBER_ME, 0);
+        GameEvent.Trigger(GameEventType.GameAuthentication);
     }
 
     private void OnOpenPanelButtonClick()

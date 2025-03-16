@@ -14,4 +14,7 @@ public class GlobalString
     public const string PLAYER_SCORE = "PlayerScore";
     public const string TEAM = "Team";
     public const string TEAM_SIZE = "TeamCount";
+    
+    
+    public const string REMEMBER_ME = "RememberMe";
 }

@@ -89,4 +89,17 @@ public class MainPanelManager : MonoBehaviour
     {
         return currentPanel;
     }
+    
+    public void SetVisible(bool isVisible)
+    {
+        gameObject.SetActive(isVisible);
+        // if (isVisible)
+        // {
+        //     ActivateNewPanel(defaultPanelIndex);
+        // }
+        // else
+        // {
+        //     DeactivateCurrentPanel(currentPanelIndex);
+        // }
+    }
 }

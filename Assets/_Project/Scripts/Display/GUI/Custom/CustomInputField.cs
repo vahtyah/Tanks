@@ -5,8 +5,9 @@ using UnityEngine;
 public class CustomInputField : MonoBehaviour
 {
     [SerializeField] private string Name;
-    [SerializeField] private TextMeshProUGUI placeholder;
+    [SerializeField] private TextMeshProUGUI placeholderText;
     
+    private PlaceHolder placeholder;
     private TMP_InputField inputField;
     private Animator anim;
     
@@ -17,7 +18,7 @@ public class CustomInputField : MonoBehaviour
     {
         inputField = GetComponent<TMP_InputField>();
         anim = GetComponent<Animator>();
-        
+        placeholder = GetComponentInChildren<PlaceHolder>();
         inputField.onSelect.AddListener(OnSelect);
         inputField.onDeselect.AddListener(OnDeselect);
     }
@@ -30,12 +31,13 @@ public class CustomInputField : MonoBehaviour
 
     private void OnSelect(string arg0)
     {
+        if (inputField.text.Length != 0) return;
         anim.Play(inAim);
     }
 
     private void OnValidate()
     {
-        placeholder.text = Name;
+        placeholderText.SetText(Name);
         gameObject.name = Name + " Input Field";
     }
 
@@ -48,5 +50,10 @@ public class CustomInputField : MonoBehaviour
             if(inputField.text.Length > 0)
                 anim.Play(inAim);
         }
+    }
+    
+    public void Error()
+    {
+        placeholder?.Error();
     }
 }

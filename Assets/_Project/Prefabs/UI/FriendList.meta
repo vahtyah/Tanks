@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/_Project/Prefabs/UI/FriendList.meta
 guid: 7759c63d1cd4f914dae4c47c42f005c4
+========
+guid: 689e5e1e426661e468de2bb813e6cc91
+>>>>>>>> Stashed changes:Assets/_Project/Scenes/Game Modes/PvE.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

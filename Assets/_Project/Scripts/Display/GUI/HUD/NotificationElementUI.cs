@@ -44,12 +44,12 @@ public class NotificationElementUI : MonoBehaviour
         victimNameText.text = victimName;
         anim.Play(notiInRight);
 
-        Invoke(nameof(DisableNotification), 3f);
+        Invoke(nameof(HideNotification), 3f);
     }
 
-    public void DisableNotification()
+    public void HideNotification()
     {
-        CancelInvoke(nameof(DisableNotification));
+        CancelInvoke(nameof(HideNotification));
         if (gameObject.activeSelf)
             StartCoroutine(DestroyNotification());
     }
