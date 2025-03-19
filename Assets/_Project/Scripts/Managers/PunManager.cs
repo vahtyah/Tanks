@@ -23,7 +23,6 @@ public class PunManager : SingletonPunCallbacks<PunManager>, IEventListener<Auth
     {
         GUI = GUIMainMenuManager.Instance;
         PhotonNetwork.AutomaticallySyncScene = true;
-        Connect();
     }
 
     private void Update()
@@ -278,6 +277,13 @@ public class PunManager : SingletonPunCallbacks<PunManager>, IEventListener<Auth
             case AuthenticationEventType.LoginSuccessful:
                 PhotonNetwork.NickName = e.User.DisplayName;
                 GUI.SetPlayerName(PhotonNetwork.NickName);
+                var authValues = new AuthenticationValues
+                {
+                    UserId = e.User.UserId,
+                };
+                PhotonNetwork.AuthValues = authValues;
+                Debug.Log("Check ID " + PhotonNetwork.AuthValues.UserId);
+                Connect();
                 break;
             case AuthenticationEventType.LogoutSuccessful:
                 PhotonNetwork.Disconnect();

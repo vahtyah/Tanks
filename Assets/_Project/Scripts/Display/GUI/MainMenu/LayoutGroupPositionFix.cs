@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 [ExecuteInEditMode]
 [DisallowMultipleComponent]
-[AddComponentMenu("Modern UI Pack/Layout/Layout Group Fix")]
 public class LayoutGroupPositionFix : MonoBehaviour
 {
     [SerializeField] private bool fixOnEnable = true;

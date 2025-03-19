@@ -9,13 +9,7 @@ public class GraphicSettingsStorage : SettingsStorage
     public override float GetFloat(string key, float defaultValue) => PlayerPrefs.GetFloat(key, defaultValue);
     public override int GetInt(string key, int defaultValue) => PlayerPrefs.GetInt(key, defaultValue);
     public override string GetString(string key, string defaultValue) => PlayerPrefs.GetString(key, defaultValue);
-
-    public override bool GetBool(string key, bool defaultValue)
-    {
-        int value = PlayerPrefs.GetInt(key, defaultValue ? 1 : 0);
-
-        return value != 0;
-    }
+    public override bool GetBool(string key, bool defaultValue) => PlayerPrefs.GetInt(key, defaultValue ? 1 : 0) != 0;
 
     private void OnDisable()
     {

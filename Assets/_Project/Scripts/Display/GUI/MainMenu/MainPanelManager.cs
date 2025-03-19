@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
+[Serializable]
 public class PanelItem
 {
     public GameObject panelObject;
@@ -31,6 +31,7 @@ public class MainPanelManager : MonoBehaviour
 
     private void Awake()
     {
+        SetVisible(false);
         foreach (var panel in panels)
         {
             panel.panelObject.SetActive(false);

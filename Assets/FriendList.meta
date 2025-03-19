@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/FriendList.meta
 guid: 3346aa16fa64da74fa83ad157b4742b8
 folderAsset: yes
+========
+guid: 1ba0f3b431eda7b4aafb21cb15872115
+>>>>>>>> Stashed changes:Assets/_Project/Scenes/Game Modes/PvE/Elimination.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

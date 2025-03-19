@@ -1,6 +1,7 @@
 ﻿public enum GameEventType
 {
     //Add state when user need to login or register
+    None,
     GameAuthentication,
     GameMainMenu,
     GamePreStart,

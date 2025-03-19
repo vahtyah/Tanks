@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Firebase.Auth;
 
 [Serializable]
@@ -10,8 +11,11 @@ public class UserData
 
     public long CreatedAt;
     public long LastLoginAt;
+    public Dictionary<string, PhotonFriendData> Friends = new();
 
-    public UserData() {}
+    public UserData()
+    {
+    }
 
     public UserData(FirebaseUser user)
     {

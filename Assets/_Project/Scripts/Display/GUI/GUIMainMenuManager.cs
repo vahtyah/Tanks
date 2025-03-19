@@ -6,9 +6,12 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
-public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<NavigationEvent>, IEventListener<GameEvent>, IEventListener<AuthenticationEvent>
+public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<NavigationEvent>,
+    IEventListener<GameEvent>, IEventListener<AuthenticationEvent>
 {
-    [TabGroup("Authentication")] [SerializeField] private AuthenPanel authenPanel;
+    [TabGroup("Authentication")] [SerializeField]
+    private AuthenPanel authenPanel;
+
     [TabGroup("Loading")] [SerializeField] private GameObject loadingPanel;
     [TabGroup("Loading")] [SerializeField] private TextMeshProUGUI loadingText;
 
@@ -20,29 +23,22 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
 
     [TabGroup("Main Panel"), SerializeField]
     private UIHomeController homeUI;
-    
+
     [TabGroup("Main Panel"), SerializeField]
     private GraphicSettingsPanel graphicSettingsUI;
+
     [TabGroup("Main Panel"), SerializeField]
     private AudioSettingsPanel audioSettingsUI;
 
     [TabGroup("Player")] [SerializeField] private TextMeshProUGUI playerNameText;
     [TabGroup("Window")] [SerializeField] private GameObject gameFullWindow;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        SetLoadingPanelVisibility(true);
-        mainPanel.SetVisible(false);
-    }
-
     #region Pun Callbacks
 
     public void OnJoinedLobby()
     {
         SetLoadingPanelVisibility(false);
-        // SetMainPanelVisibility(true);
-        GameEvent.Trigger(GameEventType.GameAuthentication);
+        mainPanel.SetVisible(true);
     }
 
     public void OnDisconnected(DisconnectCause cause)
@@ -163,6 +159,7 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
 
     public void OnEvent(GameEvent e)
     {
+        Debug.Log("GameEvent: " + e.EventType);
         switch (e.EventType)
         {
             case GameEventType.GameAuthentication:
@@ -182,23 +179,27 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
         {
             case AuthenticationEventType.LoginSuccessful:
                 NotificationEvent.Trigger("Authentication", "Welcome back! " + e.User.DisplayName);
+                SetLoadingPanelVisibility(true);
                 authenPanel.SetVisible(false);
-                mainPanel.SetVisible(true);
+                break;
+            case AuthenticationEventType.LogoutSuccessful:
+                NotificationEvent.Trigger("Authentication", "You have logged out successfully.");
+                GameEvent.Trigger(GameEventType.GameAuthentication);
                 break;
         }
     }
 
     private void OnEnable()
     {
+        this.StartListening<AuthenticationEvent>();
         this.StartListening<NavigationEvent>();
         this.StartListening<GameEvent>();
-        this.StartListening<AuthenticationEvent>();
     }
 
     private void OnDisable()
     {
+        this.StopListening<AuthenticationEvent>();
         this.StopListening<NavigationEvent>();
         this.StopListening<GameEvent>();
-        this.StopListening<AuthenticationEvent>();
     }
 }

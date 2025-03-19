@@ -26,7 +26,7 @@ public class ExitWindow : MonoBehaviour
         anim.Play("Out");
         StartCoroutine(DisableWindow());
         PlayerPrefs.SetInt(GlobalString.REMEMBER_ME, 0);
-        GameEvent.Trigger(GameEventType.GameAuthentication);
+        AuthenticationRequest.Trigger(AuthenticationRequestType.Logout);
     }
 
     private void OnOpenPanelButtonClick()
