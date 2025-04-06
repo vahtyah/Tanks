@@ -12,7 +12,26 @@ public class FriendsController : MonoBehaviourPunCallbacks, IEventListener<Authe
     [Range(2, 100)] public int MaxFriends = 50;
 
     [Log] private List<PhotonFriendData> friends = new();
-    
+    // private void Update()
+    // {
+    //     if (!PhotonNetwork.IsConnectedAndReady) return;
+    //
+    //     var bytesReceived = PhotonNetwork.NetworkingClient.LoadBalancingPeer.BytesIn;
+    //     var bytesSent = PhotonNetwork.NetworkingClient.LoadBalancingPeer.BytesOut;
+    //
+    //     // Calculate data transfer rate (bytes/sec)
+    //     float receiveRate = bytesReceived / Time.deltaTime;
+    //     float sendRate = bytesSent / Time.deltaTime;
+    //
+    //     // Log rates in KB/s for better readability
+    //     if (Debug.isDebugBuild)
+    //     {
+    //         Debug.Log($"Network stats - Receive: {receiveRate / 1024:F2} KB/s, Send: {sendRate / 1024:F2} KB/s");
+    //     }
+    //
+    //     // Reset counters after processing
+    //     PhotonNetwork.NetworkingClient.LoadBalancingPeer.TrafficStatsReset();
+    // }
 
     private void Initialize()
     {
@@ -28,7 +47,7 @@ public class FriendsController : MonoBehaviourPunCallbacks, IEventListener<Authe
     {
         view.CleanUp();
         friends.Clear();
-        
+
         UnsubscribeFromFriendService();
     }
 
@@ -50,12 +69,12 @@ public class FriendsController : MonoBehaviourPunCallbacks, IEventListener<Authe
     private void UpdateFriendsList(List<FriendData> updatedFriends)
     {
         friends.Clear();
-        if(updatedFriends.Count == 0)
+        if (updatedFriends.Count == 0)
         {
             UpdateViewWithFriendsList();
             return;
         }
-        
+
         foreach (var friend in updatedFriends)
         {
             friends.Add(new PhotonFriendData
@@ -64,6 +83,7 @@ public class FriendsController : MonoBehaviourPunCallbacks, IEventListener<Authe
                 DisplayName = friend.DisplayName,
             });
         }
+
         FindFriends();
     }
 
@@ -105,6 +125,7 @@ public class FriendsController : MonoBehaviourPunCallbacks, IEventListener<Authe
             NotificationEvent.Trigger("Friends", "You can't add yourself as a friend.");
             return;
         }
+
         view.SetLoadingMessage("Adding friend...");
         DatabaseManager.Instance.FriendService.SendFriendRequest(friendName, (success, errorMessage) =>
         {

@@ -71,6 +71,7 @@ MonoBehaviour:
   - RPC_ResetHealth
   - RPC_Feedback
   - EquipWeapon
+  - FireWeapon
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

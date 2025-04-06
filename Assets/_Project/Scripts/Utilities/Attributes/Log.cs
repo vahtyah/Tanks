@@ -1,5 +1,6 @@
 ﻿using System;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 
 [IncludeMyAttributes]
@@ -8,4 +9,12 @@ using Sirenix.OdinInspector;
 [TitleGroup("Debugs", order: 1, alignment: TitleAlignments.Split)]
 public class Log : Attribute
 {
+}
+
+[IncludeMyAttributes]
+[BoxGroup("Settings")]
+[SerializeField]
+public class Settings : Attribute
+{
+
 }
