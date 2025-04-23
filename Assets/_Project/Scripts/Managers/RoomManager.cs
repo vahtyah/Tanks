@@ -131,22 +131,12 @@ public class Team
 
 public class RoomManager : PersistentSingletonPunCallbacks<RoomManager>
 {
-    public Info roomNameInfo;
-    public Info teamNameInfo;
     [Log] public Dictionary<Character, TeamType> TeamCharacters = new();
     [Log] public Dictionary<TeamType, Team> Teams { get; private set; } = new();
 
-    private void Start()
-    {
-        roomNameInfo = Info.Register("RoomManager", "Room");
-        teamNameInfo = Info.Register("RoomManager", "Team");
-    }
-
     private void Update()
     {
-        roomNameInfo.SetValue(PhotonNetwork.CurrentRoom?.Name);
         var team = PhotonNetwork.LocalPlayer.CustomProperties.GetValueOrDefault(GlobalString.TEAM, "None");
-        teamNameInfo.SetValue(team.ToString());
     }
 
     public void CacheTeam(Character playerCharacter, TeamType teamType)

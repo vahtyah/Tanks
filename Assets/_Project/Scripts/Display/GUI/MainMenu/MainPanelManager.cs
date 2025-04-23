@@ -16,6 +16,8 @@ public class MainPanelManager : MonoBehaviour
 {
     [SerializeField] private List<PanelItem> panels = new();
     [SerializeField, Range(0, 3)] private int defaultPanelIndex = 0;
+    [SerializeField] private bool isDefaultPanelActive = false;
+    
     
     private PanelItem currentPanel;
     private int currentPanelIndex;
@@ -31,7 +33,7 @@ public class MainPanelManager : MonoBehaviour
 
     private void Awake()
     {
-        SetVisible(false);
+        SetVisible(isDefaultPanelActive);
         foreach (var panel in panels)
         {
             panel.panelObject.SetActive(false);

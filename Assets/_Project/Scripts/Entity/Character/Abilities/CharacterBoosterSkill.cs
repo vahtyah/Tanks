@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class CharacterBoosterSkill : CharacterAbility
 {
+    
     [SerializeField] private float multiplierSpeed = 0.5f;
     [SerializeField] private MMFeedbacks skillFeedbacks;
     [SerializeField] private float skillDuration = 3f;
     [SerializeField] private float skillCooldown = 2f;
+    [SerializeField] private Sprite icon;
     
     private Timer skillTimer;
     private Timer cooldownTimer;
@@ -38,7 +40,7 @@ public class CharacterBoosterSkill : CharacterAbility
         cooldownTimer = Timer.Register(skillCooldown)
             .AutoDestroyWhenOwnerDisappear(this);
         
-        SkillEvent.TriggerEvent(WeaponState.Initializing, skillCooldown);
+        SkillEvent.TriggerEvent(WeaponState.Initializing, skillCooldown, icon);
         PhotonView = GetComponent<PhotonView>();
     }
 

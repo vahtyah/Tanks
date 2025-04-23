@@ -20,8 +20,12 @@ using System;
             UI,
             Both
         }
+
+        [SerializeField] private bool isDisabled = false;
+        
     
-        [Header("Monitor Settings")] [SerializeField]
+        [Header("Monitor Settings")] 
+        [SerializeField]
         private MonitorMode monitorMode = MonitorMode.Debug;
     
         [SerializeField] private float updateInterval = 1f;
@@ -62,7 +66,7 @@ using System;
     
         private void Update()
         {
-            if (!PhotonNetwork.IsConnectedAndReady) return;
+            if (!PhotonNetwork.IsConnectedAndReady || isDisabled) return;
     
             _timer += Time.deltaTime;
             if (_timer < updateInterval) return;

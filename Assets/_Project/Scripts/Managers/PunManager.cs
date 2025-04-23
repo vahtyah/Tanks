@@ -73,6 +73,8 @@ public class PunManager : SingletonPunCallbacks<PunManager>, IEventListener<Auth
     public override void OnJoinedLobby()
     {
         GUI.OnJoinedLobby();
+        Debug.Log("Joined Lobby");
+        // PhotonNetwork.LoadLevel(Scene.SceneName.PvE.ToString());
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)

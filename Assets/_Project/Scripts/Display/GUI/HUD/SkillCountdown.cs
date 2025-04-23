@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class SkillCountdown : MonoBehaviour, IEventListener<SkillEvent>
 {
+    [SerializeField] private Image backgroundImage;
     [SerializeField] private Image countdownImage;
     [SerializeField] private TextMeshProUGUI countdownText;
     [SerializeField] private TextMeshProUGUI amountLeftText;
@@ -17,8 +18,9 @@ public class SkillCountdown : MonoBehaviour, IEventListener<SkillEvent>
         amountLeftText.gameObject.SetActive(false);
     }
 
-    public void Initialize(float duration)
+    public void Initialize(float duration, Sprite icon)
     {
+        backgroundImage.sprite = icon;
         countdownTimer = Timer.Register(duration)
             .OnStart(() =>
             {
@@ -57,7 +59,7 @@ public class SkillCountdown : MonoBehaviour, IEventListener<SkillEvent>
         switch (e.WeaponState)
         {
             case WeaponState.Initializing:
-                Initialize(e.Param);
+                Initialize(e.Param, e.Icon);
                 break;
 
             case WeaponState.Firing:

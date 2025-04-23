@@ -33,7 +33,7 @@ public class CharacterFlagCapture : CharacterAbility, IEventListener<CharacterEv
         base.PreInitialize();
         flagDisplay = Character.Model.FlagDisplay;
         flagRenderer = Character.Model.FlagRenderer;
-        if (PhotonNetwork.CurrentRoom.GetGameMode() != GameMode.CaptureTheFlag)
+        if (PhotonNetwork.CurrentRoom == null || PhotonNetwork.CurrentRoom.GetGameMode() != GameMode.CaptureTheFlag)
             Destroy(this);
     }
 

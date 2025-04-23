@@ -7,6 +7,12 @@ public class DeathMap : Map
 
     public override Vector3 GetRandomSpawnPosition(Team team)
     {
+        var spawnArea = SpawnAreaManager.GetSpawnAreaByTeam(team);
+        return spawnArea.GetSpawnPoint();
+    }
+
+    public override Vector3 GetRandomSpawnPosition()
+    {
         var spawnArea = SpawnAreaManager.GetRandomSpawnArea();
         return spawnArea.GetSpawnPoint();
     }

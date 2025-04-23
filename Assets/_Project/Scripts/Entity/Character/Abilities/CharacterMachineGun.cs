@@ -7,6 +7,8 @@ public class CharacterMachineGun : CharacterAbility
     private Transform projectileSpawnPoint;
     [SerializeField] private Weapon weapon;
     [SerializeField] private float multiplierSpeed = 0.5f;
+    [SerializeField] private Sprite icon;
+    
 
     private CharacterMovement movement;
     private float multiplierSpeedStorage;
@@ -25,7 +27,7 @@ public class CharacterMachineGun : CharacterAbility
             // weapon.magazineReloadTimer.OnStart(()=> weaponState.ChangeState(WeaponState.Reloading, weapon.MagazineReloadDuration))
             //     .OnTimeRemaining((remaining)=> weaponState.ChangeState(WeaponState.Reloading, remaining));
 
-            SkillEvent.TriggerEvent(WeaponState.Initializing, weapon.MagazineReloadDuration);
+            SkillEvent.TriggerEvent(WeaponState.Initializing, weapon.MagazineReloadDuration, icon);
 
             weapon.weaponCooldownTimer.OnStart(() =>
                 SkillEvent.TriggerEvent(WeaponState.Firing, weapon.RemainingProjectiles));

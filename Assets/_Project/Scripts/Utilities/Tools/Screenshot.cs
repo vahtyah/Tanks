@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Screenshot : PersistentSingleton<Screenshot>
@@ -7,6 +8,15 @@ public class Screenshot : PersistentSingleton<Screenshot>
     {
         if (Input.GetKeyDown(KeyCode.F12))
         {
+            TakeScreenshot();
+        }
+    }
+    
+    IEnumerator WaitForScreenshot()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForEndOfFrame();
             TakeScreenshot();
         }
     }

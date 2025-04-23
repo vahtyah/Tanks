@@ -8,10 +8,10 @@ public class CharacterMovement : CharacterAbility, IPunObservable
     [SerializeField, BoxGroup("Settings")] private float moveSpeed = 150f;
     [Log] private float speedMultiplier = 1f;
     public Vector3 MovementDirection { get; private set; }
-    
+
     private Vector3 syncedPosition;
     private Quaternion syncedRotation;
-    
+
     public float SpeedMultiplier
     {
         get => speedMultiplier;
@@ -33,10 +33,14 @@ public class CharacterMovement : CharacterAbility, IPunObservable
     protected override void HandleInput()
     {
         base.HandleInput();
-        MovementDirection = Controller.GetDirection().With(y: 0).normalized * (moveSpeed * Time.fixedDeltaTime * SpeedMultiplier);
+        MovementDirection = Controller.GetDirection().With(y: 0).normalized *
+                            (moveSpeed * Time.fixedDeltaTime * SpeedMultiplier);
     }
 
-    private void ApplyMovement() { Controller.Move(MovementDirection); }
+    private void ApplyMovement()
+    {
+        Controller.Move(MovementDirection);
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -47,10 +51,10 @@ public class CharacterMovement : CharacterAbility, IPunObservable
         }
         else
         {
-            syncedPosition = (Vector3) stream.ReceiveNext();
-            Controller.GetRigidbody().velocity = (Vector3) stream.ReceiveNext();
-            
-            float lag = Mathf.Abs((float) (PhotonNetwork.Time - info.SentServerTime));
+            syncedPosition = (Vector3)stream.ReceiveNext();
+            Controller.GetRigidbody().velocity = (Vector3)stream.ReceiveNext();
+
+            float lag = Mathf.Abs((float)(PhotonNetwork.Time - info.SentServerTime));
             syncedPosition += Controller.GetRigidbody().velocity * lag;
         }
     }
@@ -62,7 +66,7 @@ public class CharacterMovement : CharacterAbility, IPunObservable
 
     private void FixedUpdate()
     {
-        if(PhotonView.IsMine) return;
+        if (PhotonView.IsMine) return;
         FixedLagCompensation();
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 public class PlayerCharacter : Character, IController
 {
@@ -15,7 +16,7 @@ public class PlayerCharacter : Character, IController
     
     private void Update()
     {
-        if (PhotonView.IsMine)
+        if (PhotonView.IsMine || PhotonNetwork.OfflineMode)
         {
             ProcessAbilities();
         }
@@ -23,7 +24,7 @@ public class PlayerCharacter : Character, IController
 
     private void FixedUpdate()
     {
-        if (PhotonView.IsMine)
+        if (PhotonView.IsMine || PhotonNetwork.OfflineMode)
         {
             FixedProcessAbilities();
         }

@@ -13,6 +13,7 @@ public abstract class Map : MonoBehaviour
     }
 
     public abstract Vector3 GetRandomSpawnPosition(Team team);
+    public abstract Vector3 GetRandomSpawnPosition();
 
     public abstract Vector3 GetSpawnPositionByIndex(Team team, int index);
 

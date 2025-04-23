@@ -11,6 +11,7 @@ public class Scene
         CaptureTheFlag,
         Deathmatch,
         TeamDeathmatch,
+        PvE,
     }
     public static void Load(SceneName sceneToLoad)
     {

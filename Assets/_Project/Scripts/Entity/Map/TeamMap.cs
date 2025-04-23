@@ -30,6 +30,12 @@ public class TeamMap : Map
         return spawnArea.GetSpawnPoint();
     }
 
+    public override Vector3 GetRandomSpawnPosition()
+    {
+        var spawnArea = SpawnAreaManager.GetRandomSpawnArea();
+        return spawnArea.GetSpawnPoint();
+    }
+
 
     public override Vector3 GetSpawnPositionByIndex(Team team, int index)
     {
