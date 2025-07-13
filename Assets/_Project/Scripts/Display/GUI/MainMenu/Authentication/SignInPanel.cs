@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +32,27 @@ public class SignInPanel : MonoBehaviour, IEventListener<AuthenticationEvent>
 
         AuthenticationRequest.Trigger(AuthenticationRequestType.Register, email, password, displayName);
     }
-    
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (displayNameInputField.IsFocused)
+            {
+                displayNameInputField.Deselect();
+                emailInputField.Select();
+            }
+            else if (emailInputField.IsFocused)
+            {
+                passwordInputField.Select();
+            }
+            else if (passwordInputField.IsFocused)
+            {
+                displayNameInputField.Select();
+            }
+        }
+    }
+
     public void SetVisible(bool visible)
     {
         gameObject.SetActive(visible);

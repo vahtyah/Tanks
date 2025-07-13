@@ -35,7 +35,7 @@ public class SkillCountdown : MonoBehaviour, IEventListener<SkillEvent>
             {
                 countdownImage.fillAmount = 0;
                 countdownText.gameObject.SetActive(false);
-            });
+            }).AutoDestroyWhenOwnerDisappear(this);
     }
 
     public void StartCountdown()

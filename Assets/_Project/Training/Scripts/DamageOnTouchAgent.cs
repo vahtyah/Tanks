@@ -25,7 +25,7 @@ public class DamageOnTouchAgent : DamageOnTouch
         }
         else
         {
-            projectileAgent.agent.AddReward(-.01f);
+            projectileAgent.agent.AddReward(-.00001f);
         }
         
         Pool.Despawn(gameObject);

@@ -5,47 +5,75 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b0203d08-a81d-41b3-8b35-e61e8df6617e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.VKR/.idea/indexLayout.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Training/Ver2/AgentCameraController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Training/Ver2/AgentCameraController.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Training/Ver2/CharacterNavMesh.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Training/Ver2/CharacterNavMesh.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.VKR/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.VKR/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ML-Agents/Timers/DeathmatchTraining_timers.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ML-Agents/Timers/DeathmatchTraining_timers.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ML-Agents/Timers/MainMenu_timers.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ML-Agents/Timers/MainMenu_timers.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Modern UI Pack/Prefabs/Button/Basic - Outline/White.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Modern UI Pack/Prefabs/Button/Basic - Outline/White.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SineVFX/ForceFieldEffects/Resources/Materials/ForceFieldBasicTriplanar03.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SineVFX/ForceFieldEffects/Resources/Materials/ForceFieldBasicTriplanar03.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SineVFX/ForceFieldEffects/Resources/Materials/ForceFieldBasicTriplanarMesh10.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SineVFX/ForceFieldEffects/Resources/Materials/ForceFieldBasicTriplanarMesh10.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SineVFX/ForceFieldEffects/Resources/Materials/ForceFieldBasicTriplanarMesh13.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SineVFX/ForceFieldEffects/Resources/Materials/ForceFieldBasicTriplanarMesh13.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SineVFX/ForceFieldEffects/Resources/Materials/ForceFieldDistortion03.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SineVFX/ForceFieldEffects/Resources/Materials/ForceFieldDistortion03.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/SineVFX/ForceFieldEffects/Resources/Materials/ForceFieldDistortionMesh10.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SineVFX/ForceFieldEffects/Resources/Materials/ForceFieldDistortionMesh10.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/BotMatch/LevelManagerBotMatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/BotMatch/LevelManagerBotMatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TopDownEngine/Demos/Tanks/Materials/TanksGroundMaterial.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TopDownEngine/Demos/Tanks/Materials/TanksGroundMaterial.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Animations/UI/MainMenu/FindMatchSupport/Default.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Animations/UI/MainMenu/FindMatchSupport/Default.anim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Animations/UI/MainMenu/FindMatchSupport/In.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Animations/UI/MainMenu/FindMatchSupport/In.anim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Materials/Ground.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Materials/Ground.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Materials/New Material 3.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Materials/New Material 3.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Materials/SlugTank/Chasis.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Materials/SlugTank/Chasis.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Materials/SlugTank/Gear.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Materials/SlugTank/Gear.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Materials/SlugTank/Threads.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Materials/SlugTank/Threads.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Prefabs/UI/PlayerHUD.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Prefabs/UI/PlayerHUD.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Prefabs/UI/UI/Settings.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Prefabs/UI/UI/Settings.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Resources/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Resources/Player.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Resources/Bullet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Resources/Bullet.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Resources/SlugPlayer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Resources/SlugPlayer.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Resources/TankDisplay/SlugTankDisplay.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Resources/TankDisplay/SlugTankDisplay.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scenes/Game Modes/CaptureTheFlag.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scenes/Game Modes/CaptureTheFlag.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Scenes/Game Modes/Deathmatch.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scenes/Game Modes/Deathmatch.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Scenes/Main Menu/MainMenu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scenes/Main Menu/MainMenu.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMap/Map1.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMap/Map1.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMode/CaptureTheFlag.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMode/CaptureTheFlag.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMode/DeathMatch.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMode/DeathMatch.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMode/TeamDeathMatch.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMode/TeamDeathMatch.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMap/Default Map.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMap/Default Map.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMap/Map2.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/ScriptTableObjects/GameMap/Map2.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/Button/StandardButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/Button/StandardButton.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/Custom/CustomInputField.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/Custom/CustomInputField.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/GUIMainMenuManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/GUIMainMenuManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/HUD/SkillCountdown.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/HUD/SkillCountdown.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/MainPanelManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/MainPanelManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Abilities/CharacterBoosterSkill.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Abilities/CharacterBoosterSkill.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Abilities/CharacterFlagCapture.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Abilities/CharacterFlagCapture.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Abilities/CharacterMachineGun.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Abilities/CharacterMachineGun.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Abilities/CharacterMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Abilities/CharacterMovement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Authentication/LoginPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Authentication/LoginPanel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Authentication/SignInPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Authentication/SignInPanel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Home/FindMatchUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Home/FindMatchUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Multiplayer/BoardTeamPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Multiplayer/BoardTeamPanel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Multiplayer/TeamBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Multiplayer/TeamBoard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Multiplayer/UIMultiplayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Multiplayer/UIMultiplayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/Settings/GlobalSettings/ResolutionSetting.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/Settings/GlobalSettings/ResolutionSetting.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/Settings/UI/GraphicSettingsPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/Settings/UI/GraphicSettingsPanel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Component/Health/ChaHealth.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Component/Health/ChaHealth.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/PlayerCharacter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/PlayerCharacter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Map/DeathMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Map/DeathMap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Map/Map.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Map/Map.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Map/TeamMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Map/TeamMap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Projectile/DamageOnTouch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Projectile/DamageOnTouch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Managers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Managers/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Managers/LevelManagerOnlineMatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Managers/LevelManagerOnlineMatch.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Managers/PunManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Managers/PunManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Managers/RoomManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Managers/RoomManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Systems/EventSystem/SkillEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Systems/EventSystem/SkillEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Systems/PhotonNetworkMonitor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Systems/PhotonNetworkMonitor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Utilities/Tools/Scene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Utilities/Tools/Scene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Utilities/Tools/Screenshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Utilities/Tools/Screenshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/vFolders/vFolders Data.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/vFolders/vFolders Data.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Systems/FireBaseSystem/AuthenticationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Systems/FireBaseSystem/AuthenticationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Systems/FireBaseSystem/DatabaseManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Systems/FireBaseSystem/DatabaseManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Training/Prefabs/BulletTraining.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Training/Prefabs/BulletTraining.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Training/Prefabs/SlugPlayer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Training/Prefabs/SlugPlayer.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Training/Prefabs/Training.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Training/Prefabs/Training.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Training/Scenes/DeathmatchTraining.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Training/Scenes/DeathmatchTraining.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Training/Scripts/CharacterAgent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Training/Scripts/CharacterAgent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Training/Scripts/DamageOnTouchAgent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Training/Scripts/DamageOnTouchAgent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Training/Scripts/TrainingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Training/Scripts/TrainingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Training/Scripts/TrainingController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Training/Scripts/TrainingController.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Training/Tank50.onnx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Training/Tank50.onnx.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/vHierarchy/vHierarchy Palette.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/vHierarchy/vHierarchy Palette.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/NavMeshAreas.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/NavMeshAreas.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,31 +84,21 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2e82547fb1f94317b17a4bfe50ae54fc3a800/f3/945cf1c3/PhotonPeer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2e82547fb1f94317b17a4bfe50ae54fc3a800/fe/550bc9aa/TrafficStats.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3b24cc7fa9794ed8ab04312c53e6dedd172c00/1f/ecbb8d3f/Transform.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3b24cc7fa9794ed8ab04312c53e6dedd172c00/86/d5311b09/Debug.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3b24cc7fa9794ed8ab04312c53e6dedd172c00/87/2da9620c/Object.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3b24cc7fa9794ed8ab04312c53e6dedd172c00/95/ab0d6070/GameObject.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/5c/d612a9e9/Void.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/5f/d74e6bf8/String.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/82/f4904a64/Int32.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6228a7abb9784984a640289c7bb7f56a12200/f0/9fcfde7f/DatabaseReference.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7bf3428d86bb4085b2dd2c04e6e199027800/29/b41ff921/UnityLoggingService.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7bf3428d86bb4085b2dd2c04e6e199027800/52/fba133be/UnityPlatformServices.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7bf3428d86bb4085b2dd2c04e6e199027800/8c/833a970c/UnitySynchronizationContext.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7bf3428d86bb4085b2dd2c04e6e199027800/b7/bf5e13ae/Dispatcher.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b4652b9a9a9a4fefbb528da1d02434f619c00/56/841fa338/IncludeMyAttributesAttribute.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b4652b9a9a9a4fefbb528da1d02434f619c00/de/42fd435e/BoxGroupAttribute.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e53ac1e3573b4fd5a04cd57e5e6569c015e00/7a/1209b0ff/FirebaseUser.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e53ac1e3573b4fd5a04cd57e5e6569c015e00/c7/0e79cf6b/UserProfile.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e53ac1e3573b4fd5a04cd57e5e6569c015e00/ee/e67a7372/FirebaseAuth.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3b24cc7fa9794ed8ab04312c53e6dedd172c00/c9/96ad5986/Object.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/87f070167a7643108cc61ef0492f958c1fe00/2d/84953b37/Physics.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/87f070167a7643108cc61ef0492f958c1fe00/a0/2bc277ad/PhysicsScene.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e53ac1e3573b4fd5a04cd57e5e6569c015e00/ad/7a60e870/FirebaseUser.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d44b17e136d09081da1e8fd0e8c83fde60e11818b9f2442d7ed8cb733fae895e/System.Collections.Generic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Display/GUI/MainMenu/Multiplayer/BoardTeamPanel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Abilities/CharacterFlagCapture.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Character/Component/Health/ChaHealth.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Systems/FireBaseSystem/AuthenticationService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Systems/FireBaseSystem/DatabaseManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Systems/FireBaseSystem/FriendData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Systems/FireBaseSystem/FriendService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Systems/FireBaseSystem/UserData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Systems/FireBaseSystem/UserDataService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Project/Training/Ver2/AgentCameraController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ml-agents@2.0.1/Runtime/Academy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ml-agents@2.0.1/Runtime/Agent.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ml-agents@2.0.1/Runtime/SimpleMultiAgentGroup.cs" root0="SKIP_HIGHLIGHTING" />
@@ -102,19 +120,20 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;ShowUsagesActions.previewPropertyKey&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;PUN2&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CodeLensConfigurable&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RunManager" selected="Standalone Player.Start Unity">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../EnvironmentTanks/Tank.x86_64" />
+      <option name="EXE_PATH" value="$USER_HOME$/Downloads/TanksBuild\Tanks.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="D:\EnvironmentTanks" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -232,6 +251,27 @@
       <workItem from="1744373132144" duration="2370000" />
       <workItem from="1744396984411" duration="1508000" />
       <workItem from="1745048133074" duration="3020000" />
+      <workItem from="1745672672171" duration="3079000" />
+      <workItem from="1745690479595" duration="4888000" />
+      <workItem from="1745752689633" duration="9829000" />
+      <workItem from="1745826182104" duration="3231000" />
+      <workItem from="1745924829076" duration="3175000" />
+      <workItem from="1745955057595" duration="1139000" />
+      <workItem from="1746083321420" duration="14141000" />
+      <workItem from="1746113273325" duration="875000" />
+      <workItem from="1746188635757" duration="1146000" />
+      <workItem from="1746190203900" duration="2429000" />
+      <workItem from="1746192793965" duration="4368000" />
+      <workItem from="1746252575400" duration="2483000" />
+      <workItem from="1746266831570" duration="3481000" />
+      <workItem from="1747220114039" duration="306000" />
+      <workItem from="1747223106432" duration="3736000" />
+      <workItem from="1747391792644" duration="8785000" />
+      <workItem from="1747460699959" duration="2018000" />
+      <workItem from="1747723057463" duration="8373000" />
+      <workItem from="1748693354281" duration="2520000" />
+      <workItem from="1749404812858" duration="1735000" />
+      <workItem from="1749644377255" duration="41000" />
     </task>
     <servers />
   </component>

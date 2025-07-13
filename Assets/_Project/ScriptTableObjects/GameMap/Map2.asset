@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e62d86aa8a6495a8abfc36b189ea622, type: 3}
   m_Name: Map2
   m_EditorClassIdentifier: 
-  Name: Map 2
+  Name: Snowy Outpost
   Preview: {fileID: 7590535577056678407, guid: fe42c8b526e77e54ab91d0590272d9e8, type: 3}
-  Description: dcm
+  Description: Snow-covered outpost with limited visibility and plenty of cover.
   GameMap: 1

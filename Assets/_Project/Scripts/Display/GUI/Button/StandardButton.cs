@@ -17,14 +17,17 @@ public class StandardButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] private Image normalIcon;
     [SerializeField] private Image highlightedIcon;
     [SerializeField] private Image disabledIcon;
+    
+    [SerializeField] private Button button;
 
-    private void Start()
+    private void Awake()
     {
         Initialize();
     }
 
     private void Initialize()
     {
+        if(button == null) button = GetComponent<Button>();
         if (buttonAnimator == null) buttonAnimator = GetComponent<Animator>();
         normalText.text = text;
         highlightedText.text = text;
@@ -34,6 +37,22 @@ public class StandardButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         normalIcon.sprite = icon;
         highlightedIcon.sprite = icon;
         disabledIcon.sprite = icon;
+    }
+    
+    public void OnClick(Action action)
+    {
+        button.onClick.AddListener(() =>
+        {
+            action?.Invoke();
+        });
+    }
+    
+    public void ChangeText(string newText)
+    {
+        text = newText;
+        normalText.text = text;
+        highlightedText.text = text;
+        disabledText.text = text;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

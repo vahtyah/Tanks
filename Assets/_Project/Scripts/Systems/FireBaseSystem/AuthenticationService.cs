@@ -90,10 +90,11 @@ public class AuthenticationService
                         errorMessage: "Profile update failed.");
                     return;
                 }
+                Debug.Log($"User registered successfully: {email}");    
+                ResendVerificationEmail(user);
+                AuthenticationEvent.Trigger(AuthenticationEventType.RegisterSuccessful, user);
             });
             
-            Debug.Log($"User registered successfully: {email}");
-            AuthenticationEvent.Trigger(AuthenticationEventType.RegisterSuccessful, user);
         });
     }
 

@@ -18,6 +18,8 @@ public class PunManager : SingletonPunCallbacks<PunManager>, IEventListener<Auth
     GameMode gameMode;
     GameMap gameMap;
     public Action<int> onPlayersChanged;
+    
+    private bool hasWelcomeed = false;
 
     private void Start()
     {
@@ -265,9 +267,9 @@ public class PunManager : SingletonPunCallbacks<PunManager>, IEventListener<Auth
         PhotonNetwork.CurrentRoom.IsVisible = false;
         var gameMode = PhotonNetwork.CurrentRoom.GetGameMode();
         if (gameMode == GameMode.DeathMatch)
-            PhotonNetwork.LoadLevel(Scene.SceneName.Deathmatch.ToString());
+            PhotonNetwork.LoadLevel(nameof(Scene.SceneName.Deathmatch));
         else
-            PhotonNetwork.LoadLevel(Scene.SceneName.CaptureTheFlag.ToString());
+            PhotonNetwork.LoadLevel(nameof(Scene.SceneName.CaptureTheFlag));
     }
 
     #endregion
@@ -288,6 +290,7 @@ public class PunManager : SingletonPunCallbacks<PunManager>, IEventListener<Auth
                 Connect();
                 break;
             case AuthenticationEventType.LogoutSuccessful:
+                Debug.Log("Logout successful");
                 PhotonNetwork.Disconnect();
                 break;
         }

@@ -397,6 +397,7 @@ MonoBehaviour:
   normalIcon: {fileID: 1621892411604679977}
   highlightedIcon: {fileID: 4253277866505624125}
   disabledIcon: {fileID: 6581246114678478790}
+  button: {fileID: 6898431924157153398}
 --- !u!225 &7886724048064057501
 CanvasGroup:
   m_ObjectHideFlags: 0

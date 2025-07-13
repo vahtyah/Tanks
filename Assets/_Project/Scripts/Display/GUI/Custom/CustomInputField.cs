@@ -13,6 +13,19 @@ public class CustomInputField : MonoBehaviour
     
     private string inAim = "In";
     private string outAim = "Out";
+    
+    public bool IsFocused => inputField.isFocused;
+    public void Deselect()
+    {
+        inputField.DeactivateInputField();
+        inputField.OnDeselect(null);
+    }
+    
+    public void Select()
+    {
+        inputField.ActivateInputField();
+        inputField.OnSelect(null);
+    }
 
     private void Awake()
     {

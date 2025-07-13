@@ -10,6 +10,8 @@ TagManager:
   - Flag
   - SpawnArea
   - Obstacle
+  - Player 1
+  - Player 2
   layers:
   - Default
   - TransparentFX
@@ -26,8 +28,8 @@ TagManager:
   - Enemy
   - Protective
   - Volume
-  - 
-  - 
+  - Player 1
+  - Player 2
   - 
   - 
   - 

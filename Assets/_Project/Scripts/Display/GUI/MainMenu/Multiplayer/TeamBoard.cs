@@ -43,4 +43,19 @@ public class TeamBoard : MonoBehaviour
         if (!playerEntries.Remove(player, out var playerEntry)) return;
         PunManager.Instance.RemovePlayerDisplayInRoom(player.ActorNumber);
     }
+    
+    public void ClearMembers()
+    {
+        foreach (var playerEntry in playerEntries)
+        {
+            PunManager.Instance.RemovePlayerDisplayInRoom(playerEntry.Key.ActorNumber);
+        }
+        
+        foreach (var playerElement in playerEntries.Values)
+        {
+            PlayerElement.Remove(playerElement);
+        }
+        
+        playerEntries.Clear();
+    }
 }

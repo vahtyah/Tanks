@@ -18,7 +18,7 @@ public class DamageOnTouch : MonoBehaviour, ITrigger
     private float damageTaken;
 
     [SerializeField, BoxGroup("Feedbacks")]
-    private MMFeedbacks deathFeedbacks;
+    protected MMFeedbacks deathFeedbacks;
 
     [Log] private List<GameObject> ignoredObjects = new();
     private Character owner;

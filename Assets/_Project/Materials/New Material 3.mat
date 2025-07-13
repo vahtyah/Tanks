@@ -11,7 +11,8 @@ Material:
   m_Shader: {fileID: 4800000, guid: 21b28f3ee4b3c13408ed85c229008f40, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _SCREENSPACE
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -68,21 +69,21 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Intensity: 1
+    - _Intensity: 0.3
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Saturation: 1
-    - _ScreenSpace: 0
+    - _Saturation: 1.11
+    - _ScreenSpace: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _BottomColor: {r: 1, g: 0.538343, b: 0.23137254, a: 0}
+    - _BottomColor: {r: 0.5854396, g: 0.77384245, b: 0.8679245, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _TopColor: {r: 0.990566, g: 0.39420488, b: 0, a: 0}
+    - _TopColor: {r: 0.1724813, g: 0.5010589, b: 0.7169812, a: 0}
   m_BuildTextureStacks: []

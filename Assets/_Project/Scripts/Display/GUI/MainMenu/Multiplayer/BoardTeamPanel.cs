@@ -32,6 +32,16 @@ public class BoardTeamPanel : MonoBehaviour
         if (this != null)
             teamBoards[team].RemoveMember(player);
     }
+    
+    public void Clear()
+    {
+        foreach (var teamBoard in teamBoards.Values)
+        {
+            teamBoard.ClearMembers();
+            Destroy(teamBoard.gameObject);
+        }
+        teamBoards.Clear();
+    }
 
     /*public void JoinRoom()
     {

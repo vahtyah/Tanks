@@ -76,6 +76,11 @@ public class FindMatchUI : MonoBehaviour
         }
         else
         {
+            if(gameModeSelector.GetOption() == GameMode.PvE)
+            {
+                Scene.Load(Scene.SceneName.PvE);
+                return;
+            }
             PunManager.Instance.FindMatch(gameModeSelector.GetOption(), gameMapSelector.GetOption());
             if (animator.isActiveAndEnabled)
                 animator.Play(startMatch);

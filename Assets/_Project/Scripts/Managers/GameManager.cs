@@ -9,7 +9,8 @@ public enum GameMode
     None,
     DeathMatch,
     TeamDeathMatch,
-    CaptureTheFlag
+    CaptureTheFlag,
+    PvE
 }
 
 public sealed class GameManager : PersistentSingleton<GameManager>, IEventListener<GameEvent>
@@ -23,7 +24,8 @@ public sealed class GameManager : PersistentSingleton<GameManager>, IEventListen
 
     private void Start()
     {
-        // Application.targetFrameRate = 60;
+        Application.targetFrameRate = 60;
+        Application.runInBackground = true;
     }
 
     private void Update()
@@ -35,6 +37,7 @@ public sealed class GameManager : PersistentSingleton<GameManager>, IEventListen
 
     public void OnEvent(GameEvent e)
     {
+        Debug.Log($"GameManager: {e.EventType}");
         switch (e.EventType)
         {
             case GameEventType.GameMainMenu:
@@ -62,6 +65,7 @@ public sealed class GameManager : PersistentSingleton<GameManager>, IEventListen
     private void GameMainMenu()
     {
         Cursor.visible = true;
+        Scene.Load(Scene.SceneName.MainMenu);
     }
 
     private void GamePreStart()

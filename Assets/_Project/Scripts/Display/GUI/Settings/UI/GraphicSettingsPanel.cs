@@ -20,6 +20,7 @@ public class GraphicSettingsPanel : MonoBehaviour
         {
             graphicSettingsManager.ApplySettings();
             graphicSettingsManager.SaveSettings();
+            NotificationEvent.Trigger("Authentication", "Settings applied successfully");
         });
     }
 

@@ -56,6 +56,23 @@ public class LoginPanel : MonoBehaviour, IEventListener<AuthenticationEvent>
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (emailInputField.IsFocused)
+            {
+                emailInputField.Deselect();
+                passwordInputField.Select();
+            }
+            else if (passwordInputField.IsFocused)
+            {
+                passwordInputField.Deselect();
+                emailInputField.Select();
+            }
+        }
+    }
+
     private void OnEnable()
     {
         errorText.text = string.Empty;

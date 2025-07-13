@@ -134,7 +134,6 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
         if (Input.GetKeyDown(KeyCode.Space))
         {
             PhotonNetwork.LeaveRoom();
-            GameEvent.Trigger(GameEventType.GameMainMenu);
         }
     }
 
@@ -173,7 +172,7 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
         }
 
 
-        if (winner.GetTeamType() == PhotonNetwork.LocalPlayer.GetTeam().TeamType)
+        if (winnerTmp.GetTeam().TeamType == PhotonNetwork.LocalPlayer.GetTeam().TeamType)
         {
             guiManager.SetVisibleWinScreen(true);
         }
@@ -349,7 +348,7 @@ public class LevelManagerOnlineMatch : LevelManager, IEventListener<InGameEvent>
 
     public override void OnLeftRoom()
     {
-        PhotonNetwork.LoadLevel(Scene.SceneName.MainMenu.ToString());
+        GameEvent.Trigger(GameEventType.GameMainMenu);
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)

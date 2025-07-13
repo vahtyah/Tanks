@@ -14,6 +14,8 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
     private Transform roomContainer;
 
     [SerializeField] private Button buttonOpenRoomSettings;
+    [SerializeField] private Button buttonCloseRoom;
+    
 
     [SerializeField] private RoomSettingPanel roomSettingPanel;
 
@@ -22,7 +24,7 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
     [SerializeField] private BoardTeamPanel boardTeamPanel;
     [SerializeField] private TeamBoard teamBoardDeathmatch;
 
-    [SerializeField] private Button readyButton;
+    [SerializeField] private StandardButton readyButton;
     
 
     private string roomName;
@@ -78,6 +80,15 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
         }
 
         playerList.Clear();
+        
+        if (gameMode == GameMode.DeathMatch)
+        {
+            teamBoardDeathmatch.ClearMembers();
+        }
+        else if (gameMode == GameMode.CaptureTheFlag)
+        {
+            boardTeamPanel.Clear();
+        }
     }
 
     public void RoomListUpdate(List<RoomInfo> rooms)
@@ -111,10 +122,21 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
 
     private void Start()
     {
-        buttonOpenRoomSettings.onClick.AddListener(OnOpenRoomSettingsButtonClick);
-        readyButton.onClick.AddListener(() =>
+        buttonOpenRoomSettings.onClick.AddListener(() =>
         {
+            SetRoomSettingsPanelVisible(true);
+        });
+        
+        buttonCloseRoom.onClick.AddListener(() =>
+        {
+            PhotonNetwork.LeaveRoom();
+        });
+        
+        readyButton.OnClick(() =>
+        {
+            Debug.Log(PhotonNetwork.LocalPlayer.IsReadyInLobby());
             PhotonNetwork.LocalPlayer.SetReadyInLobby(!PhotonNetwork.LocalPlayer.IsReadyInLobby());
+            readyButton.ChangeText(PhotonNetwork.LocalPlayer.IsReadyInLobby() ? "Ready" : "Cancel");
         });
     }
     
@@ -161,9 +183,9 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
         PunManager.Instance.CreateCustomRoom(roomName, maxPlayers, teamSize, gameMode);
     }
 
-    private void OnOpenRoomSettingsButtonClick()
+    private void SetRoomSettingsPanelVisible(bool isVisible)
     {
-        roomSettingPanel.gameObject.SetActive(true);
+        roomSettingPanel.gameObject.SetActive(isVisible);
     }
 
     public void OnJoinRoom(Room room)
@@ -209,6 +231,10 @@ public class UIMultiplayerController : MonoBehaviour, IEventListener<RoomEvent>
                 break;
             case RoomEventType.PlayerLeft:
                 OnPlayerLeft(e.Player);
+                break;
+            case RoomEventType.RoomLeave:
+                SetInRoomPanelVisible(false);
+                RemoveAllPlayerElements();
                 break;
         }
     }

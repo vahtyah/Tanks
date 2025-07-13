@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DatabaseManager : Singleton<DatabaseManager>, IEventListener<AuthenticationEvent>,
+public class DatabaseManager : PersistentSingleton<DatabaseManager>, IEventListener<AuthenticationEvent>,
     IEventListener<AuthenticationRequest>, IEventListener<GameEvent>
 {
     public FriendService FriendService { get; private set; }
@@ -11,6 +11,7 @@ public class DatabaseManager : Singleton<DatabaseManager>, IEventListener<Authen
     protected override void Awake()
     {
         base.Awake();
+        if (Instance != this) return;
         _ = new DatabaseInitializer((reference =>
         {
             AuthenticationService = new AuthenticationService((auth) =>

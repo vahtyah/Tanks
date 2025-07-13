@@ -85,7 +85,6 @@ public class ChaHealth : HealthTest, IEventListener<GameEvent>
 
     public override void ResetHealth()
     {
-        Debug.Log(PhotonNetwork.OfflineMode);
         photonView.RPC(nameof(RPC_ResetHealth), RpcTarget.All);
     }
 

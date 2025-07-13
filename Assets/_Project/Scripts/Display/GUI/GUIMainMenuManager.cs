@@ -33,12 +33,27 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
     [TabGroup("Player")] [SerializeField] private TextMeshProUGUI playerNameText;
     [TabGroup("Window")] [SerializeField] private GameObject gameFullWindow;
 
+    private bool isFirstTimeLogin = false;
+
+    private void Start()
+    {
+        if (DatabaseManager.Instance.AuthenticationService == null || !DatabaseManager.Instance.AuthenticationService.IsLoggedIn)
+        {
+            isFirstTimeLogin = true;
+        }
+    }
+
     #region Pun Callbacks
 
     public void OnJoinedLobby()
     {
         SetLoadingPanelVisibility(false);
         mainPanel.SetVisible(true);
+        if (isFirstTimeLogin)
+        {
+            NotificationEvent.Trigger("Authentication", "Welcome back! " + PhotonNetwork.NickName);
+            isFirstTimeLogin = false;
+        }
     }
 
     public void OnDisconnected(DisconnectCause cause)
@@ -178,7 +193,6 @@ public class GUIMainMenuManager : Singleton<GUIMainMenuManager>, IEventListener<
         switch (e.EventType)
         {
             case AuthenticationEventType.LoginSuccessful:
-                NotificationEvent.Trigger("Authentication", "Welcome back! " + e.User.DisplayName);
                 SetLoadingPanelVisibility(true);
                 authenPanel.SetVisible(false);
                 break;

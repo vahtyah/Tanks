@@ -1,10 +1,26 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.MLAgents;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TrainingController : MonoBehaviour
 {
+    public enum TrainingType
+    {
+        Training,
+        Video
+    }
+    
+    public Image winnerPanel;
+    public TextMeshProUGUI winnerText;
+    public Color blueTeamColor;
+    public Color redTeamColor;
+    
+    public TrainingType trainingType = TrainingType.Training;
+    public ParticleSystem deathParticle;
     public List<CharacterAgent> team1Players = new List<CharacterAgent>();
     public List<CharacterAgent> team2Players = new List<CharacterAgent>();
     
@@ -74,9 +90,41 @@ public class TrainingController : MonoBehaviour
 
         if (Team1PlayersAlive.Count == 0 || Team2PlayersAlive.Count == 0)
         {
-            team1Group.EndGroupEpisode();
-            team2Group.EndGroupEpisode();
-            ResetScene();
+            if(trainingType == TrainingType.Training)
+            {
+                team1Group.EndGroupEpisode();
+                team2Group.EndGroupEpisode();
+                ResetScene();
+            }
+            else
+            {
+                StartCoroutine(WaitForGameOver());
+            }
+        }
+    }
+    
+    IEnumerator WaitForGameOver()
+    {
+        ShowWinnerPanel();
+        yield return new WaitForSeconds(2f);
+        winnerPanel.gameObject.SetActive(false);
+        team1Group.EndGroupEpisode();
+        team2Group.EndGroupEpisode();
+        ResetScene();
+    }
+    
+    public void ShowWinnerPanel()
+    {
+        winnerPanel.gameObject.SetActive(true);
+        if(Team1PlayersAlive.Count == 0)
+        {
+            winnerText.text = "Blue Team Wins!";
+            winnerPanel.color = blueTeamColor;
+        }
+        else if(Team2PlayersAlive.Count == 0)
+        {
+            winnerText.text = "Red Team Wins!";
+            winnerPanel.color = redTeamColor;
         }
     }
 

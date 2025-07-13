@@ -14,6 +14,7 @@ public class CharacterAgent : Agent
     private CharacterAgentHandleWeapon weaponHandler;
     private bool isDecisionStep;
     private Vector3 startingPosition;
+    private Vector3 startingRotation;
     private BehaviorParameters behaviorParameters;
     private BufferSensorComponent bufferSensorComponent;
     
@@ -25,6 +26,7 @@ public class CharacterAgent : Agent
     private void Awake()
     {
         startingPosition = transform.position;
+        startingRotation = transform.rotation.eulerAngles;
         movement = GetComponent<CharacterAgentMovement>();
         weaponHandler = GetComponent<CharacterAgentHandleWeapon>();
         trainingController = GetComponentInParent<TrainingController>();
@@ -140,11 +142,19 @@ public class CharacterAgent : Agent
         gameObject.SetActive(true);
         transform.position = startingPosition;
         // transform.localPosition = new Vector3(Random.Range(-20, 20), transform.localPosition.y, Random.Range(-20, 20));
-        transform.rotation = Quaternion.Euler(new Vector3(0f, Random.Range(0, 360)));
+        if(trainingController.trainingType != TrainingController.TrainingType.Video)
+            transform.rotation = Quaternion.Euler(new Vector3(0f, Random.Range(0, 360)));
+        else 
+            transform.rotation = Quaternion.Euler(startingRotation);
     }
 
     public void AgentDie()
     {
+        if (trainingController.trainingType == TrainingController.TrainingType.Video)
+        {
+            var par = Pool.Spawn(trainingController.deathParticle.gameObject, transform.position, trainingController.deathParticle.transform.rotation);
+            par.GetComponent<ParticleSystem>().Play();
+        }
         trainingController.SomeoneDied(this);
     }
     

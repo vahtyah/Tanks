@@ -51,6 +51,7 @@ public class Team
     public static TeamType TryGetCacheTeam(Character playerCharacter)
     {
         EnsureManagerExists();
+        Debug.Log(playerCharacter);
         return manager.TeamCharacters.GetValueOrDefault(playerCharacter, TeamType.None);
     }
 

@@ -200,7 +200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetLayerMask:
     serializedVersion: 2
-    m_Bits: 1032
+    m_Bits: 99328
   damage: 10
   damageTaken: 1
   deathFeedbacks: {fileID: 0}

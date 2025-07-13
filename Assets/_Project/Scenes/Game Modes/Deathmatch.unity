@@ -431,19 +431,19 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6302233354137891423, guid: 717530e3b657d1447a81f9c3cf24481f, type: 3}
       insertIndex: 5
-      addedObject: {fileID: 1560744590}
-    - targetCorrespondingSourceObject: {fileID: 6302233354137891423, guid: 717530e3b657d1447a81f9c3cf24481f, type: 3}
-      insertIndex: 6
-      addedObject: {fileID: 540599865}
-    - targetCorrespondingSourceObject: {fileID: 6302233354137891423, guid: 717530e3b657d1447a81f9c3cf24481f, type: 3}
-      insertIndex: 7
-      addedObject: {fileID: 3442813}
-    - targetCorrespondingSourceObject: {fileID: 6302233354137891423, guid: 717530e3b657d1447a81f9c3cf24481f, type: 3}
-      insertIndex: 8
       addedObject: {fileID: 2098773863}
     - targetCorrespondingSourceObject: {fileID: 6302233354137891423, guid: 717530e3b657d1447a81f9c3cf24481f, type: 3}
-      insertIndex: 9
+      insertIndex: 6
       addedObject: {fileID: 443737477}
+    - targetCorrespondingSourceObject: {fileID: 6302233354137891423, guid: 717530e3b657d1447a81f9c3cf24481f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1560744590}
+    - targetCorrespondingSourceObject: {fileID: 6302233354137891423, guid: 717530e3b657d1447a81f9c3cf24481f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 540599865}
+    - targetCorrespondingSourceObject: {fileID: 6302233354137891423, guid: 717530e3b657d1447a81f9c3cf24481f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3442813}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4457485039340362254, guid: 717530e3b657d1447a81f9c3cf24481f, type: 3}
       insertIndex: -1
@@ -4487,7 +4487,7 @@ MonoBehaviour:
   - Message: Vasage!
     BonusScore: 3
   playerPrefab: {fileID: 4198146148095455993, guid: 43716c143c3f0fa449be1ac67af3d0ea, type: 3}
-  gameDuration: 1000
+  gameDuration: 5
   preStartDuration: 5
   respawnDuration: 5
 --- !u!114 &2141255833
